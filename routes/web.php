@@ -6,7 +6,7 @@ use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
