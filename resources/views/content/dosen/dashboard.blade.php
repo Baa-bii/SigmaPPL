@@ -11,14 +11,15 @@
 
 <body>
   <x-headerdosen></x-headerdosen>
-<div class="container mt-3">
-    <div class="mt-4 p-5 bg-primary text-white rounded">
-      <h1>Jumbotron Example</h1> 
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat..</p> 
-    </div>
-    <div class="logout">
-      <a href="{{ route('logout') }}" class="btn btn-sm btn-primary m-2">Logout</a>
-    </div>
+  <div class="container mt-1 mb-7">
+      <div class="mt-4 p-2 text-white rounded text-center bg-yellow-500 font-semibold">
+        <h1>Selamat Datang {{ Auth::user()->name }}!</h1> 
+      </div>
+  </div>
+  <div class="flex flex-wrap justify-self-center w-fit bg-gray-300 p-8 space-x-5 rounded-md">
+    <div class="h-40 w-40 bg-white rounded-2xl"></div>
+    <div class="h-40 w-40 bg-white rounded-2xl"></div>
+    <div class="h-40 w-40 bg-white rounded-2xl"></div>
   </div>
 </body>
 </html>
