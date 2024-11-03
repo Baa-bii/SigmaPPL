@@ -9,16 +9,16 @@
     </div>
   </div>
   <div class="flex justify-center font-sans py-2">
-    <div class="flex-1 text-center text-l hover:text-blue-500 cursor-pointer font-semibold">
+    <div class="flex-1 text-center text-l hover:text-yellow-500 cursor-pointer font-semibold">
       <a href="{{ route('dosen.dashboard.index') }}"></a>
       Dashboard
     </div>
     <div class="contents"></div>
-    <div class="flex-1 text-center text-l hover:text-blue-500 cursor-pointer font-semibold">
+    <div class="flex-1 text-center text-l hover:text-yellow-500 cursor-pointer font-semibold">
       <a href="#"></a>
       Akademik
     </div>
-    <div class="flex-1 text-center text-l hover:text-blue-500 cursor-pointer font-semibold">
+    <div class="flex-1 text-center text-l hover:text-yellow-500 cursor-pointer font-semibold">
       <a href="#"></a>
       Jadwal
     </div>
