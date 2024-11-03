@@ -27,7 +27,7 @@ class AuthController extends Controller
             return redirect()->intended('/mhs/home');
         }
         else{
-            return redirect(route('login'))->with('msg', 'email dan password salah');
+            return redirect(route('login'))->with('msg', 'Email dan password salah');
         }
     }
 

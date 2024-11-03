@@ -12,8 +12,11 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
+
+
 Route::group(['middleware'=>'auth:dosen'], function(){
     Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/akademik', [DashboardDosenController::class, 'akademik'])->name('dosen.akademik.index');
 });
 
 Route::group(['middleware'=>'auth:mhs'], function(){

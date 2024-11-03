@@ -11,4 +11,8 @@ class DashboardDosenController extends Controller
     public function index(): View{
         return view('content.dosen.dashboard');
     }
+
+    public function akademik(): View{
+        return view('content.dosen.akademik');
+    }
 }
