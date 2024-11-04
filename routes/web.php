@@ -17,6 +17,7 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 Route::group(['middleware'=>'auth:dosen'], function(){
     Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
     Route::get('/dosen/akademik', [DashboardDosenController::class, 'akademik'])->name('dosen.akademik.index');
+    Route::get('/dosen/isi/irs', [DashboardDosenController::class, 'irs'])->name('dosen.isi.irs.index');
 });
 
 Route::group(['middleware'=>'auth:mhs'], function(){

@@ -15,4 +15,8 @@ class DashboardDosenController extends Controller
     public function akademik(): View{
         return view('content.dosen.akademik');
     }
+
+    public function irs(): View{
+        return view('content.dosen.isi.irs');
+    }
 }
