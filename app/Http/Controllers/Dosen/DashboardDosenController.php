@@ -19,4 +19,8 @@ class DashboardDosenController extends Controller
     public function irs(): View{
         return view('content.dosen.isi.irs');
     }
+
+    public function perwalian(): View{
+        return view('content.dosen.perwalian');
+    }
 }
