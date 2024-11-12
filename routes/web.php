@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
+use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Akademik\DashboardAkademikController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -23,6 +24,10 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 
 Route::group(['middleware'=>'auth:mhs'], function(){
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
+});
+
+Route::group(['middleware'=>'auth:akademik'], function(){
+    Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

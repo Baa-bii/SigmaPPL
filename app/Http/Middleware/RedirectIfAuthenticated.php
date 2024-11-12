@@ -24,6 +24,9 @@ class RedirectIfAuthenticated extends RedirectIfAuthenticatedMiddleware
         else if(Auth::guard('mhs')->check()){
             return redirect(route('mhs.dashboard.index'));
         }
+        else if(Auth::guard('akademik')->check()){
+            return redirect(route('akademik.dashboard.index'));
+        }
         return $next($request);
     }
 }
