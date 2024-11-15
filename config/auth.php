@@ -50,6 +50,10 @@ return [
             'driver' => 'session',
             'provider' => 'mhs',
         ],
+        'akademik' => [
+            'driver' => 'session',
+            'provider' => 'akademik',
+        ],
     ],
 
     /*
@@ -81,6 +85,11 @@ return [
         ],
 
         'mhs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'akademik' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
