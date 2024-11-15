@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('irs', function (Blueprint $table) {
-            $table->id();
+        Schema::create('program_studi', function (Blueprint $table) {
+            $table->string('kode_prodi')->primary();
+            $table->string('nama_prodi');
+            $table->string('fakultas');
+            $table->string('akreditasi');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('irs');
+        Schema::dropIfExists('program_studi');
     }
 };

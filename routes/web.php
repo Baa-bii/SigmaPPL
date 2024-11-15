@@ -26,3 +26,8 @@ Route::group(['middleware'=>'auth:mhs'], function(){
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/mhs/IRSmhs', function () {
+    return view('IRSmhs');
+
+});
