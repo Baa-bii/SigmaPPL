@@ -44,6 +44,8 @@ Route::group(['middleware'=>'auth:mhs'], function(){
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
     Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
+    Route::get('/kaprodi/matakuliah', [DashboardKaprodiController::class, 'index'])->name('kaprodi.matakuliah.index');
+    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'index'])->name('kaprodi.jadwal.index');
 });
 
 Route::group(['middleware'=>'auth:dekan'], function(){

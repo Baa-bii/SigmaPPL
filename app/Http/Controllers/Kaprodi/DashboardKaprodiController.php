@@ -11,4 +11,12 @@ class DashboardKaprodiController extends Controller
     public function index(): View{
         return view('content.kaprodi.dashboard');
     }
+
+    public function matkul(): View{
+        return view('content.kaprodi.matakuliah');
+    }
+
+    public function jadwal(): View{
+        return view('content.kaprodi.jadwal');
+    }
 }

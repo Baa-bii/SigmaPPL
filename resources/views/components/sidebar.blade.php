@@ -65,7 +65,7 @@
             @elseif($user->role === 'kaprodi')
                 <!-- Menu Kaprodi -->
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('kaprodi.dashboard.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('kaprodi.matakuliah.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('kaprodi.jadwal.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
