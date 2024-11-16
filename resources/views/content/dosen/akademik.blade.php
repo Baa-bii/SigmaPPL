@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <x-headerdosen></x-headerdosen>
+    <x-header></x-header>
     <div class="flex flex-wrap justify-center p-8 mx-4 space-x-4 rounded-md">
       <a href="{{ route('dosen.isi.irs.index') }}">
         <div class="h-40 w-80 bg-white rounded-2xl shadow-lg border-2 border-yellow-300 hover:cursor-pointer hover:scale-105 ease-in-out duration-300" href="#">

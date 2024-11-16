@@ -54,6 +54,14 @@ return [
             'driver' => 'session',
             'provider' => 'akademik',
         ],
+        'dekan' => [
+            'driver' => 'session',
+            'provider' => 'dekan',
+        ],
+        'kaprodi' => [
+            'driver' => 'session',
+            'provider' => 'kaprodi',
+        ],
     ],
 
     /*
@@ -90,6 +98,16 @@ return [
         ],
 
         'akademik' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'kaprodi' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'dekan' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],

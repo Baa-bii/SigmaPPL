@@ -30,6 +30,14 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/akademik/home');
         }
+        else if (Auth::guard('dekan')->attempt(['email'=>$data['email'],'password'=>$data['password'], 'role'=>'dekan'])){
+            $request->session()->regenerate();
+            return redirect()->intended('/dekan/home');
+        }
+        else if (Auth::guard('kaprodi')->attempt(['email'=>$data['email'],'password'=>$data['password'], 'role'=>'kaprodi'])){
+            $request->session()->regenerate();
+            return redirect()->intended('/kaprodi/home');
+        }
         else{
             return redirect(route('login'))->with('msg', 'Email dan password salah');
         }
@@ -44,6 +52,12 @@ class AuthController extends Controller
         }
         else if (Auth::guard('akademik')->check()){
             Auth::guard('akademik')->logout();
+        }
+        else if (Auth::guard('dekan')->check()){
+            Auth::guard('dekan')->logout();
+        }
+        else if (Auth::guard('kaprodi')->check()){
+            Auth::guard('kaprodi')->logout();
         }
         request()->session()->invalidate();
         request()->session()->regenerateToken();

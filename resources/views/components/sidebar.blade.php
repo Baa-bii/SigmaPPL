@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('dekan.usulan.jadwal.kuliah') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('dekan.jadwal.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -55,7 +55,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('dekan.usulan.ruang.kuliah') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('dekan.ruang.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -65,7 +65,7 @@
             @elseif($user->role === 'kaprodi')
                 <!-- Menu Kaprodi -->
                 <li>
-                    <a href="{{ route('kaprodi.dashboard.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('kaprodi.kelola.mata.kuliah') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('kaprodi.kelola.jadwal') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>
@@ -99,7 +99,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('akademik.kelola.ruangan') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
+                    <a href="{{ route('akademik.ruang.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg group">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="..."></path>
                         </svg>

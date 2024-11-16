@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name'=> 'Mahasiswa',
+            'name'=> 'Rizzelle Marie Regal',
             'email'=> 'mahasiswa@gmail.com',
             'role'=> 'mhs',
             'password'=>bcrypt('mhs123')
@@ -34,6 +34,20 @@ class DatabaseSeeder extends Seeder
             'email'=> 'akademik@gmail.com',
             'role'=> 'akademik',
             'password'=>bcrypt('akademik123')
+        ]);
+
+        User::create([
+            'name'=> 'Dekan',
+            'email'=> 'dekan@gmail.com',
+            'role'=> 'dekan',
+            'password'=>bcrypt('dekan123')
+        ]);
+
+        User::create([
+            'name'=> 'Kaprodi',
+            'email'=> 'kaprodi@gmail.com',
+            'role'=> 'kaprodi',
+            'password'=>bcrypt('kaprodi123')
         ]);
     }
 }
