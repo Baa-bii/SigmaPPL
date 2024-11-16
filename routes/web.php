@@ -6,6 +6,14 @@ use App\Http\Controllers\Mhs\DashboardMhsController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 
+//testing component
+Route::get('/header', function () {
+    return view('components.header');
+});
+Route::get('/sidebar', function () {
+    return view('components.sidebar');
+});
+
 Route::get('/', function () {
     return view('auth.login');
 });
