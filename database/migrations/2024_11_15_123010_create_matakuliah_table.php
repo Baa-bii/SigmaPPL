@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('matakuliah', function (Blueprint $table) {
-            $table->id();
+            $table->string('kode_mk')->primary();
+            $table->string('nama_mk');
+            $table->string('sks');
+            $table->string('semester');
+            $table->string('jenis_mk');
+            $table->string('kode_prodi');
+            $table->foreign('kode_prodi')->references('kode_prodi')->on('program_studi')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('matakuliah', function (Blueprint $table) {
+            $table->dropForeign(['kode_prodi']);
+        });
         Schema::dropIfExists('matakuliah');
     }
 };

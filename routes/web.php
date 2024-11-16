@@ -26,8 +26,17 @@ Route::group(['middleware'=>'auth:mhs'], function(){
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
 });
 
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/mhs/IRSmhs', function () {
+    return view('IRSmhs');
+
+});
+
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
