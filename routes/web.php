@@ -15,6 +15,12 @@ use App\Http\Controllers\Akademik\DashboardAkademikController;
 // Route::get('/sidebar', function () {
 //     return view('components.sidebar');
 // });
+Route::get('/footerdosen', function () {
+    return view('components.footerdosen');
+});
+Route::get('/footermhs', function () {
+    return view('components.footermhs');
+});
 
 Route::get('/', function () {
     return view('auth.login');
