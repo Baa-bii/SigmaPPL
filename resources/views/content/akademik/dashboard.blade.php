@@ -14,5 +14,11 @@
 <body>
     <x-header></x-header>
     <x-sidebar></x-sidebar>
+    <main>
+        <div class="p-16 md:ml-64 h-auto pt-20">
+            
+        </div>
+    </main>
+    <x-footerdosen></x-footerdosen>
 </body>
 </html>

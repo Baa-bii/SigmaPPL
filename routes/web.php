@@ -60,7 +60,7 @@ Route::get('/mhs/IRSmhs', function () {
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
-    Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruangan.index');
+    Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
