@@ -49,5 +49,11 @@ class DatabaseSeeder extends Seeder
             'role'=> 'kaprodi',
             'password'=>bcrypt('kaprodi123')
         ]);
+
+        // Panggil Seeder lainnya di sini
+        $this->call([
+            ProgramStudiSeeder::class,
+            DosenSeeder::class, 
+        ]);
     }
 }

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->string('nip_dosen')->primary();
             $table->string('nama_dosen');
+            $table->string('email')->unique(); // Tambahkan kolom email
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade'); // Foreign key ke tabel users
             $table->string('dosen');
             $table->string('dosen_wali');
             $table->string('kaprodi');
@@ -22,7 +24,6 @@ return new class extends Migration
             $table->foreign('kode_prodi')->references('kode_prodi')->on('program_studi')->onDelete('cascade');
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -31,7 +32,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('dosen', function (Blueprint $table) {
-            $table->dropForeign(['kode_prodi']);  // Menghapus foreign key 
+            $table->dropForeign(['kode_prodi']); // Hapus foreign key kode_prodi
+            $table->dropForeign(['email']); // Hapus foreign key email
         });
 
         Schema::dropIfExists('dosen');
