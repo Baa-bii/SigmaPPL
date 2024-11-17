@@ -24,7 +24,7 @@
     <!-- Main Content -->
 
     <main class="p-16 md:ml-64 h-auto pt-20">
-        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Dashboard</h1>
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Dashboard</h1>
       
       <!-- Konten 1-->
       <div
