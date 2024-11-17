@@ -4,80 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>IRS mahasiswa</title>
+    <title>Perwalian</title>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
-
-        <!--Navbar-->
-    
-        <nav class="bg-black border-b border-gray-200 px-4 py-3 dark:bg-gray-900 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">   
-            <div class="flex flex-wrap justify-between items-center">
-                <div class="flex justify-start items-center">
-                    <!--Toogle sidebar muncul ketika layar nya diperkecil untuk menampilkan sidebar-->
-                    <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="p-2 mr-2 text-yellow-400 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <!-- Icon untuk toggle-->
-                        <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                        </svg>
-                        <svg aria-hidden="true" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Toggle sidebar</span>
-                    </button>
-    
-                    <!--Logo SiGMA-->
-                    <a href="#" class="flex items-center pl-10">
-                        <img src="{{ asset('logo.png') }}" class="mr-5 h-10" alt="SiGMA Logo" />
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap text-yellow-400 dark:text-white">SiGMA</span>
-                    </a>
-                </div>
-    
-                <div class="flex items-center lg:order-2">
-                    <!-- Notifikasi -->
-                    <button type="button" data-dropdown-toggle="notification-dropdown" class="p-2 mr-1 text-yellow-400 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
-                        <span class="sr-only">View notifications</span>
-    
-                        <!--Ikon lonceng-->
-                        <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
-                        </svg>
-                    </button>
-                    
-                    <!-- User menu button with kebab icon -->
-                    <div class="relative inline-block text-left">
-                        <button type="button" class="flex items-center mx-3 px-3 py-1 text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false">
-                            <!-- Foto user dan nama -->
-                            <span class="sr-only">Open user menu</span>
-                            <span class="self-center text-l font-semibold whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
-                            Rizelle Mariel Regal.
-                            </span>
-                            <img class="w-10 h-10 rounded-full ml-4"
-                            src="{{ asset('img/user.png') }}"
-                            alt="user photo"
-                            />
-                            <!-- Ikon kebab menu -->
-                            <svg class="w-6 h-6 text-yellow-400 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M12 7C12.55 7 13 6.55 13 6C13 5.45 12.55 5 12 5C11.45 5 11 5.45 11 6C11 6.55 11.45 7 12 7Z" stroke-width="2"/>
-                                <path d="M12 13C12.55 13 13 12.55 13 12C13 11.45 12.55 11 12 11C11.45 11 11 11.45 11 12C11 12.55 11.45 13 12 13Z" stroke-width="2"/>
-                                <path d="M12 19C12.55 19 13 18.55 13 18C13 17.45 12.55 17 12 17C11.45 17 11 17.45 11 18C11 18.55 11.45 19 12 19Z" stroke-width="2"/>
-                            </svg>
-                        </button>
-    
-                        <!-- Dropdown menu for user -->
-                        <div id="dropdown" class="hidden absolute right-0 z-50 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600">
-                            <div class="py-1">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">My profile</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Account settings</a>
-                            </div>
-                            <div class="py-1">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Log out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <x-header></x-header>
+        <main>
+        
+        </main>
+        <x-footermhs></x-footermhs>
     </div>
 </body>
 </html>

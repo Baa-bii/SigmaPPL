@@ -30,21 +30,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name'=> 'Akademik',
+            'name'=> 'Saipul Jamil',
             'email'=> 'akademik@gmail.com',
             'role'=> 'akademik',
             'password'=>bcrypt('akademik123')
         ]);
 
         User::create([
-            'name'=> 'Dekan',
+            'name'=> 'Della Mutiara',
             'email'=> 'dekan@gmail.com',
             'role'=> 'dekan',
             'password'=>bcrypt('dekan123')
         ]);
 
         User::create([
-            'name'=> 'Kaprodi',
+            'name'=> 'Agus Santoso',
             'email'=> 'kaprodi@gmail.com',
             'role'=> 'kaprodi',
             'password'=>bcrypt('kaprodi123')

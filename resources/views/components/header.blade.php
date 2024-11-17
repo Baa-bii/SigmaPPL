@@ -45,11 +45,11 @@
             >
                 <!-- Nama dan Foto User -->
                 @if($user)
-                    <span class="hidden md:block self-center text-l font-normal whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
+                    <span class="hidden md:block self-center text-sm font-light whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
                         <b>{{ $user->name }}</b>
                     </span>
                 @else
-                    <span class="hidden md:block self-center text-l font-normal whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
+                    <span class="hidden md:block self-center text-sm font-light whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
                         <b>Guest</b>
                     </span>
                 @endif
@@ -83,7 +83,7 @@
                 class="hidden absolute right-0 z-50 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600"
             >
                 <!-- Nama dan Foto User (Visible on Small Screens) -->
-                <div class="block md:hidden px-4 py-2 items-center">
+                <div class="block md:hidden px-4 py-2 flex items-center">
                     <img class="w-10 h-10 rounded-full mr-2" src="{{ asset('img/user.png') }}" alt="user photo" />
                     <span class="text-gray-900 dark:text-white text-sm font-normal">
                         {{ $user ? $user->name : 'Guest' }}

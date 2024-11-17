@@ -12,7 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
-    <x-header></x-header>
-    <x-sidebar></x-sidebar>
+    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+        <x-header></x-header>
+        <x-sidebar></x-sidebar>
+        <main>
+        
+        </main>
+        <x-footerdosen></x-footerdosen>
+    </div>
 </body>
 </html>
