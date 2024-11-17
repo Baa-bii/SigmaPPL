@@ -272,7 +272,7 @@
         </ul>
 
         <!-- Calendar Section -->
-        <ul class="pt-20 mt-20 space-y-2">
+        <ul class="pt-28 mt-28 space-y-3">
             <li>
                 <div class="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-700">
                     <div class="flex items-center justify-between px-4 py-3 bg-black">
@@ -296,7 +296,7 @@
                         </div>
                     </div>
                 </div>
-            </li>`
+            </li>
         </ul>
     </div>
 
