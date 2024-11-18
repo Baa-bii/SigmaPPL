@@ -10,9 +10,11 @@ class Mahasiswa extends Model
     use HasFactory;
 
     protected $table = 'mahasiswa';
+
     protected $fillable = [
         'nim',
         'nama_mhs',
+        'email',
         'angkatan',
         'jalur_masuk',
         'no_hp',
@@ -20,4 +22,12 @@ class Mahasiswa extends Model
         'kode_prodi',
         'nip_dosen',
     ];
+
+    /**
+     * Relasi ke tabel users
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email'); // Relasi berdasarkan email
+    }
 }

@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User Dosen
+        $faker = Faker::create('id_ID');
+
+        // Seeder User Dosen
         User::create([
             'name' => 'Bambang Susanto, M.Kom',
             'email' => 'bambangss@lecturer.com',
@@ -29,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('agus123'),
         ]);
 
-        // User Akademik, Dekan, Kaprodi
+        // Seeder User Akademik, Dekan, Kaprodi
         User::create([
             'name' => 'Saipul Jamil',
             'email' => 'akademik@lecturer.com',
@@ -51,31 +53,32 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('kaprodi123'),
         ]);
 
-        // User Mahasiswa
-        $faker = Faker::create();
-        $angkatan = [
-            '2024' => 'bambangss@lecturer.com',
-            '2022' => 'bambangss@lecturer.com',
-            '2023' => 'agusdwi@lecturer.com',
-            '2021' => 'agusdwi@lecturer.com',
-        ];
+        User::create([
+            'name' => 'Rizelle Marie Regal',
+            'email' => 'rizelle@students.com',
+            'role' => 'mhs',
+            'password' => bcrypt('rizelle123'),
+        ]);
 
-        foreach ($angkatan as $tahun => $dosenEmail) {
+        // Seeder User Mahasiswa
+        $angkatan = ['2024', '2022', '2023', '2021'];
+        foreach ($angkatan as $tahun) {
             for ($i = 1; $i <= 50; $i++) {
+                $name = $faker->name;
                 $nim = $tahun . str_pad($i, 3, '0', STR_PAD_LEFT);
-                $nama = $faker->name();
-                $email = strtolower(str_replace(' ', '', $nama)) . '@students.com';
+                $email = strtolower(str_replace(' ', '', $name)) . $nim . '@students.com';
 
+                // Buat User Mahasiswa
                 User::create([
-                    'name' => $nama,
+                    'name' => $name,
                     'email' => $email,
                     'role' => 'mhs',
-                    'password' => bcrypt(strtolower(str_replace(' ', '', $nama)) . '123'),
+                    'password' => bcrypt("{$name}123"),
                 ]);
             }
         }
 
-        // Panggil Seeder lainnya di sini
+        // Panggil Seeder lainnya
         $this->call([
             ProgramStudiSeeder::class,
             DosenSeeder::class,

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->string('nim')->primary();
             $table->string('nama_mhs');
+            $table->string('email')->unique(); 
             $table->string('angkatan');
             $table->string('jalur_masuk');
             $table->string('no_hp');
@@ -24,7 +25,6 @@ return new class extends Migration
             $table->foreign('nip_dosen')->references('nip_dosen')->on('dosen')->onDelete('cascade');
             $table->timestamps();
         });
-        
     }
 
     /**
