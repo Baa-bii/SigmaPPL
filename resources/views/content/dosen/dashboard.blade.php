@@ -26,25 +26,28 @@
     <main class="p-16 md:ml-64 h-auto pt-20">
       <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Dashboard</h1>
       
-      <!-- Konten 1-->
-      <div
-          class="bg-white rounded-lg border-gray-300 dark:border-gray-600 h-48 mb-8">
-          <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28">
-          <h1 class="absolute text-xl font-semibold text-yellow-400 dark:text-white" 
-              style="top: 69%; left: 34.5%; transform: translate(-50%, -50%);">
-              BAMBANG SUSANTO, M.Kom.
-          </h1>
-          <h1 class="absolute text-l text-black dark:text-white" 
-              style="top: 126%; left: 42%; transform: translate(-50%, -50%);">
-              NIP : 199112092024061001   |   bambangss@lecturer.sigma.ac.id
-          </h1>
-          <img 
-              class="absolute -bottom-16 left-12 w-36 h-36 rounded-full "  
-              src="{{ asset('img/USERFIX.jpg') }}" 
-              alt="photo profile"
-          />
+      <!-- Konten 1 -->
+      <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-48 mb-8">
+          <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28 flex items-center">
+              <!-- Nama Dosen -->
+              <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
+                  {{ $dosen->nama_dosen ?? 'Nama tidak ditemukan' }}
+              </h1>
+          </div>
+          <div class="relative flex items-center">
+              <!-- NIP dan Email -->
+              <h1 class="text-l text-black dark:text-white text-center mt-4 pl-64">
+                  NIP : {{ $dosen->nip_dosen ?? 'NIP tidak ditemukan' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->email }}
+              </h1>
+              <!-- Foto Profil -->
+              <img 
+                  class="absolute -bottom-6 left-12 w-36 h-36 rounded-full" 
+                  src="{{ asset('img/USERFIX.jpg') }}" 
+                  alt="photo profile"
+              />
           </div>
       </div>
+
       
       <!-- Konten 2 -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-8">
