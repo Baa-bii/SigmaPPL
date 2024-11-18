@@ -27,6 +27,12 @@ class RedirectIfAuthenticated extends RedirectIfAuthenticatedMiddleware
         else if(Auth::guard('akademik')->check()){
             return redirect(route('akademik.dashboard.index'));
         }
+        else if(Auth::guard('dekan')->check()){
+            return redirect()->route('dekan.dashboard.index');
+        }
+        else if(Auth::guard('kaprodi')->check()){
+            return redirect(route('kaprodi.dashboard.index'));
+        }
         return $next($request);
     }
 }

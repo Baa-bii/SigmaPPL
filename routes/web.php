@@ -3,8 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
+use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
+
+//testing component
+// Route::get('/header', function () {
+//     return view('components.header');
+// });
+// Route::get('/sidebar', function () {
+//     return view('components.sidebar');
+// });
+Route::get('/footerdosen', function () {
+    return view('components.footerdosen');
+});
+Route::get('/footermhs', function () {
+    return view('components.footermhs');
+});
 
 Route::get('/', function () {
     return view('auth.login');
@@ -27,8 +43,18 @@ Route::group(['middleware'=>'auth:mhs'], function(){
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.akademik.index');
 });
 
+Route::group(['middleware'=>'auth:kaprodi'], function(){
+    Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
+    Route::get('/kaprodi/matakuliah', [DashboardKaprodiController::class, 'index'])->name('kaprodi.matakuliah.index');
+    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'index'])->name('kaprodi.jadwal.index');
+});
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::group(['middleware'=>'auth:dekan'], function(){
+    Route::get('/dekan/home', [DashboardDekanController::class, 'index'])->name('dekan.dashboard.index');
+    Route::get('/dekan/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
+    Route::get('/dekan/jadwal', [DashboardDekanController::class, 'jadwal'])->name('dekan.jadwal.index');
+});
+
 
 Route::get('/mhs/IRSmhs', function () {
     return view('IRSmhs');
@@ -37,6 +63,7 @@ Route::get('/mhs/IRSmhs', function () {
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
+    Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
 });
 
 Route::get('/db', function () {
