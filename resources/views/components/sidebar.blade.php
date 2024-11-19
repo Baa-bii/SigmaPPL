@@ -15,12 +15,12 @@
                     <a
                         href="{{ route('dosen.dashboard.index') }}"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dosen/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        {{ Request::is('dosen/dashboard') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dosen/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            {{ Request::is('dosen/dashboard') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -43,11 +43,11 @@
                     <a
                         href="{{ route('dosen.perwalian.index') }}"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dosen/isi/perwalian') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        {{ Request::is('dosen/perwalian') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dosen/isi/perwalian') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            {{ Request::is('dosen/perwalian') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"

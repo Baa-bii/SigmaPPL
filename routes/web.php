@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\PerwalianController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 
@@ -32,10 +33,8 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 
 Route::group(['middleware'=>'auth:dosen'], function(){
-    Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
-    Route::get('/dosen/akademik', [DashboardDosenController::class, 'akademik'])->name('dosen.akademik.index');
-    Route::get('/dosen/isi/irs', [DashboardDosenController::class, 'irs'])->name('dosen.isi.irs.index');
-    Route::get('/dosen/isi/perwalian', [DashboardDosenController::class, 'perwalian'])->name('dosen.perwalian.index');
+    Route::get('/dosen/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
 });
 
 Route::group(['middleware'=>'auth:mhs'], function(){
