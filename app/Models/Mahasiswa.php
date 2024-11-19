@@ -9,7 +9,10 @@ class Mahasiswa extends Model
 {
     use HasFactory;
 
-    protected $table = 'mahasiswa';
+    protected $table = 'mahasiswa'; // Nama tabel
+    protected $primaryKey = 'nim'; // Primary key
+    public $incrementing = false; // Jika primary key bukan auto-increment
+    protected $keyType = 'string'; // Jika primary key berupa string
 
     protected $fillable = [
         'nim',
@@ -29,5 +32,14 @@ class Mahasiswa extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'email', 'email'); // Relasi berdasarkan email
+    }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
+    }
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'nip_dosen', 'nip_dosen');
     }
 }
