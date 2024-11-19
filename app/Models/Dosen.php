@@ -29,4 +29,14 @@ class Dosen extends Model
     {
         return $this->belongsTo(User::class, 'email', 'email'); // Relasi ke tabel users berdasarkan email
     }
+    public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class, 'nip_dosen', 'nip_dosen');
+    }
+
+    // Relasi untuk mendapatkan angkatan unik yang diampu
+    public function angkatan()
+    {
+        return $this->mahasiswa()->select('angkatan')->distinct();
+    }
 }

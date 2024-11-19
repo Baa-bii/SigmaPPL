@@ -33,8 +33,10 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 
 Route::group(['middleware'=>'auth:dosen'], function(){
-    Route::get('/dosen/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
     Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
+    Route::get('/dosen/perwalian/{nim}', [PerwalianController::class, 'show'])->name('dosen.perwalian.show');
+
 });
 
 Route::group(['middleware' => 'auth:mhs'], function () {
