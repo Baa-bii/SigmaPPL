@@ -31,12 +31,14 @@
             <!-- Dropdown Pilih Angkatan -->
             <form class="absolute left-8 top-8 w-[320px]">
                 <form method="GET" action="{{ route('dosen.perwalian.index') }}" class="mb-6">
+                    @csrf    
                     <select name="angkatan" onchange="this.form.submit()" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" {{ $angkatan == null ? 'selected' : '' }}>Semua Angkatan</option>
-                        <option value="2024" {{ $angkatan == '2024' ? 'selected' : '' }}>2024</option>
-                        <option value="2023" {{ $angkatan == '2023' ? 'selected' : '' }}>2023</option>
-                        <option value="2022" {{ $angkatan == '2022' ? 'selected' : '' }}>2022</option>
-                        <option value="2021" {{ $angkatan == '2021' ? 'selected' : '' }}>2021</option>
+                        @foreach($angkatanList as $angkatanOption)
+                            <option value="{{ $angkatanOption }}" {{ $angkatan == $angkatanOption ? 'selected' : '' }}>
+                                {{ $angkatanOption }}
+                            </option>
+                        @endforeach
                     </select>
                 </form>
             </form>
@@ -136,13 +138,15 @@
                                     </div>
                                 </td>
                                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="pl-3">
-                                        <div class="font-medium">{{ $mhs->nama_mhs }}</div>
+                                    <div class="pl-3 ">
+                                        <a href="{{ route('dosen.perwalian.show', $mhs->nim) }}" class="text-blue-600 font:light hover:underline">
+                                            {{ $mhs->nama_mhs }}
+                                        </a>
                                     </div>
                                 </th>
                                 <td class="px-6 py-4">{{ $mhs->nim }}</td>
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center">{{ $mhs->kode_prodi }}</div>
+                                    <div class="flex items-center whitespace-nowrap">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</div>
                                 </td>
                                 <td class="px-6 py-4">{{ $mhs->angkatan }}</td>
                                 <td class="px-6 py-4">{{ $mhs->jalur_masuk }}</td>
@@ -162,17 +166,66 @@
 
                 <!-- Pagination -->
                 <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span></span>
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
+                        Showing 
+                        <span class="font-semibold text-gray-900 dark:text-white">
+                            {{ $mahasiswa->firstItem() }}-{{ $mahasiswa->lastItem() }}
+                        </span> 
+                        of 
+                        <span class="font-semibold text-gray-900 dark:text-white">
+                            {{ $mahasiswa->total() }}
+                        </span>
+                    </span>
                     <ul class="inline-flex items-center -space-x-px text-sm h-8 mr-5 mb-5">
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a></li>
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a></li>
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a></li>
-                        <li><a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a></li>
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a></li>
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a></li>
-                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a></li>
+                        <!-- Tombol Previous -->
+                        @if($mahasiswa->onFirstPage())
+                            <li>
+                                <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                                    Previous
+                                </span>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ $mahasiswa->previousPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Previous
+                                </a>
+                            </li>
+                        @endif
+
+                        <!-- Nomor Halaman -->
+                        @for($i = 1; $i <= $mahasiswa->lastPage(); $i++)
+                            @if($i == $mahasiswa->currentPage())
+                                <li>
+                                    <span class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+                                        {{ $i }}
+                                    </span>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ $mahasiswa->url($i) }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        {{ $i }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endfor
+
+                        <!-- Tombol Next -->
+                        @if($mahasiswa->hasMorePages())
+                            <li>
+                                <a href="{{ $mahasiswa->nextPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Next
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                                    Next
+                                </span>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
+
             </div>
         </div>
 

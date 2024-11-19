@@ -33,13 +33,16 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 
 Route::group(['middleware'=>'auth:dosen'], function(){
-    Route::get('/dosen/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
     Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
+    Route::get('/dosen/perwalian/{nim}', [PerwalianController::class, 'show'])->name('dosen.perwalian.show');
+
 });
 
-Route::group(['middleware'=>'auth:mhs'], function(){
+Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
-    Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.akademik.index');
+    Route::get('/mhs/registrasi', [DashboardMhsController::class, 'registrasi'])->name('mhs.registrasi.index');
+    Route::get('/mhs/akademik', [DashboardMhsController::class, 'akademik'])->name('mhs.akademik.index');
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
@@ -55,23 +58,17 @@ Route::group(['middleware'=>'auth:dekan'], function(){
 });
 
 
-Route::get('/mhs/IRSmhs', function () {
-    return view('IRSmhs');
+// Route::get('/mhs/IRSmhs', function () {
+//     return view('IRSmhs');
 
-});
+// });
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
     Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
 });
 
-Route::get('/db', function () {
-    return view('content.mhs.dashboard');
-});
 
-Route::get('/akademik', function () {
-    return view('content.mhs.akademik');
-});
 
 Route::get('/dekan', function () {
     return view('content.dekan.dashboard');

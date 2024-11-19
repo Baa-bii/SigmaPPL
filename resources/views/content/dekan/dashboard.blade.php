@@ -16,7 +16,6 @@
         <x-header></x-header>
         <x-sidebar></x-sidebar>
         <main>
-
         <!-- Konten 1-->
         <div class="bg-white border-gray-200 dark:border-gray-600 h-48 mb-4 mt-2 mr-4 shadow">
             <div class="relative bg-gray-800 border-gray-800 dark:border-gray-600 h-24 shadow">
@@ -35,7 +34,6 @@
                 />
             </div>
         </div>
-
         <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mr-4">
             <!-- Tabel dengan Wrapper -->
             <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Jadwal Kuliah</h3>
@@ -69,7 +67,6 @@
                 </table>
             </div>
         </div>
-
         <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mr-4 mt-4">
             <!-- Tabel dengan Wrapper -->
             <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Ruang Kuliah</h3>
@@ -102,30 +99,25 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        
-        </main>
+        </div>        
+    </main>
         <x-footerdosen></x-footerdosen>
     </div>
-
     <!-- JavaScript untuk Dropdown -->
     <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const menuButton = document.getElementById("user-menu-button");
                 const dropdownMenu = document.getElementById("dropdown");
-
                 // Toggle dropdown saat tombol diklik
                 menuButton.addEventListener("click", (event) => {
                     event.stopPropagation(); // Mencegah penutupan karena klik di luar
                     dropdownMenu.classList.toggle("hidden");
                 });
-
                 // Tutup dropdown jika klik di luar
                 document.addEventListener("click", () => {
                     dropdownMenu.classList.add("hidden");
                 });
             });
         </script>
-
 </body>
 </html>
