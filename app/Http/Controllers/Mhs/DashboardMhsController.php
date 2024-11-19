@@ -9,7 +9,13 @@ use App\Http\Controllers\Controller;
 class DashboardMhsController extends Controller
 {
     public function index(): View{
-        return view('content.mhs.dashboard');
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Ambil data dosen terkait user
+        $mhs = $user->mhs;
+
+        return view('content.mhs.dashboard', compact('user', 'mhs'));
     }
 
     public function akademik(): View{
