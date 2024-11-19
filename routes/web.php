@@ -39,6 +39,7 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 
 Route::group(['middleware'=>'auth:mhs'], function(){
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
+    Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.akademik.index');
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
@@ -63,6 +64,16 @@ Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
     Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
 });
+
+Route::get('/db', function () {
+    return view('content.mhs.dashboard');
+});
+
+Route::get('/akademik', function () {
+    return view('content.mhs.akademik');
+});
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
