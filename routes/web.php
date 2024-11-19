@@ -73,6 +73,11 @@ Route::get('/akademik', function () {
     return view('content.mhs.akademik');
 });
 
+Route::get('/dekan', function () {
+    return view('content.dekan.dashboard');
+
+});
+
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
