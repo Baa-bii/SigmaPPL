@@ -11,6 +11,8 @@ class Mahasiswa extends Model
 
     protected $table = 'mahasiswa';
 
+    protected $primaryKey = 'nim';
+    
     protected $fillable = [
         'nim',
         'nama_mhs',
@@ -29,5 +31,9 @@ class Mahasiswa extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'email', 'email'); // Relasi berdasarkan email
+    }
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'nip_dosen', 'nip_dosen'); // Relasi berdasarkan email
     }
 }

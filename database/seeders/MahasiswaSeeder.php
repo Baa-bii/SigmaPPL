@@ -46,11 +46,11 @@ class MahasiswaSeeder extends Seeder
         $user = User::where('email', 'rizelle@students.com')->first();
 
         Mahasiswa::create([
-            'nim' => '20240051',
+            'nim' => '24060122140999',
             'nama_mhs' => $user->name,
             'email' => $user->email,
-            'angkatan' => '2024',
-            'jalur_masuk' => 'SNBP',
+            'angkatan' => '2022',
+            'jalur_masuk' => 'Mandiri',
             'no_hp' => '0812' . $faker->unique()->numerify('########'),
             'jenis_kelamin' => 'Perempuan',
             'kode_prodi' => 'INF123',

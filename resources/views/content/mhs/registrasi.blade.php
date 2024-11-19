@@ -17,7 +17,7 @@
 <body class="bg-gray-100">
 
     <!-- Header -->
-    <x-headerMHS></x-headerMHS>
+    <x-header></x-header>
     <!-- Breadcrumb -->
     <div class="flex justify-between items-center mb-6">
             <h1 class="text-lg font-semibold text-black">Registrasi</h1>
@@ -34,6 +34,8 @@
     <!-- Container Utama -->
     <div class="container mx-auto max-w-5xl p-6">
         <!-- Breadcrumb -->
+        <div class="container w-full mx-auto p-6  max-w-7xl">
+        <!-- Breadcrumb -->
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-lg font-semibold text-black">Registrasi</h1>
             <nav class="flex items-center text-sm text-gray-600">
@@ -44,14 +46,15 @@
                 <span>Registrasi</span>
             </nav>
         </div>
+    </div>
 
         <!-- Main Content -->
         <div class="space-y-6">
-            <!-- Status Pembayaran -->
+            <!-- Status Pembayaran
             <div class="bg-white p-6 shadow-md">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-semibold">Status Pembayaran</h3>
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-600 transition">Bayar</button>
+                    
                 </div>
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
@@ -69,7 +72,7 @@
                 </div>
                 <hr class="border-gray-300 mb-4">
                 <p class="text-gray-700">Tagihan sudah terbayar.</p>
-            </div>
+            </div> -->
 
             <!-- Pilih Status Akademik -->
             <div class="bg-white p-6 shadow-md">
@@ -78,12 +81,12 @@
                     <div class="bg-gray-100 p-6 flex-1">
                         <h3 class="text-lg font-bold mb-2">Aktif</h3>
                         <p class="mb-4">Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).</p>
-                        <button class="bg-yellow-500 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
+                        <button class="bg-yellow-300 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
                     </div>
                     <div class="bg-gray-100 p-6 flex-1">
                         <h3 class="text-lg font-bold mb-2">Cuti</h3>
                         <p class="mb-4">Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.</p>
-                        <button class="bg-yellow-500 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
+                        <button class="bg-yellow-300 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
                     </div>
                 </div>
                 <hr class="border-gray-300 mb-4">
@@ -95,4 +98,6 @@
         </div>
     </div>
 </body>
+
 </html>
+<x-footermhs></x-footermhs>

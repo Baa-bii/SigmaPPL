@@ -83,6 +83,7 @@ class DatabaseSeeder extends Seeder
             ProgramStudiSeeder::class,
             DosenSeeder::class,
             MahasiswaSeeder::class,
+            SemesterAktifSeeder::class,
         ]);
     }
 }

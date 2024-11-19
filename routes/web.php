@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\PerwalianController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 
@@ -32,15 +33,14 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 
 Route::group(['middleware'=>'auth:dosen'], function(){
-    Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
-    Route::get('/dosen/akademik', [DashboardDosenController::class, 'akademik'])->name('dosen.akademik.index');
-    Route::get('/dosen/isi/irs', [DashboardDosenController::class, 'irs'])->name('dosen.isi.irs.index');
-    Route::get('/dosen/isi/perwalian', [DashboardDosenController::class, 'perwalian'])->name('dosen.perwalian.index');
+    Route::get('/dosen/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
 });
 
-Route::group(['middleware'=>'auth:mhs'], function(){
+Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
-    Route::get('/mhs/akademik', [DashboardMhsController::class, 'index'])->name('mhs.akademik.index');
+    Route::get('/mhs/registrasi', [DashboardMhsController::class, 'registrasi'])->name('mhs.registrasi.index');
+    Route::get('/mhs/akademik', [DashboardMhsController::class, 'akademik'])->name('mhs.akademik.index');
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
@@ -56,23 +56,17 @@ Route::group(['middleware'=>'auth:dekan'], function(){
 });
 
 
-Route::get('/mhs/IRSmhs', function () {
-    return view('IRSmhs');
+// Route::get('/mhs/IRSmhs', function () {
+//     return view('IRSmhs');
 
-});
+// });
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
     Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
 });
 
-Route::get('/db', function () {
-    return view('content.mhs.dashboard');
-});
 
-Route::get('/akademik', function () {
-    return view('content.mhs.akademik');
-});
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
