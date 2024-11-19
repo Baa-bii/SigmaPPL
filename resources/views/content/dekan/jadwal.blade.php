@@ -44,7 +44,6 @@
             <div class="space-y-4">
                 <div>
                     <label for="program-studi" class="block font-semibold mb-1">Program Studi</label>
-                    <label for="program-studi" class="block font-semibold mb-1 text-sm">Pilih Prodi</label>
                     <select id="program-studi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
                         <option value="">Pilih Prodi</option>
                         <option value="biologi">Biologi</option>

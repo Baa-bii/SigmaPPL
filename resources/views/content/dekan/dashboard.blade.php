@@ -16,6 +16,8 @@
         <x-header></x-header>
         <x-sidebar></x-sidebar>
         <main>
+        <!-- Main Content -->
+        <main class="p-22 md:ml-64 h-auto pt-20" >
         <!-- Konten 1-->
         <div class="bg-white border-gray-200 dark:border-gray-600 h-48 mb-4 mt-2 mr-4 shadow">
             <div class="relative bg-gray-800 border-gray-800 dark:border-gray-600 h-24 shadow">
