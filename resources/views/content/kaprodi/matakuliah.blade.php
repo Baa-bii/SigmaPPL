@@ -16,7 +16,7 @@
         <x-header></x-header>
         <x-sidebar></x-sidebar>
         <main>
-        
+            
         </main>
         <x-footerdosen></x-footerdosen>
     </div>

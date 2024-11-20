@@ -54,6 +54,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProgramStudiSeeder::class,
             DosenSeeder::class, 
+            RuangKelasSeeder::class,
+            MataKuliahSeeder::class,
         ]);
     }
 }
