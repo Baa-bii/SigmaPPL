@@ -22,26 +22,38 @@
     <x-sidebar></x-sidebar>
 
     <!-- Main Content -->
-
     <main class="p-16 md:ml-64 h-auto pt-20">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Perwalian</h1>
 
         <!-- Konten 1 -->
         <div class="relative rounded-lg bg-white h-48 mb-4 p-4">
             <!-- Dropdown Pilih Angkatan -->
-            <form class="absolute left-8 top-8 w-[320px]">
-                <form method="GET" action="{{ route('dosen.perwalian.index') }}" class="mb-6">
-                    @csrf    
-                    <select name="angkatan" onchange="this.form.submit()" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" {{ $angkatan == null ? 'selected' : '' }}>Semua Angkatan</option>
-                        @foreach($angkatanList as $angkatanOption)
-                            <option value="{{ $angkatanOption }}" {{ $angkatan == $angkatanOption ? 'selected' : '' }}>
-                                {{ $angkatanOption }}
-                            </option>
-                        @endforeach
-                    </select>
-                </form>
-            </form>
+            <form method="GET" action="{{ route('dosen.perwalian.index') }}" class="mb-6">
+            <select name="angkatan" onchange="this.form.submit()" class="p-2 border border-gray-300 rounded">
+                <option value="" {{ $angkatan == null ? 'selected' : '' }}>Semua Angkatan</option>
+                <option value="2024" {{ $angkatan == '2024' ? 'selected' : '' }}>2024</option>
+                <option value="2023" {{ $angkatan == '2023' ? 'selected' : '' }}>2023</option>
+                <option value="2022" {{ $angkatan == '2022' ? 'selected' : '' }}>2022</option>
+                <option value="2021" {{ $angkatan == '2021' ? 'selected' : '' }}>2021</option>
+            </select>
+        </form>
+            <!-- Tombol Filter Data -->
+            <button type="button" class="absolute right-56 top-8 px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black bg-gray-400 rounded-lg hover:bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg class="w-3 h-3 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+                    <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
+                    <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
+                </svg>
+                Filter Data
+            </button>
+
+            <!-- Tombol Reset Data -->
+            <button type="button" class="absolute right-16 top-8 px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black bg-gray-400 rounded-lg hover:bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg class="w-3 h-3 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+                    <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
+                    <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
+                </svg>
+                Reset Data
+            </button>
 
             <!-- Container Flex untuk memusatkan tombol -->
             <div class="flex justify space-x-8 mt-24 ml-4">
@@ -128,104 +140,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($mahasiswa as $mhs)
-                            <!-- Example Row -->
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
-                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="pl-3 ">
-                                        <a href="{{ route('dosen.perwalian.show', $mhs->nim) }}" class="text-blue-600 font:light hover:underline">
-                                            {{ $mhs->nama_mhs }}
-                                        </a>
-                                    </div>
-                                </th>
-                                <td class="px-6 py-4">{{ $mhs->nim }}</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center whitespace-nowrap">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</div>
-                                </td>
-                                <td class="px-6 py-4">{{ $mhs->angkatan }}</td>
-                                <td class="px-6 py-4">{{ $mhs->jalur_masuk }}</td>
-                                <!--
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                </td>
-                                -->
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center border px-4 py-2">Tidak ada data mahasiswa.</td>
-                            </tr>
-                        @endforelse
+                    @forelse($mahasiswa as $mhs)
+                    <tr>
+                    <td class="border px-4 py-2"></td>
+                        <td class="border px-4 py-2">{{ $mhs->nama_mhs }}</td>
+                        <td class="border px-4 py-2">{{ $mhs->nim }}</td>
+                        <td class="border px-4 py-2">{{ $mhs->prodi }}</td>
+                        <td class="border px-4 py-2">{{ $mhs->angkatan }}</td>
+                        <td class="border px-4 py-2">{{ $mhs->jalur_masuk }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center border px-4 py-2">Tidak ada data mahasiswa.</td>
+                    </tr>
+                @endforelse
                     </tbody>
                 </table>
 
                 <!-- Pagination -->
                 <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
-                        Showing 
-                        <span class="font-semibold text-gray-900 dark:text-white">
-                            {{ $mahasiswa->firstItem() }}-{{ $mahasiswa->lastItem() }}
-                        </span> 
-                        of 
-                        <span class="font-semibold text-gray-900 dark:text-white">
-                            {{ $mahasiswa->total() }}
-                        </span>
-                    </span>
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span></span>
                     <ul class="inline-flex items-center -space-x-px text-sm h-8 mr-5 mb-5">
-                        <!-- Tombol Previous -->
-                        @if($mahasiswa->onFirstPage())
-                            <li>
-                                <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
-                                    Previous
-                                </span>
-                            </li>
-                        @else
-                            <li>
-                                <a href="{{ $mahasiswa->previousPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    Previous
-                                </a>
-                            </li>
-                        @endif
-
-                        <!-- Nomor Halaman -->
-                        @for($i = 1; $i <= $mahasiswa->lastPage(); $i++)
-                            @if($i == $mahasiswa->currentPage())
-                                <li>
-                                    <span class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
-                                        {{ $i }}
-                                    </span>
-                                </li>
-                            @else
-                                <li>
-                                    <a href="{{ $mahasiswa->url($i) }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        {{ $i }}
-                                    </a>
-                                </li>
-                            @endif
-                        @endfor
-
-                        <!-- Tombol Next -->
-                        @if($mahasiswa->hasMorePages())
-                            <li>
-                                <a href="{{ $mahasiswa->nextPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    Next
-                                </a>
-                            </li>
-                        @else
-                            <li>
-                                <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
-                                    Next
-                                </span>
-                            </li>
-                        @endif
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a></li>
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a></li>
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a></li>
+                        <li><a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a></li>
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a></li>
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a></li>
+                        <li><a href="#" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a></li>
                     </ul>
                 </nav>
-
             </div>
         </div>
 
@@ -235,7 +179,40 @@
     <x-footerdosen></x-footerdosen>
 
   </div>
+  <script>
+    document.getElementById('filterButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        const angkatan = document.getElementById('filterAngkatan').value;
 
+        fetch('{{ route('dosen.perwalian.index') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ angkatan })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('mahasiswaTable');
+            tableBody.innerHTML = '';
+            data.forEach(mahasiswa => {
+                const row = `
+                    <tr>
+                        <td>${mahasiswa.nama}</td>
+                        <td>${mahasiswa.nim}</td>
+                        <td>${mahasiswa.prodi}</td>
+                        <td>${mahasiswa.angkatan}</td>
+                        <td>${mahasiswa.ip_lalu}</td>
+                        <td>${mahasiswa.sks_diambil}</td>
+                        <td>${mahasiswa.status}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        });
+    });
+</script>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
 
 </body>
