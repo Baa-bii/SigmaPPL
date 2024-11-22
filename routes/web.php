@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Dosen\PerwalianController;
 use App\Http\Controllers\Mhs\DashboardMhsController;
+use App\Http\Controllers\Akademik\RuangKelasController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
-use App\Http\Controllers\Dosen\PerwalianController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
+use App\Models\RuangKelas;
 
 //testing component
 // Route::get('/header', function () {
@@ -65,7 +67,7 @@ Route::group(['middleware'=>'auth:dekan'], function(){
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
-    Route::get('/akademik/ruang', [DashboardAkademikController::class, 'ruang'])->name('akademik.ruang.index');
+    Route::get('/akademik/ruang', [RuangKelasController::class, 'index'])->name('akademik.ruang.index');
 });
 
 

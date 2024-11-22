@@ -11,5 +11,14 @@ class RuangKelas extends Model
 
     protected $table = 'ruang';
 
-    protected $fillable = ['id', 'nama', 'gedung','kapasitas', 'kode_prodi', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 
+                            'nama', 
+                            'gedung',
+                            'kapasitas', 
+                            'kode_prodi'];
+
+    public function program_studi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
+    }
 }
