@@ -70,7 +70,16 @@ Route::group(['middleware'=>'auth:dekan'], function(){
 
 Route::group(['middleware'=>'auth:akademik'], function(){
     Route::get('/akademik/home', [DashboardAkademikController::class, 'index'])->name('akademik.dashboard.index');
-    Route::get('/akademik/ruang', [RuangKelasController::class, 'index'])->name('akademik.ruang.index');
+    Route::resource('/akademik/ruang', RuangKelasController::class, [
+        'names' => [
+            'index' => 'akademik.ruang.index',
+            'create' => 'akademik.ruang.create',
+        //     'store' => 'akademik.ruang.store',
+        //     'edit' => 'akademik.ruang.edit',
+        //     'update' => 'akademik.ruang.update',
+        //     'destroy' => 'akademik.ruang.destroy',
+        ],
+    ])->except(['show']);
 });
 
 
