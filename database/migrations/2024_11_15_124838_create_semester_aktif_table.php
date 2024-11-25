@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tahun_akademik');
             $table->integer('semester');
-            $table->string('status');
+            $table->string('status')->default('Belum Registrasi');
             $table->string('nim');
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->timestamps();
