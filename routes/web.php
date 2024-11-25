@@ -71,10 +71,10 @@ Route::group(['middleware'=>'auth:akademik'], function(){
         'names' => [
             'index' => 'akademik.ruang.index',
             'create' => 'akademik.ruang.create',
-        //     'store' => 'akademik.ruang.store',
-        //     'edit' => 'akademik.ruang.edit',
-        //     'update' => 'akademik.ruang.update',
-        //     'destroy' => 'akademik.ruang.destroy',
+            'store' => 'akademik.ruang.store',
+            'edit' => 'akademik.ruang.edit',
+            'update' => 'akademik.ruang.update',
+            'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
 });

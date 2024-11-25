@@ -74,11 +74,17 @@
                                 <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi }}</p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
-                                <a href="#">
-                                <button class="bg-green-400 w-10 rounded text-white hover:bg-green-500 shadow-md">
+                                <a href="{{ route('akademik.ruang.edit', $ruang->id) }}">
+                                <button class="bg-green-400 w-auto p-1 rounded text-white hover:bg-green-500 shadow-md">
                                     Edit
                                 </button>
-                            </a>
+                                <form action="{{ route('akademik.ruang.destroy', $ruang->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 w-auto p-1 rounded text-white hover:bg-red-600 shadow-md">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

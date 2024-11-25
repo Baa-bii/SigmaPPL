@@ -28,5 +28,38 @@ class RuangKelasController extends Controller
         return view('content.akademik.editruang', compact('ruangKelas', 'programStudi'));
     }
 
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'gedung' => 'required|string|max:255',
+            'kapasitas' => 'required|integer|min:1',
+            'kode_prodi' => 'required|exists:program_studi,kode_prodi',
+        ]);
+
+        RuangKelas::create($validatedData);
+
+        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully created!');
+    }
+
+    public function update(Request $request, RuangKelas $ruangKelas)
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'gedung' => 'required|string|max:255',
+            'kapasitas' => 'required|integer|min:1',
+            'kode_prodi' => 'required|exists:program_studi,kode_prodi',
+        ]);
+
+        $ruangKelas->update($validatedData);
+
+        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully updated!');
+    }
+
+    public function destroy(RuangKelas $ruangKelas)
+    {
+        $ruangKelas->forceDelete();
+        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully deleted!');
+    }
     
 }
