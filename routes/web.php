@@ -9,6 +9,8 @@ use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
+use App\Http\Controllers\Mhs\RegistrasiController;
+use App\Http\Controllers\Mhs\BuatIRSController;
 use App\Models\RuangKelas;
 
 //testing component
@@ -43,8 +45,9 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 
 Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
-    Route::get('/mhs/registrasi', [DashboardMhsController::class, 'registrasi'])->name('mhs.registrasi.index');
-    Route::get('/mhs/akademik', [DashboardMhsController::class, 'akademik'])->name('mhs.akademik.index');
+    Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
+    Route::post('/update-status', [App\Http\Controllers\Mhs\RegistrasiController::class, 'updateStatus']);
+    Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
