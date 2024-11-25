@@ -18,62 +18,13 @@
 
     <!-- Header -->
     <x-header></x-header>
-    <!-- Breadcrumb -->
-    <div class="flex justify-between items-center mb-6">
-            <h1 class="text-lg font-semibold text-black">Registrasi</h1>
-            <nav class="flex items-center text-sm text-gray-600">
-                <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                    <i class="fas fa-home mr-1"></i> Home
-                </a>
-                <span class="mx-2">/</span>
-                <span>Registrasi</span>
-            </nav>
-        </div>
-    </div>
-
+    <x-sidebar></x-sidebar>
+    
     <!-- Container Utama -->
-    <div class="container mx-auto max-w-5xl p-6">
-        <!-- Breadcrumb -->
-        <div class="container w-full mx-auto p-6  max-w-7xl">
-        <!-- Breadcrumb -->
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-lg font-semibold text-black">Registrasi</h1>
-            <nav class="flex items-center text-sm text-gray-600">
-                <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                    <i class="fas fa-home mr-1"></i> Home
-                </a>
-                <span class="mx-2">/</span>
-                <span>Registrasi</span>
-            </nav>
-        </div>
-    </div>
-
-        <!-- Main Content -->
-        <div class="space-y-6">
-            <!-- Status Pembayaran
-            <div class="bg-white p-6 shadow-md">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold">Status Pembayaran</h3>
-                    
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <p class="font-normal">No Pembayaran</p>
-                        <p class="font-normal">Nama</p>
-                        <p class="font-normal">Nominal</p>
-                        <p class="font-normal">Status</p>
-                    </div>
-                    <div>
-                        <p>: 24060122140190</p>
-                        <p>: RIZELLE MARIE REGAL</p>
-                        <p>: Rp 3.000.000</p>
-                        <p><span class="bg-green-600 text-white px-2 py-1 rounded-md">Sudah Dibayar</span></p>
-                    </div>
-                </div>
-                <hr class="border-gray-300 mb-4">
-                <p class="text-gray-700">Tagihan sudah terbayar.</p>
-            </div> -->
-
+    <main class="md:ml-64 h-auto pt-10">
+        
+        <div class="container max-w-7xl mx-auto p-6">
+            <h1 class="mt-10 text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrasi</h1>
             <!-- Pilih Status Akademik -->
             <div class="bg-white p-6 shadow-md">
                 <h3 class="text-xl font-semibold mb-4">Pilih Status Akademik</h3>
@@ -96,8 +47,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+    <x-footerdosen></x-footerdosen>
 </body>
-
 </html>
-<x-footermhs></x-footermhs>
+

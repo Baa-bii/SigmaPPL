@@ -26,7 +26,15 @@ class DashboardMhsController extends Controller
     }    
     public function registrasi(): View{
         return view('content.mhs.registrasi');
-    }    
+    } 
+    public function show($nim)
+    {
+        $mhs = Mahasiswa::with('semester_aktif') // Mengambil relasi semester aktif
+            ->where('nim', $nim)
+            ->firstOrFail();
+
+        return view('mahasiswa.show', compact('mhs'));
+    }  
 
     
 }
