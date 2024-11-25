@@ -20,7 +20,23 @@
                 <h2>Kelola Ruangan</h2>
             </div>
 
-            <div></div>
+            <div>
+                <label for="filter" class="form-label font-sans font-medium">Filter </label>
+                <select name="filter" id="filter" class="rounded-lg text-sm">
+                    <option value="">Gedung</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+                <select name="filter" id="filter" class="rounded-lg text-sm">
+                    <option value="">Prodi</option>
+                    @foreach ($programStudi as $prodi)
+                        <option value="prodi">{{$prodi->nama_prodi}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="relative flex flex-col w-full h-full overflow-scroll text-gray-500 bg-white shadow-md rounded-xl bg-clip-border">
                 <table class="w-full text-left table-auto min-w-max">
                     <thead>
@@ -58,9 +74,11 @@
                                 <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi }}</p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
+                                <a href="#">
                                 <button class="bg-green-400 w-10 rounded text-white hover:bg-green-500 shadow-md">
                                     Edit
                                 </button>
+                            </a>
                             </td>
                         </tr>
                         @endforeach
@@ -68,8 +86,10 @@
                 </table>
             </div>
             <div>
-                <a href="#">
-                    <button class="bg-blue-500 w-auto h-auto m-4 p-2 rounded text-white hover:bg-blue-600 shadow-lg">Tambahkan Ruangan</button>
+                <a href="{{ route('akademik.ruang.create') }}">
+                    <button class="bg-blue-500 w-auto h-auto m-4 p-2 rounded text-white hover:bg-blue-600 shadow-lg" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ruangKelasModal">
+                        Tambahkan Ruangan
+                    </button>
                 </a>
             </div>
         </main>
