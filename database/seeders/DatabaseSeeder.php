@@ -81,9 +81,14 @@ class DatabaseSeeder extends Seeder
         // Panggil Seeder lainnya
         $this->call([
             ProgramStudiSeeder::class,
+            DosenSeeder::class, 
+            RuangKelasSeeder::class,
+            MataKuliahSeeder::class,
             DosenSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
+            
+ 
         ]);
     }
 }

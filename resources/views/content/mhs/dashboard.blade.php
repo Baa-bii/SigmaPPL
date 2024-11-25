@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard Mahasiswa</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
@@ -17,35 +16,14 @@
 <body>
   <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <x-header></x-header>
-        <main>
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-lg font-semibold text-black">Dashboard</h1>
-                <nav class="flex items-center text-sm text-gray-600">
-                    <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                        <i class="fas fa-home mr-1"></i> Home
-                    </a>
-                    <span class="mx-2">/</span>
-                    <span>Dashboard</span>
-                </nav>
-            </div>
-            <!-- Container Utama -->
+        <x-sidebar></x-sidebar>
+        <main class="md:ml-64 h-auto pt-20">
             <div class="container max-w-7xl mx-auto p-6">
-                <!-- Breadcrumb -->
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-lg font-semibold text-black">Dashboard</h1>
-                    <nav class="flex items-center text-sm text-gray-600">
-                        <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                            <i class="fas fa-home mr-1"></i> Home
-                        </a>
-                        <span class="mx-2">/</span>
-                        <span>Dashboard</span>
-                    </nav>
-                </div>
-
+                <h1 class="mt-10 text-lg font-semibold text-gray-900 dark:text-white mb-4">Dashboard</h1>
                 <!-- Main Content -->
                 <div class="main-content">
-                    <!-- Profile -->
-                    <div class="bg-white border border-gray-300 dark:border-gray-600 mb-4 relative">
+                    <!--Profile-->
+                    <div class="bg-white border dark:border-gray-600 mb-4 relative rounded-lg">
                         <!-- Profile Photo Positioned in the Middle Left -->
                         <div class="absolute top-1/2 left-4 transform -translate-y-1/2">
                             <img 
@@ -55,44 +33,41 @@
                             />
                         </div>
 
-                        <!-- Yellow Section for Name -->
-                        <div class="bg-yellow-400 h-20 flex items-center justify-lefy pl-36">
-                            <h1 class="text-xl font-semibold text-black dark:text-white">
+                        <div class="bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-20 flex items-center justify-lefy pl-36">
+                            <h1 class="text-xl font-semibold text-yellow-400 dark:text-white">
                                 {{ $mhs->nama_mhs }}
                             </h1>
                         </div>
 
-                        <!-- White Section for NIM and Program -->
-                        <div class="bg-white h-20 flex items-center justify-left pl-36">
+                        <div class="bg-white h-20 flex items-center justify-left pl-36 rounded-lg">
                             <h2 class="text-l text-black dark:text-gray-700">
                                 NIM : {{ $mhs->nim }} | Informatika S1
                             </h2>
                         </div>
                     </div>
-
-
+                    
                     <!-- Status Akademik -->
                     <div class="flex flex-col lg:flex-row gap-6 mb-6">
                         <div class="flex-1 p-6 shadow-md bg-white">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Status Akademik</h3>
                             <p class="text-gray-600 mb-4">Dosen Wali: {{ ($mhs->dosen)->nama_dosen ?? 'Tidak Diketahui' }} <i class="fab fa-whatsapp text-green-500"></i></p>
-                            <p class="text-gray-600 mb-4">NIP: {{ $mhs->nip_dosen }}</p>
+                            <p class="text-gray-600 mb-4">NIP: {{ $mhs->nip_dosen ?? 'Tidak Diketahui' }}</p>
                             <hr class="border-t border-gray-300 mb-4">
 
                             <div class="flex justify-between items-center gap-4">
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Semester Akademik Sekarang</p>
-                                    <p class="text-lg font-bold mt-1">2024/2025 Ganjil</p>
+                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->tahun_akademik ?? 'Tidak Diketahui' }}</p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Semester Studi</p>
-                                    <p class="text-lg font-bold mt-1">5</p>
+                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->semester ?? 'Tidak Diketahui' }}</p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Status Akademik</p>
-                                    <p class="text-lg font-bold text-red-600 mt-1">Belum Registrasi</p>
+                                    <p class="text-lg font-bold text-red-600 mt-1">{{ $mhs->semester_aktif->status ?? 'Belum Registrasi' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -133,6 +108,6 @@
                 </div>
             </div>
         </main>
-        <x-footermhs></x-footermhs>
+        <x-footerdosen></x-footerdosen>
     </div>
 </html>

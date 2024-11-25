@@ -29,33 +29,44 @@
     
 </body>
 <script>
-    const getChartOptions = (labels) => {
-    return {
-        series: labels.length === 2 ? [70, 30] : [14.2, 14.2, 14.2, 14.2, 14.2, 14.2, 14.2], // Example data
-        colors: ["#9CA3AF", "#B63546", "#2B2B8B", "#2F8B76", "#53B635", "#E3A008", "#CE39BA"],
-        chart: {
-        height: 250,
-        width: "100%", 
-        type: "pie",
-        },
-        labels: labels,
-        dataLabels: {
-        enabled: true,
-        style: {
-            fontFamily: "Inter, sans-serif",
-        },
-        },
-        legend: {
-        position: "bottom",
-        fontFamily: "Inter, sans-serif",
-        },
-    };
+    // Ambil data dari Blade template
+    const prodiLabels = @json($prodiCounts->map(function($item) {
+        return $item->program_studi->nama_prodi; // Gantilah 'nama' dengan kolom yang sesuai di tabel program_studi
+    }));
+    const prodiValues = @json($prodiCounts->pluck('total'));
+
+    const getChartOptions = (labels, values) => {
+        return {
+            series: values,
+            colors: ["#9CA3AF", "#B63546", "#2B2B8B", "#2F8B76", "#53B635", "#E3A008", "#CE39BA"],
+            chart: {
+                height: 250,
+                width: "100%",
+                type: "pie",
+            },
+            labels: labels,
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                },
+            },
+            legend: {
+                position: "bottom",
+                fontFamily: "Inter, sans-serif",
+            },
+        };
     };
 
-    // Render chart in the first column
+    // Render chart if element exists
     if (document.getElementById("pie-chart-1")) {
-        const chart1 = new ApexCharts(document.getElementById("pie-chart-1"), getChartOptions(["Informatika", "Matematika", "Statistika", "Bioteknologi","Biologi","Fisika","Kimia"]));
+        const chart1 = new ApexCharts(
+            document.getElementById("pie-chart-1"),
+            getChartOptions(prodiLabels, prodiValues)
+        );
         chart1.render();
     }
 </script>
+
+
 </html>

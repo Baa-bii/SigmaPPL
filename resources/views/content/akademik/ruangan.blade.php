@@ -46,28 +46,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            A101
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            A
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            Informatika
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <a href="#" class="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                            <button class="bg-green-400 w-10 rounded text-white hover:bg-green-500 shadow-md">Edit</button>
-                        </a>
-                        </td>
-                    </tr>
+                        @foreach ($ruangKelas as $ruang)
+                        <tr>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->nama }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->gedung }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <button class="bg-green-400 w-10 rounded text-white hover:bg-green-500 shadow-md">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
