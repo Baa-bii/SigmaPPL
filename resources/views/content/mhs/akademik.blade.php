@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <style>
+    <!-- <style>
         * {
             font-family: 'Libre Franklin', sans-serif;
         }
@@ -20,15 +20,15 @@
             transform: translateY(-50%);
             z-index: 20;
         }
-    </style>
+    </style> -->
     
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Header Sigma -->
     <x-header></x-header>
     <x-sidebar></x-sidebar>
     <!-- Container Utama -->
-    <main class="md:ml-64 h-auto relative">
+    <main class="md:ml-64 h-auto relative flex-grow">
     
         <div class="container max-w-7xl mx-auto p-6">
         <h1 class="pt-20 text-lg font-semibold text-gray-900 dark:text-white mb-4">Akademik</h1>
@@ -42,9 +42,10 @@
                             Buat IRS
                         </a>
                         @else
-                        <span class="inline-flex items-center p-2 text-gray-500 cursor-not-allowed">
+                        <a href="#" onclick="showTabContent(event, 'buat-irs')" 
+                        class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500 hover:text-gray-600 hover:border-gray-300">
                             Buat IRS
-                        </span>
+                        </a>
                         @endif
                     </li>
                     <li>
@@ -61,8 +62,8 @@
             </div>
 
             <!-- Buat IRS -->
-            @if($status === 'Aktif')
-                @include('content.mhs.buatIrs')
+            <!-- @if($status === 'Aktif')
+                
 
 
             @else
@@ -70,7 +71,8 @@
                     <h2 class="text-red-500 text-xl font-semibold">Tidak Dapat Membuat IRS</h2>
                     <p class="text-gray-500 mt-2">Status akademik Anda saat ini tidak memungkinkan untuk membuat IRS.</p>
                 </div>
-            @endif
+            @endif -->
+            @include('content.mhs.buatIrs')
             <!-- Tab Contents Lainnya -->
             @include('content.mhs.irs')
             @include('content.mhs.khs')
@@ -131,40 +133,27 @@
         }
     </script> -->
     <script>
-        function showTabContent(event, targetId) {
-    event.preventDefault();
+    function showTabContent(event, targetId) {
+        event.preventDefault();
 
-    // Jika tab yang diklik adalah "buat-irs" dan status tidak Aktif
-    if (targetId === 'buat-irs' && status !== 'Aktif') {
-        // Tampilkan alert
-        const alertContainer = document.getElementById('alert-container');
-        alertContainer.classList.remove('hidden');
-        return; // Jangan lanjutkan ke tab Buat IRS
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+
+        // Remove active class from all nav items
+        document.querySelectorAll('.text-blue-600').forEach(item => {
+            item.classList.remove('text-blue-600', 'border-blue-600');
+            item.classList.add('text-gray-500', 'border-transparent');
+        });
+
+        // Show the targeted tab content
+        document.getElementById(targetId).classList.remove('hidden');
+
+        // Set the clicked nav item as active
+        event.currentTarget.classList.add('text-blue-600', 'border-blue-600');
+        event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
     }
+</script>
 
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-
-    // Remove active class from all nav items
-    document.querySelectorAll('.text-blue-600').forEach(item => {
-        item.classList.remove('text-blue-600', 'border-blue-600');
-        item.classList.add('text-gray-500', 'border-transparent');
-    });
-
-    // Show the targeted tab content
-    document.getElementById(targetId).classList.remove('hidden');
-
-    // Set the clicked nav item as active
-    event.currentTarget.classList.add('text-blue-600', 'border-blue-600');
-    event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
-}
-
-function hideAlert() {
-    const alertContainer = document.getElementById('alert-container');
-    alertContainer.classList.add('hidden');
-}
-
-    </script>
     
 
 </body>

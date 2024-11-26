@@ -14,10 +14,10 @@
 
 
 <body>
-  <div class="antialiased bg-gray-50 dark:bg-gray-900">
+  <div class="antialiased bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen">
         <x-header></x-header>
         <x-sidebar></x-sidebar>
-        <main class="md:ml-64 h-auto pt-20">
+        <main class="md:ml-64 h-auto pt-10 flex-grow">
             <div class="container max-w-7xl mx-auto p-6">
                 <h1 class="mt-10 text-lg font-semibold text-gray-900 dark:text-white mb-4">Dashboard</h1>
                 <!-- Main Content -->

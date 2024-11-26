@@ -21,23 +21,23 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
     <!-- Header -->
     <x-header></x-header>
     <x-sidebar></x-sidebar>
     
     <!-- Container Utama -->
-    <main class="md:ml-64 h-auto pt-10">
+    <main class="md:ml-64 h-auto pt-10 flex-grow">
         
         <div class="container max-w-7xl mx-auto p-6">
             <h1 class="mt-10 text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrasi</h1>
             <!-- Pilih Status Akademik -->
-            <div class="bg-white p-6 shadow-md">
+            <div class="bg-white p-6 shadow-md rounded-lg">
                 <h3 class="text-xl font-semibold mb-4">Pilih Status Akademik</h3>
                 <div class="flex flex-col md:flex-row gap-6 mb-4">
                     <!-- Status Aktif -->
-                    <div class="bg-gray-100 p-6 flex-1">
+                    <div class="bg-gray-100 p-6 flex-1 rounded-lg">
                         <h3 class="text-lg font-bold mb-2">Aktif</h3>
                         <p class="mb-4">Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).</p>
                         <button id="status-aktif" 
@@ -48,7 +48,7 @@
                         </button>
                     </div>
                     <!-- Status Cuti -->
-                    <div class="bg-gray-100 p-6 flex-1">
+                    <div class="bg-gray-100 p-6 flex-1 rounded-lg">
                         <h3 class="text-lg font-bold mb-2">Cuti</h3>
                         <p class="mb-4">Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.</p>
                         <button id="status-cuti" 
