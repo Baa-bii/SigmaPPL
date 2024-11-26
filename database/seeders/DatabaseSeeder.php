@@ -84,7 +84,6 @@ class DatabaseSeeder extends Seeder
             DosenSeeder::class, 
             RuangKelasSeeder::class,
             MataKuliahSeeder::class,
-            DosenSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
             
