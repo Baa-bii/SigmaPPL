@@ -9,12 +9,31 @@ use App\Http\Controllers\Controller;
 
 class RuangKelasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ruangKelas = RuangKelas::with('program_studi')->get();
+        // Fetch all ProgramStudi for the dropdown options
         $programStudi = ProgramStudi::all();
+
+        // Start building the query for RuangKelas
+        $query = RuangKelas::query();
+
+        // Apply filter for Gedung
+        if ($request->has('filter_gedung') && $request->filter_gedung != '') {
+            $query->where('gedung', $request->filter_gedung);
+        }
+
+        // Apply filter for Prodi
+        if ($request->has('filter_prodi') && $request->filter_prodi != '') {
+            $query->where('kode_prodi', $request->filter_prodi);
+        }
+
+        // Fetch the filtered or full data with relationships
+        $ruangKelas = $query->with('program_studi')->get();
+
+        // Return the view with filtered data
         return view('content.akademik.ruangan', compact('ruangKelas', 'programStudi'));
     }
+
 
     public function create()
     {
@@ -22,9 +41,10 @@ class RuangKelasController extends Controller
         return view('content.akademik.createruang', compact('programStudi'));
     }
 
-    public function edit(RuangKelas $ruangKelas)
+    public function edit($id)
     {
-        $programStudi = ProgramStudi::all();
+        $ruangKelas = RuangKelas::with('program_studi')->findOrFail($id);
+        $programStudi = ProgramStudi::all(); // Assuming you fetch all ProgramStudi records
         return view('content.akademik.editruang', compact('ruangKelas', 'programStudi'));
     }
 
@@ -42,24 +62,34 @@ class RuangKelasController extends Controller
         return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully created!');
     }
 
-    public function update(Request $request, RuangKelas $ruangKelas)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        // Validate the request data
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'gedung' => 'required|string|max:255',
+            'gedung' => 'required|string|max:1',
             'kapasitas' => 'required|integer|min:1',
-            'kode_prodi' => 'required|exists:program_studi,kode_prodi',
+            'kode_prodi' => 'required|string|exists:program_studi,kode_prodi',
         ]);
 
-        $ruangKelas->update($validatedData);
+        // Find the RuangKelas by ID
+        $ruangKelas = RuangKelas::findOrFail($id);
 
-        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully updated!');
+        // Update the RuangKelas instance
+        $ruangKelas->update($validated);
+
+        // Redirect back with a success message
+        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang updated successfully.');
     }
 
-    public function destroy(RuangKelas $ruangKelas)
+    public function destroy($id)
     {
-        $ruangKelas->forceDelete();
-        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully deleted!');
+        $ruangKelas = RuangKelas::findOrFail($id);
+
+        // Attempt to delete the record
+        $ruangKelas->delete();
+
+        return redirect()->route('akademik.ruang.index')->with('success', 'Ruang deleted successfully.');
     }
     
 }
