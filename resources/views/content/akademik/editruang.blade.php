@@ -11,7 +11,7 @@
     <x-sidebar></x-sidebar>
 
     <main class="p-16 md:ml-64 h-auto pt-20">
-        <form action="{{ route('akademik.ruang.update', $ruangKelas->ruang->id) }}" method="POST">
+        <form action="{{ route('akademik.ruang.update', $ruangKelas->id) }}" method="POST">
             @csrf
             @method('PUT')
         <div class="m-6">

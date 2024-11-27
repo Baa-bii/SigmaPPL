@@ -21,21 +21,33 @@
             </div>
 
             <div>
-                <label for="filter" class="form-label font-sans font-medium">Filter </label>
-                <select name="filter" id="filter" class="rounded-lg text-sm">
-                    <option value="">Gedung</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                </select>
-                <select name="filter" id="filter" class="rounded-lg text-sm">
-                    <option value="">Prodi</option>
-                    @foreach ($programStudi as $prodi)
-                        <option value="prodi">{{$prodi->nama_prodi}}</option>
-                    @endforeach
-                </select>
+                <form method="GET" action="{{ route('akademik.ruang.index') }}">
+                    <label for="filter_gedung" class="form-label font-sans font-medium">Filter by Gedung</label>
+                    <select name="filter_gedung" id="filter_gedung" class="rounded-lg text-sm" onchange="this.form.submit()">
+                        <option value="">All Gedung</option>
+                        <option value="A" {{ request('filter_gedung') == 'A' ? 'selected' : '' }}>A</option>
+                        <option value="B" {{ request('filter_gedung') == 'B' ? 'selected' : '' }}>B</option>
+                        <option value="C" {{ request('filter_gedung') == 'C' ? 'selected' : '' }}>C</option>
+                        <option value="D" {{ request('filter_gedung') == 'D' ? 'selected' : '' }}>D</option>
+                        <option value="E" {{ request('filter_gedung') == 'E' ? 'selected' : '' }}>E</option>
+                        <option value="F" {{ request('filter_gedung') == 'F' ? 'selected' : '' }}>F</option>
+                        <option value="G" {{ request('filter_gedung') == 'G' ? 'selected' : '' }}>G</option>
+                        <option value="H" {{ request('filter_gedung') == 'H' ? 'selected' : '' }}>H</option>
+                        <option value="I" {{ request('filter_gedung') == 'I' ? 'selected' : '' }}>I</option>
+                        <option value="J" {{ request('filter_gedung') == 'J' ? 'selected' : '' }}>J</option>
+                        <option value="K" {{ request('filter_gedung') == 'K' ? 'selected' : '' }}>K</option>
+                    </select>
+            
+                    <label for="filter_prodi" class="form-label font-sans font-medium">Filter by Prodi</label>
+                    <select name="filter_prodi" id="filter_prodi" class="rounded-lg text-sm" onchange="this.form.submit()">
+                        <option value="">All Prodi</option>
+                        @foreach ($programStudi as $prodi)
+                            <option value="{{ $prodi->kode_prodi }}" {{ request('filter_prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
+                                {{ $prodi->nama_prodi }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
             <div class="relative flex flex-col w-full h-full overflow-scroll text-gray-500 bg-white shadow-md rounded-xl bg-clip-border">
                 <table class="w-full text-left table-auto min-w-max">
