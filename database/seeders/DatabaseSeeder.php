@@ -86,6 +86,7 @@ class DatabaseSeeder extends Seeder
             MataKuliahSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
+            IRSSeeder::class,
             
  
         ]);
