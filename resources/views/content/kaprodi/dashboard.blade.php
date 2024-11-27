@@ -15,12 +15,13 @@
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <x-header></x-header>
         <x-sidebar></x-sidebar>
-        <main>
-            {{-- <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+        <main class="md:ml-64 h-auto pt-20">
+          <div class="container max-w-7xl mx-auto p-6">
+            <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
                 <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
                   <div class="mx-auto max-w-5xl">
                     <div class="gap-4 sm:flex sm:items-center sm:justify-between">
-                      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">My orders</h2>
+                      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Daftar Mahasiswa</h2>
               
                       <div class="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
                         <div>
@@ -430,7 +431,7 @@
                     </nav>
                   </div>
                 </div>
-              </section> --}}
+              </section>
         </main>
         <x-footerdosen></x-footerdosen>
     </div>
