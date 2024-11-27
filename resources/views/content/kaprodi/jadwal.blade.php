@@ -15,8 +15,14 @@
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <x-header></x-header>
         <x-sidebar></x-sidebar>
-        <main>
-        
+        <main class="md:ml-64 h-auto pt-20">
+            <div class="container max-w-7xl mx-auto p-6">
+                <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+                <h1>HEI INI MASUK GA SIH</h1>
+                <h1>HEI INI MASUK GA SIH</h1>
+                <h1>HEI INI MASUK GA SIH</h1>
+                </section>
+            </div>
         </main>
         <x-footerdosen></x-footerdosen>
     </div>

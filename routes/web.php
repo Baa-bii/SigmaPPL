@@ -8,6 +8,7 @@ use App\Http\Controllers\Akademik\RuangKelasController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
+use App\Http\Controllers\Kaprodi\MataKuliahController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
@@ -52,9 +53,11 @@ Route::group(['middleware' => 'auth:mhs'], function () {
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
     Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
-    Route::get('/kaprodi/matakuliah', [DashboardKaprodiController::class, 'index'])->name('kaprodi.matakuliah.index');
-    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'index'])->name('kaprodi.jadwal.index');
+    Route::get('/kaprodi/matakuliah', [DashboardKaprodiController::class, 'matkul'])->name('kaprodi.matakuliah.index');
+    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('kaprodi.jadwal.index');
+    Route::resource('mata_kuliah', MataKuliahController::class);
 });
+
 
 Route::group(['middleware'=>'auth:dekan'], function(){
     Route::get('/dekan/home', [DashboardDekanController::class, 'index'])->name('dekan.dashboard.index');
