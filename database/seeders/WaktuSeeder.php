@@ -1,8 +1,12 @@
 <?php
 
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Waktu;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class WaktuSeeder extends Seeder
 {
@@ -27,3 +31,4 @@ class WaktuSeeder extends Seeder
         }
     }
 }
+
