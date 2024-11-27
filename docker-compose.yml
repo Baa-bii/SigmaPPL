@@ -34,20 +34,17 @@ services:
       - sigmappl
 
   db:
-    image: mysql:latest 
+    image: mysql:latest
     container_name: dblaraverdocker
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
     restart: always
     tty: true
     ports:
-      - "20222:3306"
+      - "3306:3306"
     volumes:
       - lbdata:/var/lib/mysql
     environment:
-      MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
