@@ -17,6 +17,6 @@ class ProgramStudiSeeder extends Seeder
                 'akreditasi' => 'A',
                 'created_at' => now(),
                 'updated_at' => now(),
-        ]);
+        ],);
     }
 }

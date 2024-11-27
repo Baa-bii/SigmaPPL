@@ -7,8 +7,8 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <section class="bg-yellow-500" >
+<body class="bg-yellow-500">
+    <section  >
         <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0">
             <div class="">
                 <img class="w-full h-32 mr-2" src="/assets/logo.png" alt="logo">   

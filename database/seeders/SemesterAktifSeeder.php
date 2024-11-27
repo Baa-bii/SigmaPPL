@@ -14,9 +14,33 @@ class SemesterAktifSeeder extends Seeder
     public function run(): void
     {
         SemesterAktif::create([
-            'tahun_akademik' => '2024/2025 Ganjil',
-            'Semester' => '5',
-            'Status' => 'Belum Registrasi',
+            'tahun_akademik' => '2022/2023 Ganjil',
+            'semester' => '1',
+            'status' => 'Belum Registrasi',
+            'nim' => '24060122140999',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        SemesterAktif::create([
+            'tahun_akademik' => '2022/2023 Genap',
+            'semester' => '2',
+            'status' => 'Belum Registrasi',
+            'nim' => '24060122140999',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        SemesterAktif::create([
+            'tahun_akademik' => '2023/2024 Ganjil',
+            'semester' => '3',
+            'status' => 'Belum Registrasi',
+            'nim' => '24060122140999',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        SemesterAktif::create([
+            'tahun_akademik' => '2023/2024 Genap',
+            'semester' => '4',
+            'status' => 'Belum Registrasi',
             'nim' => '24060122140999',
             'created_at' => now(),
             'updated_at' => now(),

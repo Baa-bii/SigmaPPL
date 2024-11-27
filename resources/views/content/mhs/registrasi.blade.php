@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Set CSRF token for Axios
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').content;
+    </script>
+
     <title>Registrasi</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -14,90 +21,111 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
     <!-- Header -->
     <x-header></x-header>
-    <!-- Breadcrumb -->
-    <div class="flex justify-between items-center mb-6">
-            <h1 class="text-lg font-semibold text-black">Registrasi</h1>
-            <nav class="flex items-center text-sm text-gray-600">
-                <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                    <i class="fas fa-home mr-1"></i> Home
-                </a>
-                <span class="mx-2">/</span>
-                <span>Registrasi</span>
-            </nav>
-        </div>
-    </div>
-
+    <x-sidebar></x-sidebar>
+    
     <!-- Container Utama -->
-    <div class="container mx-auto max-w-5xl p-6">
-        <!-- Breadcrumb -->
-        <div class="container w-full mx-auto p-6  max-w-7xl">
-        <!-- Breadcrumb -->
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-lg font-semibold text-black">Registrasi</h1>
-            <nav class="flex items-center text-sm text-gray-600">
-                <a href="#" class="flex items-center text-green-600 hover:text-green-700">
-                    <i class="fas fa-home mr-1"></i> Home
-                </a>
-                <span class="mx-2">/</span>
-                <span>Registrasi</span>
-            </nav>
-        </div>
-    </div>
-
-        <!-- Main Content -->
-        <div class="space-y-6">
-            <!-- Status Pembayaran
-            <div class="bg-white p-6 shadow-md">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold">Status Pembayaran</h3>
-                    
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <p class="font-normal">No Pembayaran</p>
-                        <p class="font-normal">Nama</p>
-                        <p class="font-normal">Nominal</p>
-                        <p class="font-normal">Status</p>
-                    </div>
-                    <div>
-                        <p>: 24060122140190</p>
-                        <p>: RIZELLE MARIE REGAL</p>
-                        <p>: Rp 3.000.000</p>
-                        <p><span class="bg-green-600 text-white px-2 py-1 rounded-md">Sudah Dibayar</span></p>
-                    </div>
-                </div>
-                <hr class="border-gray-300 mb-4">
-                <p class="text-gray-700">Tagihan sudah terbayar.</p>
-            </div> -->
-
+    <main class="md:ml-64 h-auto pt-10 flex-grow">
+        
+        <div class="container max-w-7xl mx-auto p-6">
+            <h1 class="mt-10 text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrasi</h1>
             <!-- Pilih Status Akademik -->
-            <div class="bg-white p-6 shadow-md">
+            <div class="bg-white p-6 shadow-md rounded-lg">
                 <h3 class="text-xl font-semibold mb-4">Pilih Status Akademik</h3>
                 <div class="flex flex-col md:flex-row gap-6 mb-4">
-                    <div class="bg-gray-100 p-6 flex-1">
+                    <!-- Status Aktif -->
+                    <div class="bg-gray-100 p-6 flex-1 rounded-lg">
                         <h3 class="text-lg font-bold mb-2">Aktif</h3>
                         <p class="mb-4">Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).</p>
-                        <button class="bg-yellow-300 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
+                        <button id="status-aktif" 
+                            class="px-4 py-2 rounded-md text-sm transition
+                                @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
+                            @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') disabled @endif>
+                            Pilih
+                        </button>
                     </div>
-                    <div class="bg-gray-100 p-6 flex-1">
+                    <!-- Status Cuti -->
+                    <div class="bg-gray-100 p-6 flex-1 rounded-lg">
                         <h3 class="text-lg font-bold mb-2">Cuti</h3>
                         <p class="mb-4">Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.</p>
-                        <button class="bg-yellow-300 text-black px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition">Pilih</button>
+                        <button id="status-cuti" 
+                            class="px-4 py-2 rounded-md text-sm transition
+                                @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
+                            @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') disabled @endif>
+                            Pilih
+                        </button>
                     </div>
                 </div>
                 <hr class="border-gray-300 mb-4">
                 <div class="flex items-center">
                     <h3 class="text-lg font-semibold mr-4">Status Akademik:</h3>
-                    <button class="bg-red-600 text-white px-4 py-2 rounded-md text-sm">Belum Tersedia</button>
+                    <span id="status-akademik" 
+                        class="px-4 py-2 rounded-md text-white text-sm
+                            @if(isset($semesterAktif) && $semesterAktif->status === 'Aktif') bg-green-500
+                            @elseif(isset($semesterAktif) && $semesterAktif->status === 'Cuti') bg-blue-500
+                            @else bg-red-600 @endif">
+                        {{ $semesterAktif->status ?? 'Belum Tersedia' }}
+                    </span>
                 </div>
+
             </div>
         </div>
-    </div>
+    </main>
+    <x-footerdosen></x-footerdosen>
 </body>
 
+<script>
+    const nim = @json($mahasiswa->nim); // Ambil NIM dari mahasiswa yang dikirim ke view
+
+    document.getElementById('status-aktif').addEventListener('click', function () {
+        updateStatus('Aktif');
+    });
+
+    document.getElementById('status-cuti').addEventListener('click', function () {
+        updateStatus('Cuti');
+    });
+
+    function updateStatus(status) {
+        axios.post('/update-status', {
+            status: status,
+            nim: nim // Kirim NIM ke backend
+        })
+        .then(response => {
+            alert(response.data.message || 'Status berhasil diperbarui!');
+
+            // Update status akademik di UI
+            const statusAkademik = document.getElementById('status-akademik');
+            statusAkademik.textContent = status; // Update teks status
+            statusAkademik.classList.remove('bg-red-600'); // Hapus warna merah
+            statusAkademik.classList.add('bg-blue-600'); // Tambahkan warna biru
+
+            // Disable tombol Aktif dan Cuti
+            const statusAktifBtn = document.getElementById('status-aktif');
+            const statusCutiBtn = document.getElementById('status-cuti');
+
+            statusAktifBtn.disabled = true;
+            statusAktifBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+            statusAktifBtn.classList.remove('bg-yellow-300', 'hover:bg-yellow-600');
+
+            statusCutiBtn.disabled = true;
+            statusCutiBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+            statusCutiBtn.classList.remove('bg-yellow-300', 'hover:bg-yellow-600');
+        })
+        .catch(error => {
+            if (error.response) {
+                alert(error.response.data.error || 'Terjadi kesalahan!');
+            } else {
+                alert('Gagal menghubungi server!');
+            }
+        });
+
+    }
+
+</script>
+
+
+
 </html>
-<x-footermhs></x-footermhs>

@@ -20,7 +20,35 @@
                 <h2>Kelola Ruangan</h2>
             </div>
 
-            <div></div>
+            <div>
+                <form method="GET" action="{{ route('akademik.ruang.index') }}">
+                    <label for="filter_gedung" class="form-label font-sans font-medium">Filter by Gedung</label>
+                    <select name="filter_gedung" id="filter_gedung" class="rounded-lg text-sm" onchange="this.form.submit()">
+                        <option value="">All Gedung</option>
+                        <option value="A" {{ request('filter_gedung') == 'A' ? 'selected' : '' }}>A</option>
+                        <option value="B" {{ request('filter_gedung') == 'B' ? 'selected' : '' }}>B</option>
+                        <option value="C" {{ request('filter_gedung') == 'C' ? 'selected' : '' }}>C</option>
+                        <option value="D" {{ request('filter_gedung') == 'D' ? 'selected' : '' }}>D</option>
+                        <option value="E" {{ request('filter_gedung') == 'E' ? 'selected' : '' }}>E</option>
+                        <option value="F" {{ request('filter_gedung') == 'F' ? 'selected' : '' }}>F</option>
+                        <option value="G" {{ request('filter_gedung') == 'G' ? 'selected' : '' }}>G</option>
+                        <option value="H" {{ request('filter_gedung') == 'H' ? 'selected' : '' }}>H</option>
+                        <option value="I" {{ request('filter_gedung') == 'I' ? 'selected' : '' }}>I</option>
+                        <option value="J" {{ request('filter_gedung') == 'J' ? 'selected' : '' }}>J</option>
+                        <option value="K" {{ request('filter_gedung') == 'K' ? 'selected' : '' }}>K</option>
+                    </select>
+            
+                    <label for="filter_prodi" class="form-label font-sans font-medium">Filter by Prodi</label>
+                    <select name="filter_prodi" id="filter_prodi" class="rounded-lg text-sm" onchange="this.form.submit()">
+                        <option value="">All Prodi</option>
+                        @foreach ($programStudi as $prodi)
+                            <option value="{{ $prodi->kode_prodi }}" {{ request('filter_prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
+                                {{ $prodi->nama_prodi }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
             <div class="relative flex flex-col w-full h-full overflow-scroll text-gray-500 bg-white shadow-md rounded-xl bg-clip-border">
                 <table class="w-full text-left table-auto min-w-max">
                     <thead>
@@ -46,34 +74,40 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            A101
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            A
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                            Informatika
-                        </p>
-                        </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                        <a href="#" class="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                            <button class="bg-green-400 w-10 rounded text-white hover:bg-green-500 shadow-md">Edit</button>
-                        </a>
-                        </td>
-                    </tr>
+                        @foreach ($ruangKelas as $ruang)
+                        <tr>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->nama }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->gedung }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi }}</p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <a href="{{ route('akademik.ruang.edit', $ruang->id) }}">
+                                <button class="bg-green-400 w-auto p-1 rounded text-white hover:bg-green-500 shadow-md">
+                                    Edit
+                                </button>
+                                <form action="{{ route('akademik.ruang.destroy', $ruang->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 w-auto p-1 rounded text-white hover:bg-red-600 shadow-md">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <div>
-                <a href="#">
-                    <button class="bg-blue-500 w-auto h-auto m-4 p-2 rounded text-white hover:bg-blue-600 shadow-lg">Tambahkan Ruangan</button>
+                <a href="{{ route('akademik.ruang.create') }}">
+                    <button class="bg-blue-500 w-auto h-auto m-4 p-2 rounded text-white hover:bg-blue-600 shadow-lg" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ruangKelasModal">
+                        Tambahkan Ruangan
+                    </button>
                 </a>
             </div>
         </main>

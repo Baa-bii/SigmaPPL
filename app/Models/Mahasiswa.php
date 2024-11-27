@@ -41,5 +41,10 @@ class Mahasiswa extends Model
     public function programStudi(){
         return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
+    public function semester_aktif()
+{
+    return $this->hasOne(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
+}
+
    
 }

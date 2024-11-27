@@ -268,6 +268,84 @@
                         <span class="ml-3">Ruangan</span>
                     </a>
                 </li>
+          
+
+            @elseif($user->role === 'mhs')  <!-- Menu MAHASISWA -->
+                <!-- Dashboard mhs -->
+                <li>
+                    <a
+                        href="{{ route('mhs.dashboard.index') }}"
+                        class="flex items-center p-2 text-base font-medium rounded-lg group
+                        {{ Request::is('mhs/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                    >
+                        <svg
+                            aria-hidden="true"
+                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                            {{ Request::is('mhs/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            fill="currentColor"
+                            viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                class="clr-i-solid clr-i-solid-path-1"
+                                d="M33,19a1,1,0,0,1-.71-.29L18,4.41,3.71,18.71a1,1,0,0,1-1.41-1.41l15-15a1,1,0,0,1,1.41,0l15,15A1,1,0,0,1,33,19Z"
+                            ></path>
+                            <path
+                                class="clr-i-solid clr-i-solid-path-2"
+                                d="M18,7.79,6,19.83V32a2,2,0,0,0,2,2h7V24h6V34h7a2,2,0,0,0,2-2V19.76Z"
+                            ></path>
+                        </svg>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Usulan Registrasi -->
+                <li>
+                    <a
+                        href="{{ route('mhs.registrasi.index') }}"
+                        class="flex items-center p-2 text-base font-medium rounded-lg group
+                        {{ Request::is('mhs/registrasi') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                    >
+                        <svg
+                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                            {{ Request::is('mhs/registrasi') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            fill="currentColor"
+                            viewBox="0 0 52 52"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M42,22.3c-2.8-1.1-3.2-2.2-3.2-3.3s0.8-2.2,1.8-3c1.7-1.4,2.6-3.5,2.6-5.8c0-4.4-2.9-8.2-8-8.2c-4.7,0-7.5,3.2-7.9,7.1c0,0.4,0.2,0.7,0.5,0.9c3.8,2.4,6.1,6.6,6.1,11.7c0,3.8-1.5,7.2-4.2,9.6c-0.2,0.2-0.2,0.6,0,0.8c0.7,0.5,2.3,1.2,3.3,1.7c0.3,0.1,0.5,0.2,0.8,0.2h12.1c2.3,0,4.1-1.9,4.1-4v-0.6C50,25.9,46.2,24,42,22.3z"
+                            ></path>
+                            <path
+                                d="M28.6,36.2c-3.4-1.4-3.9-2.6-3.9-3.9c0-1.3,1-2.6,2.1-3.6c2-1.7,3.1-4.1,3.1-6.9c0-5.2-3.4-9.7-9.6-9.7c-6.1,0-9.6,4.5-9.6,9.7c0,2.8,1.1,5.2,3.1,6.9c1.1,1,2.1,2.3,2.1,3.6c0,1.3-0.5,2.6-4,3.9c-5,2-9.9,4.3-9.9,8.5V45v1c0,2.2,1.8,4,4.1,4h27.7c2.3,0,4.2-1.8,4.2-4v-1v-0.4C38,40.5,33.6,38.2,28.6,36.2z"
+                            ></path>
+                        </svg>
+                        <span class="ml-3">Registrasi</span>
+                    </a>
+                </li>
+
+                <!-- Usulan Ruang Kuliah -->
+                <li>
+                    <a
+                        href="{{ route('mhs.akademik.index') }}"
+                        class="flex items-center p-2 text-base font-medium rounded-lg group
+                        {{ Request::is('mhs/akademik') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                    >
+                        <svg
+                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                            {{ Request::is('mhs/akademik') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            
+                            <path d="m7,13h10v1H7v-1Zm0,5h7v-1h-7v1Zm15-10.707v16.707H2V2.5c0-1.378,1.122-2.5,2.5-2.5h10.207l7.293,7.293Zm-7-.293h5.293L15,1.707v5.293Zm6,16v-15h-7V1H4.5c-.827,0-1.5.673-1.5,1.5v20.5h18Z"/>
+                           
+                            
+                        </svg>
+                        <span class="ml-3">Akademik</span>
+                    </a>
+                </li>
             @endif
         </ul>
 
