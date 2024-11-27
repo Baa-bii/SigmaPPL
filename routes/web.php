@@ -55,6 +55,7 @@ Route::group(['middleware'=>'auth:dekan'], function(){
     Route::get('/dekan/home', [DashboardDekanController::class, 'index'])->name('dekan.dashboard.index');
     Route::get('/dekan/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
     Route::get('/dekan/jadwal', [DashboardDekanController::class, 'jadwal'])->name('dekan.jadwal.index');
+    Route::get('/dekan/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
 });
 
 

@@ -17,26 +17,30 @@
         <x-sidebar></x-sidebar>
         <main>
         <!-- Main Content -->
-        <main class="p-22 md:ml-64 h-auto pt-20" >
-        <!-- Konten 1-->
-        <div class="bg-white border-gray-200 dark:border-gray-600 h-48 mb-4 mt-2 mr-4 shadow">
-            <div class="relative bg-gray-800 border-gray-800 dark:border-gray-600 h-24 shadow">
-                <h1 class="absolute text-xl font-bold text-yellow-400 dark:text-white" 
-                    style="top: 60%; left: 40%; transform: translate(-50%, -50%);">
-                    JACK BLUES BIEBER, S. Kom., M. Kom.
+        <main class="p-16 md:ml-64 h-auto pt-20">
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Dashboard</h1>
+            <!-- Konten 1 -->
+            <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-48 mb-8">
+                <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28 flex items-center">
+                <!-- Nama Dosen -->
+                <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
+                    {{ $dekan->nama_dekan ?? 'Nama tidak ditemukan' }}
                 </h1>
-                <h1 class="absolute text-l text-black dark:text-white" 
-                    style="top: 135%; left: 42%; transform: translate(-50%, -50%);">
-                    NIP : 199112092024061001        |       jackbb@lecturer.sigma.ac.id
+                </div>
+            <div class="relative flex items-center">
+                <!-- NIP dan Email -->
+                <h1 class="text-l text-black dark:text-white text-center mt-4 pl-64">
+                    NIP : {{ $dekan->nip_dekan ?? 'NIP tidak ditemukan' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->email }}
                 </h1>
+                <!-- Foto Profil -->
                 <img 
-                    class="absolute -bottom-20 left-10 w-40 h-40 rounded-full border"  
-                    src="{{ asset('img/user.png') }}" 
+                    class="absolute -bottom-6 left-12 w-36 h-36 rounded-full" 
+                    src="{{ asset('img/USERFIX.jpg') }}" 
                     alt="photo profile"
                 />
             </div>
         </div>
-        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mr-4">
+        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mb-8">
             <!-- Tabel dengan Wrapper -->
             <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Jadwal Kuliah</h3>
             <div class="overflow-x-auto border border-gray-200">
@@ -69,7 +73,7 @@
                 </table>
             </div>
         </div>
-        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mr-4 mt-4">
+        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow">
             <!-- Tabel dengan Wrapper -->
             <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Ruang Kuliah</h3>
             <div class="overflow-x-auto border border-gray-200">
@@ -105,21 +109,5 @@
     </main>
         <x-footerdosen></x-footerdosen>
     </div>
-    <!-- JavaScript untuk Dropdown -->
-    <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const menuButton = document.getElementById("user-menu-button");
-                const dropdownMenu = document.getElementById("dropdown");
-                // Toggle dropdown saat tombol diklik
-                menuButton.addEventListener("click", (event) => {
-                    event.stopPropagation(); // Mencegah penutupan karena klik di luar
-                    dropdownMenu.classList.toggle("hidden");
-                });
-                // Tutup dropdown jika klik di luar
-                document.addEventListener("click", () => {
-                    dropdownMenu.classList.add("hidden");
-                });
-            });
-        </script>
 </body>
 </html>

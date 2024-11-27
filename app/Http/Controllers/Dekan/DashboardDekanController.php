@@ -28,4 +28,8 @@ class DashboardDekanController extends Controller
     public function jadwal(): View{
         return view('content.dekan.jadwal');
     }
+
+    public function verifikasijadwal(){
+        return view('content.dekan.verifikasijadwal');
+    }
 }
