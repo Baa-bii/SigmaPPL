@@ -45,5 +45,13 @@ class SemesterAktifSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        SemesterAktif::create([
+            'tahun_akademik' => '2024/2025 Ganjil',
+            'semester' => '5',
+            'status' => 'Belum Registrasi',
+            'nim' => '24060122140999',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

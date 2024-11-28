@@ -53,8 +53,9 @@ Route::group(['middleware' => 'auth:mhs'], function () {
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
     Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
-    Route::get('/kaprodi/matakuliah', [DashboardKaprodiController::class, 'matkul'])->name('kaprodi.matakuliah.index');
     Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('kaprodi.jadwal.index');
+    
+    // Menggunakan resource route untuk mata kuliah
     Route::resource('mata_kuliah', MataKuliahController::class);
 });
 

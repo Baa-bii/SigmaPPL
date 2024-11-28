@@ -39,4 +39,9 @@ class Dosen extends Model
     {
         return $this->mahasiswa()->select('angkatan')->distinct();
     }
+    
+    public function matakuliah()
+    {
+        return $this->belongsToMany(MataKuliah::class, 'dosenmatkul', 'nip_dosen', 'kode_mk');
+    }
 }

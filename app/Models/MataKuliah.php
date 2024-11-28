@@ -12,4 +12,9 @@ class MataKuliah extends Model
     protected $table = 'matakuliah';
 
     protected $fillable = ['kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk', 'kode_prodi', 'created_at', 'updated_at'];
+
+    public function dosen()
+    {
+        return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
+    }
 }

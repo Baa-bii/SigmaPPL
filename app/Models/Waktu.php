@@ -11,5 +11,6 @@ class waktu extends Model
 
     protected $table = 'waktu';
 
-    protected $fillable = ['id', 'jam_mulai', 'jam_selesai','tanggal', 'created_at', 'updated_at'];
+    protected $fillable = ['jam_mulai'];
+
 }

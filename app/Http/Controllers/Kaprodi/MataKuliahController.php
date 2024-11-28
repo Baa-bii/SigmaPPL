@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\kaprodi;
 
 use Illuminate\Support\Facades\Log;
 use App\Models\Dosen;
@@ -9,16 +9,17 @@ use Illuminate\Http\Request;
 
 class MataKuliahController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $mataKuliah = MataKuliah::with('dosen')->get();
-        return view('kaprodi.matakuliah', compact('mataKuliah'));
+        $dosen = Dosen::all(); // Pastikan ini ditambahkan
+        return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen')); // Mengirimkan dosen
     }
-
 
     public function create()
     {
-        $dosen = Dosen::all();
-        return view('kaprodi.matakuliah', compact('dosen'));
+        $dosen = Dosen::all(); // Mendapatkan data dosen
+        return view('content.kaprodi.matakuliah', compact('dosen')); // Mengirimkan variabel dosen ke view
     }
 
     public function store(Request $request)
@@ -47,6 +48,6 @@ class MataKuliahController extends Controller
         // Simpan relasi ke tabel pivot
         $mataKuliah->dosen()->attach($request->nip_dosen);
 
-        return redirect()->route('kaprodi.matakuliah')->with('success', 'Mata kuliah berhasil disimpan!');
+        return redirect()->route('mata_kuliah.index')->with('success', 'Mata kuliah berhasil disimpan!');
     }
 };
