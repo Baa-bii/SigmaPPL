@@ -25,7 +25,9 @@ class BuatIRSController extends Controller
         $semester = $mhs->semester_aktif->semester ?? null;
 
         // Semua mata kuliah untuk dropdown
-        $mataKuliahDropdown = \App\Models\MataKuliah::orderBy('semester', 'asc')->get();
+        // $mataKuliahDropdown = \App\Models\MataKuliah::orderBy('semester', 'asc')->get();
+        $mataKuliahDropdown = \App\Models\MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')->get();
+
 
 
         // Mata kuliah hanya untuk semester aktif mahasiswa
@@ -37,16 +39,12 @@ class BuatIRSController extends Controller
         }
 
 
-        // Ambil jadwal untuk mata kuliah dengan banyak kelas
-        $jadwal = Jadwal::with('matakuliah')
+        $jadwal = Jadwal::with(['matakuliah', 'waktu'])
             ->whereHas('matakuliah', function ($query) use ($semester) {
                 $query->where('semester', $semester);
             })
             ->get()
-            ->groupBy('kode_mk')
-            ->filter(function ($kelasJadwal) {
-                return $kelasJadwal->count() > 1;
-            });
+            ->groupBy(['waktu.jam_mulai', 'hari']); // Kelompokkan berdasarkan jam dan hari
 
         return view('content.mhs.akademik', compact('mhs', 'status', 'semester', 'mataKuliahDropdown', 'mataKuliahDitampilkan', 'jadwal'));
     }
