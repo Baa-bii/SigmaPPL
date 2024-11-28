@@ -15,150 +15,156 @@
 <div class="antialiased bg-gray-50 dark:bg-gray-900">
     <x-header></x-header>
     <x-sidebar></x-sidebar>
-    <main class="p-16 md:ml-64 h-auto pt-20">
-        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Jadwal kuliah</h1>
-            <!-- Kontainer Utama -->
-            <div class="flex items-center justify-between gap-4 px-4">
-                <!-- Simbol Previous dan Search Bar -->
-                <div class="flex items-center flex-grow gap-3">
-                    <!-- Tombol Previous -->
-                    <a href="{{ route('dekan.jadwal.index') }}" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </a>
+    <main class="p-16 md:ml-64 h-auto pt-20 min-h-screen">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Jadwal Kuliah</h1>
+        <!-- Kontainer Utama -->
+        <div class="flex items-center justify-between gap-4 px-4">
+            <!-- Simbol Previous dan Search Bar -->
+            <div class="flex items-center flex-grow gap-3">
+                <!-- Tombol Previous -->
+                <a href="{{ route('dekan.jadwal.index') }}" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </a>
 
-                    <!-- Search Bar -->
-                    <form class="flex-grow flex items-center">
-                        <label for="simple-search" class="sr-only">Cari Jadwal</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
-                                </svg>
-                            </div>
-                            <input type="text" id="simple-search" placeholder="Cari Jadwal" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                <!-- Search Bar -->
+                <form class="flex-grow flex items-center">
+                    <label for="simple-search" class="sr-only">Cari Jadwal</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
+                            </svg>
                         </div>
-                    </form>
-                </div>
+                        <input type="text" id="simple-search" placeholder="Cari Jadwal" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    </div>
+                </form>
+            </div>
 
-                <!-- Filter dan Actions -->
-                <div class="flex items-center gap-4">
-                    <!-- Dropdown Filter -->
-                    <div class="relative inline-block text-left">
+            <!-- Filter dan Actions -->
+            <div class="flex items-center gap-4">
+                <!-- Dropdown Filter -->
+                <div class="relative inline-block text-left">
                     <button id="filtersDropdownButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                            Filters
-                            <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
+                        Filters
+                        <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
 
-                        <!-- Dropdown Menu -->
-                        <div id="filtersDropdown" class="absolute hidden left-0 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                            <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Disetujui</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Ditolak</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sedang Proses</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <!-- Dropdown Menu -->
+                    <div id="filtersDropdown" class="absolute hidden left-0 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                        <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Disetujui</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Ditolak</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sedang Proses</a>
+                            </li>
+                        </ul>
                     </div>
+                </div>
 
-                    <!-- Dropdown Actions -->
-                    <div class="relative inline-block text-left">
-                        <button id="actionsDropdownButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                            Actions
-                            <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
+                <!-- Dropdown Actions -->
+                <div class="relative inline-block text-left">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                        Actions
+                        <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
 
-                        <!-- Dropdown Menu -->
-                        <div id="actionsDropdown" class="absolute hidden left-0 mt-1 w-24 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                            <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Setuju</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Tolak</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <!-- Dropdown Menu -->
+                    <div id="actionsDropdown" class="absolute hidden left-0 mt-1 w-24 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                        <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Setuju</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Tolak</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Tabel Data -->
-            <div class="overflow-x-auto mt-2">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
-                    <thead class="text-sm text-black uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="p-4 w-10">
-                                <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            <th scope="col" class="p-4">MATA KULIAH</th>
-                            <th scope="col" class="p-4">WAKTU</th>
-                            <th scope="col" class="p-4">DOSEN</th>
-                            <th scope="col" class="p-4">SEMESTER</th>
-                            <th scope="col" class="p-4">RUANGAN</th>
-                            <th scope="col" class="p-4">AKSI</th>
-                            <th scope="col" class="p-4">STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-transparent">
-                        <tr class="bg-white dark:bg-gray-800">
-                            <!-- Checkbox -->
-                            <td class="p-4">
-                                <input type="checkbox" class="rowCheckbox w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            </td>
-                            <td class="p-4 whitespace-nowrap">Matematika Dasar</td>
-                            <td class="p-4 whitespace-nowrap">Senin, 08:00 - 10:00</td>
-                            <td class="p-4 whitespace-nowrap">Dr. Andi Wijaya</td>
-                            <td class="p-4 whitespace-nowrap">1</td>
-                            <td class="p-4 whitespace-nowrap">Ruang 101</td>
-                            <td class="p-4 flex gap-2">
-                                <button type="button" class="setuju-button flex items-center whitespace-nowrap text-sm font-medium text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
-                                        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                    </svg>
-                                    Setuju
-                                </button>
-                                <button type="button" class="tolak-button flex items-center whitespace-nowrap border border-red-500 text-red-500 px-3 py-1 text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                    </svg>
-                                    Tolak
-                                </button>
-                            </td>
-                            <td class="p-4 whitespace-nowrap">
-                                <span id="status-column" class="bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-block align-middle">
-                                    Menunggu
-                                </span>
-                            </td>
-                        </tr>
-                        <!-- Tambahkan baris data lainnya -->
-                    </tbody>
-                </table>
-            </div>
-<nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                    Menampilkan
-                    <span class="font-semibold text-gray-900 dark:text-white">1 - 10</span>
-                    of
-                    <span class="font-semibold text-gray-900 dark:text-white">50</span>
+        <!-- Tabel Data -->
+        <div class="overflow-x-auto mt-2">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
+                <thead class="text-sm text-black uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="p-4 w-10">
+                            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                        </th>
+                        <th scope="col" class="p-4">MATA KULIAH</th>
+                        <th scope="col" class="p-4">WAKTU</th>
+                        <th scope="col" class="p-4">DOSEN</th>
+                        <th scope="col" class="p-4">SEMESTER</th>
+                        <th scope="col" class="p-4">RUANGAN</th>
+                        <th scope="col" class="p-4">AKSI</th>
+                        <th scope="col" class="p-4">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-transparent">
+                    <tr class="bg-white dark:bg-gray-800">
+                        <!-- Checkbox -->
+                        <td class="p-4">
+                            <input type="checkbox" class="rowCheckbox w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                        </td>
+                        <td class="p-4 whitespace-nowrap">Matematika Dasar</td>
+                        <td class="p-4 whitespace-nowrap">Senin, 08:00 - 10:00</td>
+                        <td class="p-4 whitespace-nowrap">Dr. Andi Wijaya</td>
+                        <td class="p-4 whitespace-nowrap">1</td>
+                        <td class="p-4 whitespace-nowrap">Ruang 101</td>
+                        <td class="p-4 flex gap-2">
+                            <button type="button" class="setuju-button flex items-center whitespace-nowrap text-sm font-medium text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                </svg>
+                                Setuju
+                            </button>
+                            <button type="button" class="tolak-button flex items-center whitespace-nowrap border border-red-500 text-red-500 px-3 py-1 text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                Tolak
+                            </button>
+                        </td>
+                        <td class="p-4 whitespace-nowrap">
+                            <span id="status-column" class="bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-block align-middle">
+                                Menunggu
+                            </span>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan baris data lainnya -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination -->
+        <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
+                Showing 
+                <span class="font-semibold text-gray-900 dark:text-white">
+                    {{ $jadwal->firstItem() }}-{{ $jadwal->lastItem() }}
+                </span> 
+                of 
+                <span class="font-semibold text-gray-900 dark:text-white">
+                    {{ $jadwal->total() }}
                 </span>
-                <ul class="inline-flex items-stretch -space-x-px">
-                    <li>
+            </span>
+            <ul class="inline-flex items-center -space-x-px text-sm h-8 mr-5 mb-5">
+            <li>
                         <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span class="sr-only">Previous</span>
                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

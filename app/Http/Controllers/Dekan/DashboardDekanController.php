@@ -32,4 +32,5 @@ class DashboardDekanController extends Controller
     public function verifikasijadwal(){
         return view('content.dekan.verifikasijadwal');
     }
+
 }

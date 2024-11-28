@@ -66,6 +66,10 @@ Route::group(['middleware'=>'auth:dekan'], function(){
     Route::get('/dekan/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
 });
 
+Route::get('/dekan', function () {
+    return view('content.dekan.dashboard');
+
+});
 
 // Route::get('/mhs/IRSmhs', function () {
 //     return view('IRSmhs');
@@ -84,13 +88,6 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
-});
-
-
-
-Route::get('/dekan', function () {
-    return view('content.dekan.dashboard');
-
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
