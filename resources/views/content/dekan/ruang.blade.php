@@ -17,9 +17,11 @@
         <x-sidebar></x-sidebar>
         <main>
         <!-- Main Content -->
-        <main class="p-22 md:ml-64 h-auto pt-20">      
-        <div class="container mx-auto my-3">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <main class="p-16 md:ml-64 h-auto pt-20">
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Ruang Kuliah</h1>
+            <!-- Konten 1 -->
+            <div class="container mx-auto my-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Statistik Belum Disetujui -->
                 <div class="bg-yellow-400 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
                     <h3 class="text-4xl font-bold mb-1">120</h3>
@@ -41,7 +43,7 @@
             </div>
         </div>
         <!-- Form Section -->
-        <div class="bg-white shadow p-6 mr-4">
+        <div class="bg-white shadow p-6 mr-4 mt-8">
             <h3 class="text-lg font-semibold mb-4">Persetujuan Usulan Ruang Kuliah</h3>
             <div class="space-y-4">
                 <div>
@@ -72,7 +74,7 @@
                     </select>
                 </div>
                 <!-- Button Tampilkan -->
-                <button type="button" onclick="window.location.href='http://127.0.0.1:8000/verifikasi-jadwal'" class="w-full bg-yellow-400 text-gray-800 block font-semibold py-2 rounded-md hover:bg-yellow-300">
+                <button type="button" onclick="window.location.href='http://127.0.0.1:8000/verifikasi-jadwal'" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300">
                     Tampilkan
                 </button>
             </div>
@@ -80,25 +82,5 @@
     </main>
         <x-footerdosen></x-footerdosen>
     </div>
-
-    <!-- JavaScript untuk Dropdown -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const menuButton = document.getElementById("user-menu-button");
-            const dropdownMenu = document.getElementById("dropdown");
-
-            // Toggle dropdown saat tombol diklik
-            menuButton.addEventListener("click", (event) => {
-                event.stopPropagation(); // Mencegah penutupan karena klik di luar
-                dropdownMenu.classList.toggle("hidden");
-            });
-
-            // Tutup dropdown jika klik di luar
-            document.addEventListener("click", () => {
-                dropdownMenu.classList.add("hidden");
-            });
-        });
-    </script>
-
 </body>
 </html>
