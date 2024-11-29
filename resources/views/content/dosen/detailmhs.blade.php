@@ -23,7 +23,14 @@
 
     <!-- Main Content -->
     <main class="p-16 md:ml-64 h-auto pt-20">
-        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Detail Mahasiswa</h1>
+        <div class="mt-4 mb-4 flex items-center space-x-4">
+            <a href="{{ route('dosen.perwalian.index') }}" class="text-xl text-black hover:text-blue-500 font-semibold">
+                Perwalian >
+            </a>
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                Detail Mahasiswa
+            </h1>
+        </div>
 
         <!-- Konten 1 -->
         <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-64 mb-8">
