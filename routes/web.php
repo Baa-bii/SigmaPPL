@@ -67,6 +67,7 @@ Route::prefix('dekan')->middleware(['auth:dekan'])->group(function () {
     Route::get('/home', [DashboardDekanController::class, 'dashboard'])->name('dekan.dashboard.index');
     Route::get('/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
     Route::get('/jadwal', [DashboardDekanController::class, 'index'])->name('dekan.jadwal.index');
+    Route::patch('/dekan/verifikasi/{id}', [DashboardDekanController::class, 'updateStatus'])->name('dekan.verifikasi.update');
     Route::get('/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
 });
 

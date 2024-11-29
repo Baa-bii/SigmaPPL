@@ -40,15 +40,16 @@ class DashboardDekanController extends Controller
 
     public function verifikasijadwal(): View
     {
-        // Mengambil data jadwal beserta relasi 'matakuliah', 'waktu', dan 'ruang'
-        $jadwal = Jadwal::with(['matakuliah', 'waktu', 'ruang'])->paginate(10);
-        
+        // Mengambil data jadwal dengan status 'menunggu' beserta relasi 'matakuliah', 'waktu', dan 'ruang'
+        $jadwal = Jadwal::with(['matakuliah', 'waktu', 'ruang'])
+            ->where('status', 'menunggu')
+            ->paginate(10);
+
         return view('content.dekan.verifikasijadwal', compact('jadwal'));
     }
 
     public function dashboard()
     {
-        // Hitung jumlah berdasarkan status
         $belum_disetujui = Jadwal::where('status', 'menunggu')->count();
         $sudah_disetujui = Jadwal::where('status', 'disetujui')->count();
         $ditolak = Jadwal::where('status', 'ditolak')->count();
@@ -67,4 +68,18 @@ class DashboardDekanController extends Controller
 
         return view('content.dekan.ruang', compact('jadwal'));
     }
+
+    public function updateStatus(Request $request, $id)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:disetujui,ditolak',
+    ]);
+
+    $jadwal = Jadwal::findOrFail($id);
+    $jadwal->status = $validated['status'];
+    $jadwal->save();
+
+    return redirect()->route('dekan.verifikasijadwal')->with('success', 'Status berhasil diperbarui!');
+}
+
 }
