@@ -13,19 +13,39 @@ class Jadwal extends Model
 
     protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
 
+    // Relasi ke model Waktu
+    public function waktu()
+    {
+        return $this->belongsTo(Waktu::class, 'id_waktu');
+    }
+
+    // Relasi ke model Ruang
+    public function ruang()
+    {
+        return $this->belongsTo(RuangKelas::class, 'id_ruang');
+    }
+
+    // Relasi ke model Matakuliah
     public function matakuliah()
     {
     return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
     }
 
-    public function waktu()
+    // Relasi ke model ProgramStudi
+    public function programStudi()
     {
-    return $this->belongsTo(Waktu::class, 'id_waktu', 'id');
+        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
 
-    public function ruang()
+    // Relasi ke model SemesterAktif
+    public function semesterAktif()
     {
-    return $this->belongsTo(RuangKelas::class, 'id_ruang', 'id');  // Pastikan id_ruang di jadwal merujuk pada id di ruang
+        return $this->belongsTo(SemesterAktif::class, 'id_TA');
+    }
+    // Relasi ke model SemesterAktif
+    public function riwayatsemesterAktif()
+    {
+        return $this->belongsTo(riwayatsemesterAktif::class, 'id_TA');
     }
 
 }

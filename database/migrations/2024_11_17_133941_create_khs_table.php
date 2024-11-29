@@ -17,8 +17,11 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
-            $table->unsignedBigInteger('id_TA');
-            $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
+            // $table->unsignedBigInteger('id_TA');
+            // $table->foreign('id_TA')->references('id')->on('riwayat_semester_aktif')->onDelete('cascade');
+            // Relasi ke IRS (indeks rencana studi)
+            $table->unsignedBigInteger('id_irs'); 
+            $table->foreign('id_irs')->references('id')->on('irs')->onDelete('cascade');
             $table->string('nilai'); 
             $table->timestamps();
         });
@@ -32,7 +35,7 @@ return new class extends Migration
         Schema::table('khs', function (Blueprint $table) {
             $table->dropForeign(['nim']);
             $table->dropForeign(['kode_mk']);
-            $table->dropForeign(['id_TA']);
+            $table->dropForeign(['id_irs']);
         });
         Schema::dropIfExists('khs');
     }

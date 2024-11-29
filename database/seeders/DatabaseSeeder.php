@@ -86,8 +86,11 @@ class DatabaseSeeder extends Seeder
             MataKuliahSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
+            RiwayatSemesterAktifSeeder::class,
             WaktuSeeder::class,
             JadwalSeeder::class,
+            IRSSeeder::class,
+            khsSeeder::class,
         ]);
     }
 }
