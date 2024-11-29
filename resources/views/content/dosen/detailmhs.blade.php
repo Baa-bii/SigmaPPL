@@ -73,69 +73,137 @@
 
         <!-- Tabs -->
         <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-8">
-            <ul class="flex justify-center space-x-8">
-                <li>
-                    <a href="#" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                        IRS
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500">
-                        KHS
-                    </a>
-                </li>
-            </ul>
+                <ul class="flex justify-center space-x-8">
+                    <li>
+                        @if(isset($status) && $status === 'Aktif')
+                        <a href="#" onclick="showTabContent(event, 'buat-irs')" 
+                        class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500 hover:text-gray-600 hover:border-gray-300">
+                            Buat IRS
+                        </a>
+                        @else
+                        <a href="#" onclick="showTabContent(event, 'buat-irs')" 
+                        class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500 hover:text-gray-600 hover:border-gray-300">
+                            Buat IRS
+                        </a>
+                        @endif
+                    </li>
+                    <li>
+                        <a href="#" onclick="showTabContent(event, 'irs')" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
+                            IRS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"  onclick="showTabContent(event, 'khs')" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
+                            KHS
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        <!-- Konten 2 IRS -->
+        <div id="content-irs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6">  
+            <div id="accordion-irs">    
+                <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+                    <h2 id="accordion-flush-heading-1">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">Text.</p>
+                        <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">text</a> text</p>
+                        </div>
+                    </div>
+                    <h2 id="accordion-flush-heading-2">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">?</p>
+                        <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Text</a> text.</p>
+                        </div>
+                    </div>
+                    <h2 id="accordion-flush-heading-3">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-3" aria-expanded="false" aria-controls="accordion-flush-body-3">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-3" class="hidden" aria-labelledby="accordion-flush-heading-3">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">TEXT.</p>
+                        <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
+                            <li><a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
+                            <li><a href="#" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>  
         </div>
 
-        <!-- Konten 2 -->
-        <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6">      
-            <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
-                <h2 id="accordion-flush-heading-1">
-                    <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
-                    <span>?</span>
-                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                    </svg>
-                    </button>
-                </h2>
-                <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
-                    <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Text.</p>
-                    <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">text</a> text</p>
+        <!-- Konten 2 KHS -->
+        <div id="content-khs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6">  
+            <div id="accordion-khs">    
+                <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+                    <h2 id="accordion-flush-heading-1">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">Text.</p>
+                        <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">text</a> text</p>
+                        </div>
+                    </div>
+                    <h2 id="accordion-flush-heading-2">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">?</p>
+                        <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Text</a> text.</p>
+                        </div>
+                    </div>
+                    <h2 id="accordion-flush-heading-3">
+                        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-3" aria-expanded="false" aria-controls="accordion-flush-body-3">
+                        <span>?</span>
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                        </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-flush-body-3" class="hidden" aria-labelledby="accordion-flush-heading-3">
+                        <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">TEXT.</p>
+                        <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
+                            <li><a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
+                            <li><a href="#" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
+                        </ul>
+                        </div>
                     </div>
                 </div>
-                <h2 id="accordion-flush-heading-2">
-                    <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
-                    <span>?</span>
-                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                    </svg>
-                    </button>
-                </h2>
-                <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-                    <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">?</p>
-                    <p class="text-gray-500 dark:text-gray-400">Text <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Text</a> text.</p>
-                    </div>
-                </div>
-                <h2 id="accordion-flush-heading-3">
-                    <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-3" aria-expanded="false" aria-controls="accordion-flush-body-3">
-                    <span>?</span>
-                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                    </svg>
-                    </button>
-                </h2>
-                <div id="accordion-flush-body-3" class="hidden" aria-labelledby="accordion-flush-heading-3">
-                    <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">TEXT.</p>
-                    <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
-                        <li><a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
-                        <li><a href="#" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">?</a></li>
-                    </ul>
-                    </div>
-                </div>
-            </div>
+            </div>  
         </div>
 
     </main>
@@ -144,6 +212,28 @@
     <x-footerdosen></x-footerdosen>
 
   </div>
+
+  <script>
+    function showTabContent(event, targetId) {
+        event.preventDefault();
+
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+
+        // Remove active class from all nav items
+        document.querySelectorAll('.text-blue-600').forEach(item => {
+            item.classList.remove('text-blue-600', 'border-blue-600');
+            item.classList.add('text-gray-500', 'border-transparent');
+        });
+
+        // Show the targeted tab content
+        document.getElementById(targetId).classList.remove('hidden');
+
+        // Set the clicked nav item as active
+        event.currentTarget.classList.add('text-blue-600', 'border-blue-600');
+        event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
+    }
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

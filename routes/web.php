@@ -27,6 +27,9 @@ Route::get('/footerdosen', function () {
 Route::get('/footermhs', function () {
     return view('components.footermhs');
 });
+Route::get('/irs', function () {
+    return view('content.mhs.irs');
+});
 
 Route::get('/', function () {
     return view('auth.login');
