@@ -441,11 +441,11 @@
 
                 // Jika accordion dibuka, rotasi ke atas (0deg)
                 if (targetElement.classList.contains('hidden')) {
-                    icon.classList.remove('rotate-180');
-                    icon.classList.add('rotate-0');
-                } else {
                     icon.classList.remove('rotate-0');
                     icon.classList.add('rotate-180');
+                } else {
+                    icon.classList.remove('rotate-180');
+                    icon.classList.add('rotate-0');
                 }
             });
         });
