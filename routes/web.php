@@ -59,16 +59,21 @@ Route::group(['middleware'=>'auth:kaprodi'], function(){
 });
 
 
-Route::group(['middleware'=>'auth:dekan'], function(){
-    Route::get('/dekan/home', [DashboardDekanController::class, 'index'])->name('dekan.dashboard.index');
-    Route::get('/dekan/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
-    Route::get('/dekan/jadwal', [DashboardDekanController::class, 'jadwal'])->name('dekan.jadwal.index');
-    Route::get('/dekan/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
+Route::prefix('dekan')->middleware(['auth:dekan'])->group(function () {
+    Route::get('/home', [DashboardDekanController::class, 'dashboard'])->name('dekan.dashboard.index');
+    Route::get('/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
+    Route::get('/jadwal', [DashboardDekanController::class, 'index'])->name('dekan.jadwal.index');
+    Route::get('/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
 });
 
 Route::get('/dekan', function () {
     return view('content.dekan.dashboard');
 
+});
+
+Route::get('/test-ruang', function () {
+    $ruang = RuangKelas::all();
+    return response()->json($ruang);
 });
 
 // Route::get('/mhs/IRSmhs', function () {
