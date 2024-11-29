@@ -393,13 +393,6 @@ class JadwalSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
 
-                // Tambah jam, reset ke 1 jika melebihi 6
-                $jam++;
-                if ($jam > 6) {
-                    $jam = 1; // Reset ke jam pertama
-                    $hariIndex = ($hariIndex + 1) % count($hari); // Ganti ke hari berikutnya
-                }
-            }
-        }
+        // Tambahkan entri lainnya sesuai kebutuhan
     }
 }
