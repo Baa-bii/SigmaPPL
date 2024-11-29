@@ -17,4 +17,11 @@ class MataKuliah extends Model
     {
         return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
     }
+    public function mahasiswa()
+    {
+        return $this->belongsToMany(Mahasiswa::class, 'irs', 'kode_mk', 'nim')
+            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')
+            ->withTimestamps();
+    }
+
 }

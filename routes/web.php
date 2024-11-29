@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::post('/update-status', [App\Http\Controllers\Mhs\RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
+    Route::post('/irs/update-courses', [BuatIRSController::class, 'updateCourses']);
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){
