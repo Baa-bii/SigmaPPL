@@ -11,7 +11,7 @@ class IRS extends Model
 
     protected $table = 'irs';
 
-    protected $fillable = ['nim', 'kode_mk', 'id_TA'];
+    protected $fillable = ['nim', 'kode_mk', 'id_TA', 'id_riwayat_TA'];
 
     /**
      * Relasi ke tabel Mahasiswa.
@@ -35,5 +35,10 @@ class IRS extends Model
     public function semesterAktif()
     {
         return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
+    }
+    
+    public function riwayatSemesterAktif()
+    {
+        return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA', 'id');
     }
 }
