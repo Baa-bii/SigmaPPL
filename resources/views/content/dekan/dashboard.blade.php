@@ -40,72 +40,85 @@
                 />
             </div>
         </div>
-        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mb-8">
+            <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow mb-8">
             <!-- Tabel dengan Wrapper -->
             <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Jadwal Kuliah</h3>
             <div class="overflow-x-auto border border-gray-200">
                 <table class="min-w-full bg-white">
                     <thead>
                         <tr class="bg-gray-200 text-black">
-                            <th class="py-3 px-3 text-left font-medium">NO</th>
-                            <th class="py-3 px-3 text-left font-medium">MATA KULIAH</th>
-                            <th class="py-3 px-3 text-left font-medium">WAKTU</th>
-                            <th class="py-3 px-3 text-left font-medium">DOSEN</th>
-                            <th class="py-3 px-3 text-left font-medium">SEMESTER</th>
-                            <th class="py-3 px-3 text-left font-medium">RUANGAN</th>
-                            <th class="py-3 px-3 text-left font-medium">STATUS</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">NO</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">MATA KULIAH</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">WAKTU</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">DOSEN</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">SEMESTER</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">RUANGAN</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">GEDUNG</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">TAHUN AKADEMIK</th>
+                            <th scope="col" class="p-4 whitespace-nowrap text-center">STATUS</th>
                         </tr>
                     </thead>
-                    <tbody class="text-black text-sm">
-                        <!-- Contoh Row -->
-                        <tr class="border-b">
-                            <td class="py-3 px-3 whitespace-nowrap">1</td>
-                            <td class="py-3 px-3 whitespace-nowrap">Pengembangan Berbasis Platform</td>
-                            <td class="py-3 px-3 whitespace-nowrap">07.00 - 10.20</td>
-                            <td class="py-3 px-3 whitespace-nowrap">Sandy Kurniawan, S. Kom., M. Kom.</td>
-                            <td class="py-3 px-3 whitespace-nowrap">5</td>
-                            <td class="py-3 px-3 whitespace-nowrap">E101</td>
-                            <td class="py-3 px-3 whitespace-nowrap">
-                                <span class="bg-green-200 text-green-600 px-3 py-1 rounded-full text-sm">Setuju</span>
+                    <tbody class="divide-y divide-transparent">
+                    @php $index = ($jadwal->currentPage() - 1) * $jadwal->perPage() + 1; @endphp
+                    @foreach ($jadwal as $item)
+                        <tr class="bg-white text-black dark:bg-gray-800">
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index }}</td> <!-- Nomor urut yang memperhitungkan pagination -->
+                            <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->matakuliah->nama_mk ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->waktu->jam_mulai }} - {{ $item->waktu->jam_selesai }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm">{{ $item->matakuliah->dosen->nama ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->nama ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->gedung ?? 'N/A' }}</td> 
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->id_TA }}</td>
+                            <td class="p-4 whitespace-nowrap">
+                                <span class="statusCell bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full">
+                                    {{ $item->status ?? 'Menunggu' }}
+                                </span>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
+                        @php $index++; @endphp
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow">
-            <!-- Tabel dengan Wrapper -->
-            <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Ruang Kuliah</h3>
-            <div class="overflow-x-auto border border-gray-200">
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr class="bg-gray-200 text-black">
-                            <th class="py-3 px-3 text-left font-medium">NO</th>
-                            <th class="py-3 px-3 text-left font-medium">KELAS</th>
-                            <th class="py-3 px-3 text-left font-medium">WAKTU</th>
-                            <th class="py-3 px-3 text-left font-medium">KAPASITAS</th>
-                            <th class="py-3 px-3 text-left font-medium">GEDUNG</th>
-                            <th class="py-3 px-3 text-left font-medium">KEPERLUAN</th>
-                            <th class="py-3 px-3 text-left font-medium">STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-black text-sm">
-                        <!-- Contoh Row -->
-                        <tr class="border-b">
-                            <td class="py-3 px-3 whitespace-nowrap">1</td>
-                            <td class="py-3 px-3 whitespace-nowrap">Pengembangan Berbasis Platform</td>
-                            <td class="py-3 px-3 whitespace-nowrap">07.00 - 10.20</td>
-                            <td class="py-3 px-3 whitespace-nowrap">Sandy Kurniawan, S. Kom., M. Kom.</td>
-                            <td class="py-3 px-3 whitespace-nowrap">5</td>
-                            <td class="py-3 px-3 whitespace-nowrap">E101</td>
-                            <td class="py-3 px-3 whitespace-nowrap">
-                                <span class="bg-red-200 text-red-600 px-3 py-1 rounded-full text-sm">Tolak</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>        
+    </div>
+    <div class="relative max-w-screen-lg mx-auto p-4 bg-white shadow">
+    <!-- Tabel dengan Wrapper -->
+    <h3 class="text-lg font-semibold mb-4">Informasi Persetujuan Usulan Ruang Kuliah</h3>
+    <div class="overflow-x-auto border border-gray-200">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr class="bg-gray-200 text-black">
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">NO</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">MATA KULIAH</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">WAKTU</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">RUANGAN</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">GEDUNG</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">KAPASITAS</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">STATUS</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-transparent">
+            <!-- Loop untuk menampilkan data jadwal -->
+            @foreach($jadwal as $index => $data)
+                <tr class="bg-white text-black dark:bg-gray-800">
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index + 1 }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->matakuliah->nama_mk }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->waktu->jam_mulai }} - {{ $data->waktu->jam_selesai }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->nama }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->gedung }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->kapasitas }}</td>
+                    <td class="p-4 whitespace-nowrap">
+                        <span class="statusCell bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full">
+                            {{ $item->status ?? 'Menunggu' }}
+                        </span>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+</div>        
     </main>
         <x-footerdosen></x-footerdosen>
     </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Verifikasi Jadwal</title>
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -57,16 +57,16 @@
                     <div id="filtersDropdown" class="absolute hidden left-0 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                         <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua</a>
+                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="semua">Semua</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Disetujui</a>
+                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="disetujui">Semua Disetujui</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Semua Ditolak</a>
+                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="ditolak">Semua Ditolak</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sedang Proses</a>
+                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="proses">Sedang Proses</a>
                             </li>
                         </ul>
                     </div>
@@ -82,13 +82,13 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="actionsDropdown" class="absolute hidden left-0 mt-1 w-24 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div id="actionsDropdown" class="absolute hidden left-0 mt-1 w-30 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                         <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Setuju</a>
+                                <a href="#" id="approveButton" class="block px-4 py-2 hover:bg-gray-100">Menyetujui</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Tolak</a>
+                                <a href="#" id="rejectButton" class="block px-4 py-2 hover:bg-gray-100">Menolak</a>
                             </li>
                         </ul>
                     </div>
@@ -96,117 +96,154 @@
             </div>
         </div>
 
-        <!-- Tabel Data -->
-        <div class="overflow-x-auto mt-2">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
-                <thead class="text-sm text-black uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="p-4 w-10">
-                            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                        </th>
-                        <th scope="col" class="p-4">MATA KULIAH</th>
-                        <th scope="col" class="p-4">WAKTU</th>
-                        <th scope="col" class="p-4">DOSEN</th>
-                        <th scope="col" class="p-4">SEMESTER</th>
-                        <th scope="col" class="p-4">RUANGAN</th>
-                        <th scope="col" class="p-4">AKSI</th>
-                        <th scope="col" class="p-4">STATUS</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-transparent">
-                    <tr class="bg-white dark:bg-gray-800">
-                        <!-- Checkbox -->
-                        <td class="p-4">
-                            <input type="checkbox" class="rowCheckbox w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                        </td>
-                        <td class="p-4 whitespace-nowrap">Matematika Dasar</td>
-                        <td class="p-4 whitespace-nowrap">Senin, 08:00 - 10:00</td>
-                        <td class="p-4 whitespace-nowrap">Dr. Andi Wijaya</td>
-                        <td class="p-4 whitespace-nowrap">1</td>
-                        <td class="p-4 whitespace-nowrap">Ruang 101</td>
-                        <td class="p-4 flex gap-2">
-                            <button type="button" class="setuju-button flex items-center whitespace-nowrap text-sm font-medium text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
-                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                </svg>
-                                Setuju
-                            </button>
-                            <button type="button" class="tolak-button flex items-center whitespace-nowrap border border-red-500 text-red-500 px-3 py-1 text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                                Tolak
-                            </button>
-                        </td>
-                        <td class="p-4 whitespace-nowrap">
-                            <span id="status-column" class="bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-block align-middle">
-                                Menunggu
-                            </span>
-                        </td>
-                    </tr>
-                    <!-- Tambahkan baris data lainnya -->
-                </tbody>
-            </table>
-        </div>
+        @if (session('success'))
+    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+        {{ $errors->first() }}
+    </div>
+@endif
+
+<!-- Tabel Data -->
+<div class="overflow-x-auto mt-2">
+    <table id="data-tabel" class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
+        <thead class="text-sm text-black uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="p-4 w-10 text-center">
+                    <input id="mainCheckbox" type="checkbox" class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                    <label for="mainCheckbox" class="sr-only">Select all</label>
+                </th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">MATA KULIAH</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">WAKTU</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">DOSEN</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">SEMESTER</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">RUANGAN</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">GEDUNG</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">TAHUN AKADEMIK</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">AKSI</th>
+                <th scope="col" class="p-4 whitespace-nowrap text-center">STATUS</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-transparent">
+            @foreach ($jadwal as $item)
+                <tr class="bg-white text-black dark:bg-gray-800 status-row" data-status="{{ $item->status ?? 'menunggu' }}"
+                    data-search="{{ $item->matakuliah->nama_mk ?? '' }} {{ $item->matakuliah->dosen->nama ?? '' }} {{ $item->matakuliah->semester ?? '' }} {{ $item->ruang->nama ?? '' }} {{ $item->ruang->gedung ?? '' }} {{ $item->id_TA ?? '' }}">
+                    <!-- Checkbox -->
+                    <td class="p-4 text-center">
+                        <input type="checkbox" class="rowCheckbox w-3 h-3 text-primary-600 bg-gray-100 rounded">
+                    </td>
+                    <!-- Nama Mata Kuliah -->
+                    <td class="p-4 whitespace-nowrap">{{ $item->matakuliah->nama_mk ?? 'N/A' }}</td>
+                    <!-- Waktu -->
+                    <td class="p-4 whitespace-nowrap">{{ $item->waktu->jam_mulai }} - {{ $item->waktu->jam_selesai }}</td>
+                    <!-- Dosen -->
+                    <td class="p-4 whitespace-nowrap">{{ $item->matakuliah->dosen->nama ?? 'N/A' }}</td>
+                    <!-- Semester -->
+                    <td class="p-4 whitespace-nowrap text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
+                    <!-- Ruangan -->
+                    <td class="p-4 whitespace-nowrap text-center">{{ $item->ruang->nama ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-center">{{ $item->ruang->gedung ?? 'N/A' }}</td>
+                    <!-- Tahun Akademik -->
+                    <td class="p-4 whitespace-nowrap text-center">{{ $item->id_TA }}</td>
+
+                    <!-- Form Setujui/Tolak -->
+                    <td class="p-4 flex gap-2 whitespace-nowrap">
+                        <form action="{{ route('dekan.verifikasi.update', $item->id) }}" method="POST" class="inline-block">
+                            @csrf
+                            @method('PATCH')
+                            <!-- Tombol Setujui -->
+                            <button type="submit" name="status" value="disetujui" class="text-green-500 hover:underline">Setujui</button>
+                            <!-- Tombol Tolak -->
+                            <button type="submit" name="status" value="ditolak" class="text-red-500 hover:underline">Tolak</button>
+                        </form>
+                    </td>
+
+                    <!-- Status Saat Ini -->
+                    <td>{{ ucfirst($item->status) }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
         <!-- Pagination -->
         <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
                 Showing 
                 <span class="font-semibold text-gray-900 dark:text-white">
-                    {{ $jadwal->firstItem() }}-{{ $jadwal->lastItem() }}
+                    {{ $jadwal->firstItem() }}
                 </span> 
+                to
+                <span class="font-semibold text-gray-900 dark:text-white">
+                    {{ $jadwal->lastItem() }}
+                </span>
                 of 
                 <span class="font-semibold text-gray-900 dark:text-white">
                     {{ $jadwal->total() }}
                 </span>
             </span>
             <ul class="inline-flex items-center -space-x-px text-sm h-8 mr-5 mb-5">
-            <li>
-                        <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Previous</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
+                <!-- Tombol Previous -->
+                @if($jadwal->onFirstPage())
+                    <li>
+                        <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                            Previous
+                        </span>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ $jadwal->previousPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Previous
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Next</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</section>
-        </div>
-    </main>
-</div>
+                @endif
 
+                <!-- Nomor Halaman -->
+                @for($i = 1; $i <= $jadwal->lastPage(); $i++)
+                    @if($i == $jadwal->currentPage())
+                        <li>
+                            <span class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+                                {{ $i }}
+                            </span>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{ $jadwal->url($i) }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                {{ $i }}
+                            </a>
+                        </li>
+                    @endif
+                @endfor
+
+                <!-- Tombol Next -->
+                @if($jadwal->hasMorePages())
+                    <li>
+                        <a href="{{ $jadwal->nextPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Next
+                        </a>
+                    </li>
+                @else
+                    <li>
+                        <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                            Next
+                        </span>
+                    </li>
+                @endif
+            </ul>
+        </nav>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
     </section>
     <!-- End block -->
-        </main>
+    </main>
         <x-footerdosen></x-footerdosen>
     </div>
 
@@ -251,61 +288,159 @@
         });
     });
 
-        const dropdownButton = document.getElementById('filtersDropdownButton');
-        const dropdownMenu = document.getElementById('filtersDropdown');
+    document.addEventListener('DOMContentLoaded', function () {
+    const dropdownButton = document.getElementById('filtersDropdownButton');
+    const dropdown = document.getElementById('filtersDropdown');
+    const filterOptions = document.querySelectorAll('.filter-option');
+    const statusRows = document.querySelectorAll('.status-row'); // Semua baris tabel
 
-        // Tampilkan atau sembunyikan dropdown saat tombol diklik
-        dropdownButton.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('hidden');
+    // Menampilkan dropdown saat tombol "Filters" diklik
+    dropdownButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Mencegah event klik tersebar
+        dropdown.classList.toggle('hidden');
+    });
+
+    // Menutup dropdown jika klik di luar dropdown
+    document.addEventListener('click', function (event) {
+        if (!dropdown.contains(event.target) && !dropdownButton.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Event listener untuk setiap opsi filter
+    filterOptions.forEach(option => {
+        option.addEventListener('click', function () {
+            const filter = this.getAttribute('data-filter');
+            applyFilter(filter);
+            dropdown.classList.add('hidden'); // Menyembunyikan dropdown setelah pilihan dipilih
         });
+    });
 
-        // Tutup dropdown saat mengklik di luar elemen
-        document.addEventListener('click', (event) => {
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
+    // Fungsi untuk menerapkan filter
+    function applyFilter(filter) {
+        statusRows.forEach(row => {
+            const status = row.getAttribute('data-status');
+
+            // Tampilkan atau sembunyikan baris berdasarkan status yang dipilih
+            if (filter === 'semua') {
+                row.style.display = ''; // Menampilkan semua baris
+            } else if (filter === 'disetujui' && status === 'setuju') {
+                row.style.display = ''; // Tampilkan hanya status "Setuju"
+            } else if (filter === 'ditolak' && status === 'ditolak') {
+                row.style.display = ''; // Tampilkan hanya status "Menolak"
+            } else if (filter === 'proses' && status === 'menunggu') {
+                row.style.display = ''; // Tampilkan hanya status "Menunggu"
+            } else {
+                row.style.display = 'none'; // Sembunyikan baris lainnya
             }
         });
-
-        // Toggle dropdown visibility
-        document.getElementById('actionsDropdownButton').addEventListener('click', function (event) {
-        event.stopPropagation(); // Mencegah event click tersebar ke dokumen
-            const dropdown = document.getElementById('actionsDropdown');
-                dropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (event) {
-            const dropdown = document.getElementById('actionsDropdown');
-            const button = document.getElementById('actionsDropdownButton');
-            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
-
-        // Actions for Setujui Semua
-        document.getElementById('approveAllButton').addEventListener('click', function () {
-            alert('Semua jadwal telah disetujui!');
-            // Tambahkan logika untuk menyetujui semua di sini
-        });
-
-        // Actions for Tolak Semua
-        document.getElementById('rejectAllButton').addEventListener('click', function () {
-            alert('Semua jadwal telah ditolak!');
-            // Tambahkan logika untuk menolak semua di sini
-        });
+    }
+});
 
         document.addEventListener('DOMContentLoaded', function () {
-            const mainCheckbox = document.getElementById('mainCheckbox');
-            mainCheckbox.addEventListener('change', function () {
-                const rowCheckboxes = document.querySelectorAll('.rowCheckbox');
-                rowCheckboxes.forEach(checkbox => {
-                    checkbox.checked = mainCheckbox.checked;
-                });
-            });
+    const mainCheckbox = document.getElementById('mainCheckbox');
+    const rowCheckboxes = document.querySelectorAll('.rowCheckbox');
+    const dropdownButton = document.getElementById('actionsDropdownButton');
+    const dropdown = document.getElementById('actionsDropdown');
+    const approveButton = document.getElementById('approveButton');
+    const rejectButton = document.getElementById('rejectButton');
+    const statusCells = document.querySelectorAll('.statusCell'); // Koleksi status sel
+
+    // Menyembunyikan dropdown jika mengklik di luar
+    document.addEventListener('click', function (event) {
+        if (!dropdown.contains(event.target) && !dropdownButton.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Menampilkan dropdown saat tombol "Actions" diklik
+    dropdownButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Mencegah event klik tersebar
+        dropdown.classList.toggle('hidden');
+    });
+
+    // Checkbox utama mengontrol checkbox baris
+    mainCheckbox.addEventListener('change', function () {
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
         });
+    });
+
+    // Fungsi untuk mengubah status menjadi "Setuju" jika ada checkbox yang dicentang
+    approveButton.addEventListener('click', function () {
+        const anyChecked = Array.from(rowCheckboxes).some(cb => cb.checked); // Cek apakah ada checkbox yang dicentang
+
+        if (anyChecked) {
+            rowCheckboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    // Ubah status menjadi "Setuju" untuk yang dicentang
+                    const statusCell = statusCells[index]; // Ambil status cell yang sesuai
+                    statusCell.textContent = 'Setuju'; // Ubah teks status
+                    statusCell.classList.remove('bg-yellow-200', 'text-yellow-600'); // Hapus kelas lama
+                    statusCell.classList.add('bg-green-200', 'text-green-600'); // Tambahkan kelas Setuju
+                }
+            });
+            alert('Semua jadwal yang dicentang telah disetujui!');
+        } else {
+            alert('Silakan pilih jadwal untuk disetujui!');
+        }
+
+        dropdown.classList.add('hidden'); // Menyembunyikan dropdown setelah aksi
+    });
+
+    // Fungsi untuk mengubah status menjadi "Menolak" jika tombol Tolak diklik
+    rejectButton.addEventListener('click', function () {
+        const anyChecked = Array.from(rowCheckboxes).some(cb => cb.checked); // Cek apakah ada checkbox yang dicentang
+
+        if (anyChecked) {
+            rowCheckboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    // Ubah status menjadi "Menolak" untuk yang dicentang
+                    const statusCell = statusCells[index]; // Ambil status cell yang sesuai
+                    statusCell.textContent = 'Menolak'; // Ubah teks status
+                    statusCell.classList.remove('bg-yellow-200', 'text-yellow-600'); // Hapus kelas lama
+                    statusCell.classList.add('bg-red-200', 'text-red-600'); // Tambahkan kelas Menolak
+                }
+            });
+            alert('Semua jadwal yang dicentang telah ditolak!');
+        } else {
+            alert('Silakan pilih jadwal untuk ditolak!');
+        }
+
+        dropdown.classList.add('hidden'); // Menyembunyikan dropdown setelah aksi
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('simple-search');
+    const rows = document.querySelectorAll('#dataTable tbody tr'); // Semua baris tabel
+
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();  // Ambil input pencarian dan ubah menjadi lowercase
+
+        rows.forEach(row => {
+            const searchData = row.getAttribute('data-search').toLowerCase();  // Ambil data pencarian yang ada di setiap baris
+
+            // Jika search term ada dalam data-search, tampilkan baris, jika tidak, sembunyikan
+            if (searchData.includes(searchTerm)) {
+                row.style.display = '';  // Menampilkan baris
+            } else {
+                row.style.display = 'none';  // Menyembunyikan baris
+            }
+        });
+    });
+});
+
+public function updateStatus(Request $request, $id)
+{
+    $jadwal = Jadwal::findOrFail($id);
+    $jadwal->status = $request->input('status');
+    $jadwal->save();
+
+    return redirect()->route('dekan.verifikasi.jadwal')->with('success', 'Status jadwal berhasil diperbarui.');
+}
 
     </script>
-
 
 </body>
 </html>

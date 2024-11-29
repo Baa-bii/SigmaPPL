@@ -24,7 +24,11 @@ return new class extends Migration
             // Relasi ke Riwayat Semester Aktif (untuk IRS semester sebelumnya)
             $table->unsignedBigInteger('id_riwayat_TA')->nullable();  // Semester Aktif untuk IRS sebelumnya
             $table->foreign('id_riwayat_TA')->references('id')->on('riwayat_semester_aktif')->onDelete('cascade');
+            $table->enum('status', ['Sudah Disetujui', 'Belum Disetujui'])->default('Belum Disetujui');
+            $table->enum('status_mata_kuliah', ['BARU', 'PERBAIKAN', 'ULANG'])->default('BARU');            
             $table->timestamps();
+            $table->unique(['nim', 'kode_mk', 'id_TA']);
+           
         });
     }
 
