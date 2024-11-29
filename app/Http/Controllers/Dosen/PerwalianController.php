@@ -18,14 +18,20 @@ class PerwalianController extends Controller
             return redirect()->route('login')->with('error', 'Data dosen tidak ditemukan.');
         }
 
+        // Mengambil parameter dari request
         $angkatan = $request->input('angkatan');
+        $search = $request->input('search'); // Menambahkan input pencarian
+        $perPage = $request->input('per_page', 10); // Menangani jumlah data per halaman (default 10)
 
         // Ambil mahasiswa berdasarkan nip_dosen dosen yang login, dengan pagination
         $mahasiswa = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
             ->when($angkatan, function ($query, $angkatan) {
                 return $query->where('angkatan', $angkatan);
             })
-            ->paginate(10); // Pagination 10 data per halaman
+            ->when($search, function ($query, $search) {
+                return $query->where('nama_mhs', 'like', '%' . $search . '%');
+            })
+            ->paginate($perPage); // Pagination sesuai dengan nilai per_page
 
         // Ambil angkatan unik
         $angkatanList = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
@@ -33,7 +39,8 @@ class PerwalianController extends Controller
             ->distinct()
             ->pluck('angkatan');
 
-        return view('content.dosen.perwalian', compact('mahasiswa', 'angkatanList', 'angkatan'));
+        // Kirim data mahasiswa, angkatanList, dan angkatan ke view
+        return view('content.dosen.perwalian', compact('mahasiswa', 'angkatanList', 'angkatan', 'perPage', 'search'));
     }
 
     public function show($nim)
@@ -42,6 +49,4 @@ class PerwalianController extends Controller
 
         return view('content.dosen.detailmhs', compact('mahasiswa'));
     }
-
-
 }
