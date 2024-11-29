@@ -17,8 +17,13 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
-            $table->unsignedBigInteger('id_TA');
+            // Relasi ke Semester Aktif (untuk IRS semester sekarang)
+            $table->unsignedBigInteger('id_TA')->nullable();  // Semester Aktif untuk IRS sekarang
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
+
+            // Relasi ke Riwayat Semester Aktif (untuk IRS semester sebelumnya)
+            $table->unsignedBigInteger('id_riwayat_TA')->nullable();  // Semester Aktif untuk IRS sebelumnya
+            $table->foreign('id_riwayat_TA')->references('id')->on('riwayat_semester_aktif')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +37,7 @@ return new class extends Migration
             $table->dropForeign(['nim']);
             $table->dropForeign(['kode_mk']);
             $table->dropForeign(['id_TA']);
+            $table->dropForeign(['id_riwayat_TA']);
         });
         Schema::dropIfExists('irs');
     }
