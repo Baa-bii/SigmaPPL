@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
             $table->string('kode_prodi');
             $table->foreign('kode_prodi')->references('kode_prodi')->on('program_studi')->onDelete('cascade');
+            $table->string('status')->default('menunggu')->after('kode_prodi');
             $table->timestamps();
         });
     }
