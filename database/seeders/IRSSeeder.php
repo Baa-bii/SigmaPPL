@@ -47,6 +47,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6102',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -54,6 +55,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6101',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -61,6 +63,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00007',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -68,6 +71,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6105',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -75,6 +79,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00005',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -82,6 +87,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6103',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -89,6 +95,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6104',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -96,6 +103,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00003',
             'id_riwayat_TA' => $id_TA_Ganjil_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -104,6 +112,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6202',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -111,6 +120,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6204',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -118,6 +128,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00011',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -125,6 +136,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6603',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -132,6 +144,7 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6203',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -139,27 +152,28 @@ class IRSSeeder extends Seeder
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00004',
             'id_riwayat_TA' => $id_TA_Genap_2022,
+            'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6402',
-            'id_riwayat_TA' => $id_TA_Genap_2022,
+            'id_riwayat_TA' => $id_TA_Genap_2022,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00006',
-            'id_riwayat_TA' => $id_TA_Genap_2022,
+            'id_riwayat_TA' => $id_TA_Genap_2022,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6201',
-            'id_riwayat_TA' => $id_TA_Genap_2022,
+            'id_riwayat_TA' => $id_TA_Genap_2022,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -167,56 +181,56 @@ class IRSSeeder extends Seeder
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6301',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6306',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6303',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6302',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6304',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6506',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6305',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'UUW00008',
-            'id_riwayat_TA' => $id_TA_Ganjil_2023,
+            'id_riwayat_TA' => $id_TA_Ganjil_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -224,45 +238,44 @@ class IRSSeeder extends Seeder
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6406',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6404',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6401',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6403',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6405',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         IRS::create([
             'nim' => '24060122140999',
             'kode_mk' => 'PAIK6601',
-            'id_riwayat_TA' => $id_TA_Genap_2023,
+            'id_riwayat_TA' => $id_TA_Genap_2023,'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
     }
 }

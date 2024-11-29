@@ -42,9 +42,16 @@ class Mahasiswa extends Model
         return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
     public function semester_aktif()
-{
-    return $this->hasOne(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
-}
+    {
+        return $this->hasOne(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
+    }
+    public function matakuliah()
+    {
+        return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk')
+            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')
+            ->withTimestamps();
+    }
+
 
    
 }

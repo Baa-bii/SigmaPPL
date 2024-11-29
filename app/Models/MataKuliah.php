@@ -15,8 +15,8 @@ class MataKuliah extends Model
 
     // Assuming a Dosen belongs to MataKuliah
     public function dosen()
-{
-    return $this->belongsTo(Dosen::class, 'dosen_id', 'nip_dosen');
-}
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_id', 'nip_dosen');
+    }
 
 }
