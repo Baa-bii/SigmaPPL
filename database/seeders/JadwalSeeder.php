@@ -377,18 +377,22 @@ class JadwalSeeder extends Seeder
             'id_TA' => $id_TA_Ganjil_2024,
             'id_ruang' => $id_ruang_A303,
             'kode_mk' => 'PAIK6601', 
-            'kode_prodi' => 'INF123', // Program studi
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'hari' => 'Jumat',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_13,
+            'id_TA' => $id_TA_Ganjil_2024,
+            'id_ruang' => $id_ruang_K102,
+            'kode_mk' => 'PAIK6405', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-                // Tambah jam, reset ke 1 jika melebihi 6
-                $jam++;
-                if ($jam > 6) {
-                    $jam = 1; // Reset ke jam pertama
-                    $hariIndex = ($hariIndex + 1) % count($hari); // Ganti ke hari berikutnya
-                }
-            }
-        }
+        // Tambahkan entri lainnya sesuai kebutuhan
     }
 }
