@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
         // Seeder User Mahasiswa
         $angkatan = ['2024', '2022', '2023', '2021'];
         foreach ($angkatan as $tahun) {
-            for ($i = 1; $i <= 50; $i++) {
+            for ($i = 1; $i <= 10; $i++) {
                 $name = $faker->name;
                 $nim = $tahun . str_pad($i, 3, '0', STR_PAD_LEFT);
                 $email = strtolower(str_replace(' ', '', $name)) . $nim . '@students.com';
@@ -88,14 +88,12 @@ class DatabaseSeeder extends Seeder
             MataKuliahSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
-            WaktuSeeder::class,
             JadwalSeeder::class,
             IRSSeeder::class,
             khsSeeder::class,
             DosenMatkulSeeder::class,
             // RiwayatSemesterAktifSeeder::class,
-            
-            
+        
         ]);
     }
 }

@@ -56,7 +56,7 @@
                 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                     <!-- Header with title and three-dot icon -->
                     <div class="flex justify-between items-center mb-1">
-                        <h5 class="text-l font-semibold leading-none text-gray-900 dark:text-white text-center flex-grow">Status Akademik Mahasiswa</h5>
+                        <h5 class="text-l font-semibold leading-none text-gray-900 dark:text-white text-center flex-grow">Status Registrasi Mahasiswa</h5>
                         <button id="widgetDropdownButton1" data-dropdown-toggle="widgetDropdown1" data-dropdown-placement="bottom" type="button" class="inline-flex items-center justify-center text-gray-500 w-8 h-8 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm">
                             <svg class="w-3.5 h-3.5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
                                 <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
@@ -257,7 +257,7 @@
 
         // Render chart in the first column
         if (document.getElementById("pie-chart-1")) {
-            const chart1 = new ApexCharts(document.getElementById("pie-chart-1"), getChartOptions(["Aktif", "Cuti", "Mangkir"]));
+            const chart1 = new ApexCharts(document.getElementById("pie-chart-1"), getChartOptions(["Sudah Registrasi", "Belum Registrasi"]));
             chart1.render();
         }
 
@@ -269,7 +269,7 @@
 
         // Render chart in the third column
         if (document.getElementById("pie-chart-2")) {
-            const chart2 = new ApexCharts(document.getElementById("pie-chart-2"), getChartOptions(["Disetujui", "Belum Disetujui"]));
+            const chart2 = new ApexCharts(document.getElementById("pie-chart-2"), getChartOptions(["Sudah Disetujui", "Belum Disetujui"]));
             chart2.render();
         }
     </script>

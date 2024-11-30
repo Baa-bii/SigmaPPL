@@ -1,5 +1,4 @@
 <!-- BUAT IRS -->
-
 <div class="tab-content flex flex-col lg:flex-row gap-6" id="buat-irs">
 @if(isset($status) && $status === 'Aktif')
     <!-- Sidebar Informasi Mahasiswa -->
@@ -31,91 +30,17 @@
                 </div>
                 <span class="text-sm font-medium text-gray-500 dark:text-gray-400">18 SKS</span>
             </div>
-            <!-- Dropdown Tambah Mata Kuliah -->
-            <!-- <div class="mt-6">
-                <h3 class="font-semibold mb-2 text-sm">+ Tambah Mata Kuliah</h3>
-                <select name="mata-kuliah" id="mata-kuliah" class="w-full p-2 border rounded bg-gray-50">
-                    <option value=""></option>
-                    <option value="1">Pengembangan Berbasis Platform</option>
-                    <option value="2">Kewirausahaan</option>
-                    <option value="3">Komputasi Tersebar dan Paralel</option>
-                    <option value="4">Proyek Perangkat Lunak</option>
-                    <option value="5">Sistem Informasi</option>
-                    <option value="6">Pembelajaran Mesin</option>
-                    <option value="7">Keamanan Jaringan dan Jaminan Informasi</option>
-                </select>
-            </div> -->
-            
-            
-
+           
             <!-- Dropdown menu -->
-            <!-- <div id="dropdownSearch" class="z-10 hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                <div class="p-3">
-                <label for="input-group-search" class="sr-only">Search</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                    </div>
-                    <input type="text" id="input-group-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mata Kuliah">
-                </div>
-                </div>
-                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-11" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-11" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Bonnie Green</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input checked id="checkbox-item-12" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="checkbox-item-12" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Jese Leos</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-13" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-13" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Michael Gough</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-14" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-14" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Robert Wall</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-15" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-15" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Joseph Mcfall</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-16" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-16" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Leslie Livingston</label>
-                    </div>
-                </li>
-                        <li>
-                    <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input id="checkbox-item-17" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                    <label for="checkbox-item-17" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Roberta Casas</label>
-                    </div>
-                </li>
-            </a>
-            </div> -->
-            <!-- Dropdown menu -->
-             <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-64" type="button">Daftar Mata Kuliah Lain <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg>
+            <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-64" type="button">Daftar Mata Kuliah Lain <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
             </button>
             <div id="dropdownSearch" class="z-10 hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700">
                 <div class="p-3">
                     <label for="input-group-search" class="sr-only">Search</label>
                     <div class="relative">
-                        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-auto">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
@@ -123,35 +48,29 @@
                         <input type="text" id="input-group-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mata Kuliah">
                     </div>
                 </div>
-                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
-                    @foreach ($mataKuliahDropdown as $mk)
+                <ul id="dropdownSearchList" class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                    @foreach ($mataKuliah as $mk)
                         <li>
                             <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input type="checkbox" id="checkbox-{{ $mk->kode_mk }}" value="{{ $mk->kode_mk }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input type="checkbox" id="checkbox-{{ $mk->kode_mk }}" 
+                                    value="{{ $mk->kode_mk }}" 
+                                    class="course-checkbox" 
+                                    {{ $mataKuliahDitampilkan->contains('kode_mk', $mk->kode_mk) ? 'checked' : '' }} />
                                 <label for="checkbox-{{ $mk->kode_mk }}" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                    {{ $mk->nama_mk }} - {{ $mk->sks }} SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }}
+                                    {{ $mk->nama_mk }} - {{ $mk->sks }}  SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }} - ({{ $mk->kode_mk }})
+                                    <!-- <h4 class="font-semibold text-sm">{{ $mk->nama_mk }}</h4>
+                                    <p class="text-xs">{{ strtoupper($mk->jenis_mk) }} ({{ $mk->kode_mk }})</p>
+                                    <p class="text-xs">Semester {{ $mk->semester }}</p>
+                                    <p class="text-xs">{{ $mk->sks }} SKS</p> -->
+                                   
                                 </label>
                             </div>
                         </li>
                     @endforeach
                 </ul>
             </div>
-        </div>
 
-        <!-- Mata Kuliah Ditampilkan -->
-        <!-- <div class="mt-6">
-            <h3 class="font-semibold text-sm mb-2">Mata Kuliah Ditampilkan</h3>
-            <div class="p-4 bg-gray-50 rounded-lg shadow">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-check text-green-500"></i>
-                    <div>
-                        <h4 class="font-semibold text-sm">Pengembangan Berbasis Platform</h4>
-                        <p class="text-xs">WAJIB (KM2020)</p>
-                        <p class="text-xs">SMT 5</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        </div>
         <!-- Mata Kuliah Ditampilkan -->
         <div class="mt-6">
             <h3 class="font-semibold text-sm mb-2">Mata Kuliah Ditampilkan</h3>
@@ -159,15 +78,16 @@
                 @if ($mataKuliahDitampilkan->isEmpty())
                     <p class="text-xs text-gray-500">Tidak ada mata kuliah untuk semester ini.</p>
                 @else
-                    @foreach ($mataKuliahDitampilkan as $mk)
-                        <div id="selected-{{ $mk->kode_mk }}"class="p-4 bg-gray-50 rounded-lg shadow mb-3">
+                    @foreach ($mataKuliahDitampilkan as $matkul)
+                        <div id="selected-{{ $matkul->kode_mk }}"class="p-4 bg-gray-50 rounded-lg shadow mb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-check text-green-500"></i>
                                 <div>
-                                    <h4 class="font-semibold text-sm">{{ $mk->nama_mk }}</h4>
-                                    <p class="text-xs">{{ strtoupper($mk->jenis_mk) }} ({{ $mk->kode_mk }})</p>
-                                    <p class="text-xs">SMT {{ $mk->semester }}</p>
-                                    <p class="text-xs">{{ $mk->sks }} SKS</p>
+                                    <!-- <h4 class="font-semibold text-sm">{{ $matkul->nama_mk }}</h4>
+                                    <p class="text-xs">{{ strtoupper($matkul->jenis_mk) }} ({{ $mk->kode_mk }})</p>
+                                    <p class="text-xs">Semester {{ $matkul->semester }}</p>
+                                    <p class="text-xs">{{ $matkul->sks }} SKS</p> -->
+                                    <h4 class="font-semibold text-sm">{{ $matkul->nama_mk }} - {{ $matkul->sks }}  SKS (Semester {{ $matkul->semester }}) - {{ strtoupper($matkul->jenis_mk) }} - ({{ $matkul->kode_mk }})</h4>
                                 </div>
                             </div>
                         </div>
@@ -177,263 +97,56 @@
         </div>
     </div>
     
-
     <!-- Jadwal Mata Kuliah -->
-
     <div class="w-full lg:w-2/3 scroll-smooth">
-        <!-- <div class="sticky-button-container flex items-center justify-end p-0 mb-0">
-        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">SKS</button>
-        </div> -->
         <div class="overflow-x-auto">
-           
-            <!-- <div class="flex items-center mb-4">
-                <div class="w-full h-5  bg-gray-200 rounded dark:bg-gray-700 mr-2">
-                    <div class="h-5 bg-yellow-300 rounded" style="width: 70%"></div>
-                </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">18 SKS</span>
-            </div> -->
-
             <table class="w-full border-collapse border border-gray-300 bg-white">
-    <thead>
-        <tr>
-            <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
-            <th class="border border-gray-300 p-2">SENIN<br><span class="italic text-sm font-medium">MONDAY</span></th>
-            <th class="border border-gray-300 p-2">SELASA<br><span class="italic text-sm font-medium">TUESDAY</span></th>
-            <th class="border border-gray-300 p-2">RABU<br><span class="italic text-sm font-medium">WEDNESDAY</span></th>
-            <th class="border border-gray-300 p-2">KAMIS<br><span class="italic text-sm font-medium">THURSDAY</span></th>
-            <th class="border border-gray-300 p-2">JUMAT<br><span class="italic text-sm font-medium">FRIDAY</span></th>
-        </tr>
-    </thead>
-    <tbody>
-        @for ($hour = 6; $hour <= 22; $hour++)
-            <tr>
-                <td class="border border-gray-300 p-2 text-center">
-                    {{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00
-                </td>
-                @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $hari)
-                    <td class="border border-gray-300 p-2">
-                        @foreach ($jadwal as $kelasJadwal)
-                            @foreach ($kelasJadwal->where('hari', $hari)->where('waktu.jam_mulai', str_pad($hour, 2, '0', STR_PAD_LEFT) . ':00') as $jadwalItem)
-                                <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2">
-                                    <h5 class="mb-2 text-xs font-bold text-gray-900">
-                                        {{ $jadwalItem->matakuliah->nama_mk }}
-                                    </h5>
-                                    <p class="text-xs text-red-500 font-semibold">
-                                        {{ strtoupper($jadwalItem->matakuliah->jenis_mk) }} ({{ $jadwalItem->matakuliah->kode_mk }})
-                                    </p>
-                                    <p class="text-xs text-gray-700">
-                                        (SMT {{ $jadwalItem->matakuliah->semester }}) ({{ $jadwalItem->matakuliah->sks }} SKS)
-                                    </p>
-                                    <p class="text-xs text-gray-700">Kelas: {{ $jadwalItem->kelas }}</p>
-                                    <div class="flex items-center mt-2 text-xs text-gray-600">
-                                        <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        {{ $jadwalItem->waktu->jam_mulai }} - {{ $jadwalItem->waktu->jam_selesai }}
-                                    </div>
-                                </div>
+                <thead>
+                    <tr>
+                        <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
+                        <th class="border border-gray-300 p-2">SENIN<br><span class="italic text-sm font-medium">MONDAY</span></th>
+                        <th class="border border-gray-300 p-2">SELASA<br><span class="italic text-sm font-medium">TUESDAY</span></th>
+                        <th class="border border-gray-300 p-2">RABU<br><span class="italic text-sm font-medium">WEDNESDAY</span></th>
+                        <th class="border border-gray-300 p-2">KAMIS<br><span class="italic text-sm font-medium">THURSDAY</span></th>
+                        <th class="border border-gray-300 p-2">JUMAT<br><span class="italic text-sm font-medium">FRIDAY</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for ($hour = 6; $hour <= 22; $hour++)
+                        <tr>
+                            <td class="border border-gray-300 p-2 text-center">
+                                {{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00
+                            </td>
+                            @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $hari)
+                                <td class="border border-gray-300 p-2">
+                                    @foreach ($jadwal as $kelasJadwal)
+                                        @foreach ($kelasJadwal->where('hari', $hari)->where('waktu.jam_mulai', str_pad($hour, 2, '0', STR_PAD_LEFT) . ':00') as $jadwalItem)
+                                            <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2">
+                                                <h5 class="mb-2 text-xs font-bold text-gray-900">
+                                                    {{ $jadwalItem->matakuliah->nama_mk }}
+                                                </h5>
+                                                <p class="text-xs text-red-500 font-semibold">
+                                                    {{ strtoupper($jadwalItem->matakuliah->jenis_mk) }} ({{ $jadwalItem->matakuliah->kode_mk }})
+                                                </p>
+                                                <p class="text-xs text-gray-700">
+                                                    (SMT {{ $jadwalItem->matakuliah->semester }}) ({{ $jadwalItem->matakuliah->sks }} SKS)
+                                                </p>
+                                                <p class="text-xs text-gray-700">Kelas: {{ $jadwalItem->kelas }}</p>
+                                                <div class="flex items-center mt-2 text-xs text-gray-600">
+                                                    <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    {{ $jadwalItem->waktu->jam_mulai }} - {{ $jadwalItem->waktu->jam_selesai }}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                </td>
                             @endforeach
-                        @endforeach
-                    </td>
-                @endforeach
-            </tr>
-        @endfor
-    </tbody>
-</table>
-
-
-
-
-                <!-- <tbody>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">06:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">07:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"><div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg">
-                                
-                                <h5 class="mb-2 text-xs font-bold text-gray-900">
-                                    Komputasi Tersebar dan Paralel
-                                </h5>
-
-                               
-                                <p class="text-xs text-red-500 font-semibold">WAJIB (KM2020)</p>
-                                <p class="text-xs text-gray-700">(SMT 5) (3 SKS)</p>
-                                <p class="text-xs text-gray-700">Kelas: C <span class="text-red-500 font-bold">3/3 SKS</span></p>
-
-                              
-                                <div class="flex items-center mt-2 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    09.40 - 12.10
-                                </div>
-                            </div></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">09:00</td>
-                        <td class="border border-gray-300 p-2 align-top">
-                            <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg">
-                                
-                                <h5 class="mb-2 text-xs font-bold text-gray-900">
-                                    Komputasi Tersebar dan Paralel
-                                </h5>
-
-                        
-                                <p class="text-xs text-red-500 font-semibold">WAJIB (KM2020)</p>
-                                <p class="text-xs text-gray-700">(SMT 5) (3 SKS)</p>
-                                <p class="text-xs text-gray-700">Kelas: C <span class="text-red-500 font-bold">3/3 SKS</span></p>
-
-                              
-                                <div class="flex items-center mt-2 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    09.40 - 12.10
-                                </div>
-                            </div>
-                        </td>
-                        
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"><div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg">
-                                
-                                <h5 class="mb-2 text-xs font-bold text-gray-900">
-                                    Komputasi Tersebar dan Paralel
-                                </h5>
-
-                              
-                                <p class="text-xs text-red-500 font-semibold">WAJIB (KM2020)</p>
-                                <p class="text-xs text-gray-700">(SMT 5) (3 SKS)</p>
-                                <p class="text-xs text-gray-700">Kelas: C <span class="text-red-500 font-bold">3/3 SKS</span></p>
-
-                              
-                                <div class="flex items-center mt-2 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    09.40 - 12.10
-                                </div>
-                            </div></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">11:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                        <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg">
-                                
-                                <h5 class="mb-2 text-xs font-bold text-gray-900">
-                                    Komputasi Tersebar dan Paralel
-                                </h5>
-
-                               
-                                <p class="text-xs text-red-500 font-semibold">WAJIB (KM2020)</p>
-                                <p class="text-xs text-gray-700">(SMT 5) (3 SKS)</p>
-                                <p class="text-xs text-gray-700">Kelas: C <span class="text-red-500 font-bold">3/3 SKS</span></p>
-
-                        
-                                <div class="flex items-center mt-2 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    09.40 - 12.10
-                                </div>
-                            </div>
-                        </td>
-                        
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                       
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">13:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">15:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                        </td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">16:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">17:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">18:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">19:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">20:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">21:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2 text-center">22:00</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2"></td>
-                    </tr> 
-                    
-                </tbody>  -->
-            <!-- </table> -->
-            
-            
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>            
             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Simpan</button>
             <button type="button" class="focus:outline-none text-white bg-purple-800 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Lihat</button>
         
@@ -446,111 +159,184 @@
     </div>
 @endif
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('input-group-search');
-    const dropdownList = document.querySelector('#dropdownSearch ul');
-    const displayedCourses = document.querySelector('#displayedCourses');
+    $(document).ready(function() {
+    // Ketika checkbox berubah status (checked/unchecked)
+        $('.course-checkbox').change(function () {
+        var selectedCourses = [];
+        var nim = $('#nim').val(); // Ambil NIM mahasiswa dari input
 
-    // Sinkronisasi antara displayedCourses dan checkbox saat halaman dimuat
-    function syncCheckboxWithDisplayedCourses() {
-        const displayedCourseIds = Array.from(displayedCourses.children).map((course) =>
-            course.id.replace('selected-', '')
-        ); // Ambil semua ID mata kuliah yang ada di displayedCourses
-
-        const checkboxes = dropdownList.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = displayedCourseIds.includes(checkbox.value);
+        // Ambil semua kode mata kuliah yang dipilih (checked)
+        $('.course-checkbox:checked').each(function () {
+            selectedCourses.push($(this).val());
         });
-    }
 
-    // Fungsi Pencarian: Filter mata kuliah berdasarkan input
-    searchInput.addEventListener('input', function (e) {
-        const query = e.target.value.toLowerCase();
-        const listItems = dropdownList.querySelectorAll('li');
+        // Update tampilan mata kuliah yang dipilih
+        var html = '';
+        if (selectedCourses.length === 0) {
+            html = '<p class="text-xs text-gray-500">Tidak ada mata kuliah yang dipilih.</p>';
+        } else {
+            // Loop untuk menampilkan mata kuliah yang dipilih
+            selectedCourses.forEach(function(kodeMk) {
+                var mataKuliah = $('#checkbox-' + kodeMk).parent().find('label').text();
+                html += '<div id="selected-' + kodeMk + '" class="p-4 bg-gray-50 rounded-lg shadow mb-3"' +
+                            '<div class="flex items-center gap-2">' +
+                                '<i class="fas fa-check text-green-500"></i>' +
+                                    '<div>' +
+                                        '<h4 class="font-semibold text-sm">' + mataKuliah + '</h4>' +
+                                    '</div>' +
+                                '</div>' +
+                        '</div>';
+            });
+        }
 
-        listItems.forEach((item) => {
-            const label = item.querySelector('label').textContent.toLowerCase();
-            if (label.includes(query)) {
-                item.style.display = ''; // Tampilkan jika cocok
-            } else {
-                item.style.display = 'none'; // Sembunyikan jika tidak cocok
+        // Update konten #displayedCourses dengan HTML yang baru
+        $('#displayedCourses').html(html);
+
+        // Mengirim data ke server untuk memperbarui mata kuliah yang dipilih
+        $.ajax({
+            url: '/update-mata-kuliah', // URL untuk mengupdate mata kuliah
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                nim: nim,
+                courses: selectedCourses
+            },
+            success: function(response) {
+                console.log('Mata kuliah diperbarui di server');
             }
         });
     });
 
-    // Fungsi Tambah Mata Kuliah ke "Mata Kuliah Ditampilkan"
-    function addToDisplayedCourses(mk) {
-        // Cek apakah mata kuliah sudah ada
-        const existingCourse = displayedCourses.querySelector(`#selected-${mk.kode_mk}`);
-        if (existingCourse) return; // Jangan tambahkan jika sudah ada
-
-        // Buat elemen baru untuk mata kuliah
-        const courseDiv = document.createElement('div');
-        courseDiv.id = `selected-${mk.kode_mk}`;
-        courseDiv.className = 'p-4 bg-gray-50 rounded-lg shadow mb-3';
-
-        // Template HTML untuk mata kuliah
-        courseDiv.innerHTML = `
-            <div class="flex items-center gap-2">
-                <i class="fas fa-check text-green-500"></i>
-                <div>
-                    <h4 class="font-semibold text-sm">${mk.nama_mk}</h4>
-                    <p class="text-xs">${mk.jenis_mk.toUpperCase()} (${mk.kode_mk})</p>
-                    <p class="text-xs">SMT ${mk.semester}</p>
-                    <p class="text-xs">${mk.sks} SKS</p>
-                </div>
-            </div>
-        `;
-
-        // Tambahkan elemen ke dalam elemen `displayedCourses`
-        displayedCourses.appendChild(courseDiv);
-    }
-
-    // Fungsi Hapus Mata Kuliah dari "Mata Kuliah Ditampilkan"
-    function removeFromDisplayedCourses(kode_mk) {
-        // Cari elemen berdasarkan ID
-        const courseDiv = displayedCourses.querySelector(`#selected-${kode_mk}`);
-        if (courseDiv) {
-            // Hapus elemen
-            courseDiv.remove();
-        }
-    }
-
-    // Event Listener untuk Checkbox
-    dropdownList.addEventListener('change', function (e) {
-        if (e.target.type === 'checkbox') {
-            const checkbox = e.target;
-            const kode_mk = checkbox.value;
-
-            // Ambil data mata kuliah dari label checkbox
-            const label = checkbox.nextElementSibling;
-            const mataKuliahInfo = label.textContent.split(' - '); // Format: [Nama MK] - [SKS] - [Semester] - [Jenis]
-            const [nama_mk, sksText, semesterText, jenisText] = mataKuliahInfo;
-            const sks = parseInt(sksText.match(/\d+/)[0]); // Ambil angka dari teks SKS
-            const semester = parseInt(semesterText.match(/\d+/)[0]); // Ambil angka dari teks Semester
-            const jenis_mk = jenisText.trim();
-
-            if (checkbox.checked) {
-                // Tambahkan ke "Mata Kuliah Ditampilkan"
-                addToDisplayedCourses({
-                    kode_mk,
-                    nama_mk,
-                    sks,
-                    semester,
-                    jenis_mk,
-                });
-            } else {
-                // Hapus dari "Mata Kuliah Ditampilkan"
-                removeFromDisplayedCourses(kode_mk);
-            }
-        }
+    // Filter dropdown berdasarkan pencarian
+    $('#input-group-search').on('input', function() {
+        var query = $(this).val().toLowerCase();
+        $('#dropdownSearchList li').each(function() {
+            var text = $(this).find('label').text().toLowerCase();
+            $(this).toggle(text.includes(query)); // Tampilkan atau sembunyikan item
+        });
     });
-
-    // Sinkronisasi saat halaman dimuat
-    syncCheckboxWithDisplayedCourses();
 });
 
-</script>
 
+</script>
+<!-- <script>
+    $(document).ready(function() {
+        // Ketika checkbox berubah status
+        $('.course-checkbox').change(function () {
+            // Ambil semua kode mata kuliah yang dipilih
+            var selectedCourses = [];
+            $('.course-checkbox:checked').each(function () {
+                selectedCourses.push($(this).val());
+            });
+
+            // Kirim data ke controller menggunakan AJAX
+            $.ajax({
+                url: '/update-mata-kuliah', // URL untuk mengupdate mata kuliah
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    courses: selectedCourses
+                },
+                success: function (response) {
+                    // Update konten #displayedCourses dengan HTML baru
+                    $('#displayedCourses').html(response.html);
+                }
+            });
+        });
+        $(document).on('change', '.course-checkbox', function() {
+        updateDisplayedCourses();
+    });
+
+        // Filter dropdown berdasarkan pencarian
+        $('#input-group-search').on('input', function() {
+            var query = $(this).val().toLowerCase();
+            $('#dropdownSearchList li').each(function() {
+                var text = $(this).find('label').text().toLowerCase();
+                $(this).toggle(text.includes(query)); // Tampilkan atau sembunyikan item
+            });
+        });
+    });
+        // // Ketika status checkbox berubah
+        // $(document).on('change', '.course-checkbox', function() {
+        //     var kodeMk = $(this).val();
+        //     var isChecked = $(this).prop('checked');
+
+        //     console.log("Kode MK:", kodeMk, "Checked:", isChecked);
+        //     console.log("CSRF Token:", '{{ csrf_token() }}');  // Tambahkan ini untuk memastikan token ada
+
+        //     // Menentukan URL berdasarkan status checkbox
+        //     var url = isChecked ? '/mhs/irs/save-course-selection' : '/mhs/irs/remove-course-selection';
+
+        //     // Kirim data ke server menggunakan AJAX
+        //     $.ajax({
+        //         url: url,
+        //         type: 'POST',
+        //         data: {
+        //             kode_mk: kodeMk,
+        //             _token: '{{ csrf_token() }}',
+        //         },
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 alert(isChecked ? 'Mata kuliah berhasil ditambahkan' : 'Mata kuliah berhasil dihapus');
+        //                 updateScheduleTable(); // Memperbarui tampilan jadwal
+        //             } else {
+        //                 alert('Terjadi kesalahan saat menyimpan mata kuliah');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Terjadi kesalahan:', error);
+        //         }
+        //     });
+        // });
+
+        // // Fungsi untuk memperbarui jadwal
+        // function updateScheduleTable() {
+        //     $.ajax({
+        //         url: '/mhs/irs/get-selected-courses',
+        //         type: 'GET',
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 $('#displayedCourses').html(response.jadwalHtml);
+        //             } else {
+        //                 alert('Gagal memuat jadwal');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+        // Fungsi untuk mengupdate daftar mata kuliah ditampilkan
+        // function updateDisplayedCourses() {
+        //     var selectedCourses = [];
+
+        //     // Mengambil semua checkbox yang dicentang
+        //     $('.course-checkbox:checked').each(function() {
+        //         selectedCourses.push($(this).val());
+        //     });
+
+        //     // Mengirimkan data dengan AJAX
+        //     $.ajax({
+        //         url: '/update-mata-kuliah', // Ganti dengan URL yang sesuai
+        //         method: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}', // CSRF token untuk keamanan
+        //             courses: selectedCourses // Daftar kode mata kuliah yang dipilih
+        //         },
+        //         success: function(response) {
+        //             // Menampilkan mata kuliah yang baru ditambahkan
+        //             $('#displayedCourses').html(response.html);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Terjadi kesalahan:', error);
+        //         }
+        //     });
+        // }
+
+    // Event listener untuk perubahan pada checkbox
+   
+</script> -->

@@ -5,23 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Mahasiswa</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!-- <style>
-        * {
-            font-family: 'Libre Franklin', sans-serif;
-        }
-        .sticky-button-container {
-            position: sticky;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 20;
-        }
-    </style> -->
-    
+
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Header Sigma -->
