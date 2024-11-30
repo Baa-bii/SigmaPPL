@@ -107,6 +107,8 @@
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Disetujui</a></li>
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Isi</a></li>
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Isi</a></li>
+                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Registrasi</a></li>
+                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Registrasi</a></li>
                             </ul>
                         </div>
                     </div>
