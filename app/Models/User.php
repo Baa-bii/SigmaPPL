@@ -38,4 +38,5 @@ class User extends Authenticatable
     {
         return $this->hasOne(Mahasiswa::class, 'email', 'email'); // Relasi berdasarkan email
     }
+    
 }

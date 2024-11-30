@@ -22,30 +22,33 @@
             <!-- Konten 1 -->
             <div class="container mx-auto my-3">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Statistik Belum Disetujui -->
-                <div class="bg-yellow-400 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">{{ $belum_disetujui }}</h3>
-                    <p class="text-sm font-semibold mb-2">Belum Disetujui</p>
-                    <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
-                </div>
-                <!-- Statistik Sudah Disetujui -->
-                <div class="bg-green-500 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">{{ $sudah_disetujui }}</h3>
-                    <p class="text-sm font-semibold mb-2">Sudah Disetujui</p>
-                    <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
-                </div>
-                <!-- Statistik Ditolak -->
-                <div class="bg-red-600 text-white rounded-lg shadow-md p-6 mr-4 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">{{ $ditolak }}</h3>
-                    <p class="text-sm font-semibold mb-2">Ditolak</p>
-                    <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
+                    <!-- Statistik Belum Disetujui -->
+                    <div class="bg-yellow-400 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <h3 class="text-4xl font-bold mb-1">{{ $belum_disetujui }}</h3>
+                        <p class="text-sm font-semibold mb-2">Belum Disetujui</p>
+                        <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
+                    </div>
+
+                    <!-- Statistik Sudah Disetujui -->
+                    <div class="bg-green-500 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <h3 class="text-4xl font-bold mb-1">{{ $sudah_disetujui }}</h3>
+                        <p class="text-sm font-semibold mb-2">Sudah Disetujui</p>
+                        <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
+                    </div>
+
+                    <!-- Statistik Ditolak -->
+                    <div class="bg-red-600 text-white rounded-lg shadow-md p-6 mr-4 flex flex-col items-center">
+                        <h3 class="text-4xl font-bold mb-1">{{ $ditolak }}</h3>
+                        <p class="text-sm font-semibold mb-2">Ditolak</p>
+                        <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <!-- Form Section -->
         <div class="bg-white shadow p-6 mr-4 mt-8">
             <h3 class="text-lg font-semibold mb-4">Persetujuan Usulan Jadwal Kuliah</h3>
             <div class="space-y-4">
+                <!-- Dropdown Program Studi -->
                 <div>
                     <label for="program-studi" class="block font-semibold mb-1">Program Studi</label>
                     <select id="program-studi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -59,6 +62,8 @@
                         <option value="bioteknologi">Bioteknologi</option>
                     </select>
                 </div>
+        
+                <!-- Dropdown Semester -->
                 <div>
                     <label for="semester" class="block font-semibold mb-1">Semester</label>
                     <select id="semester" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -82,5 +87,79 @@
     </main>
         <x-footerdosen></x-footerdosen>
     </div>
+
+    <script>
+        
+        <script>
+$(document).ready(function () {
+    $('#program-studi, #semester').on('change', function () {
+        var prodi = $('#program-studi').val();
+        var semester = $('#semester').val();
+
+        // Validasi input untuk Program Studi dan Semester
+        if (!prodi) {
+            alert('Mohon pilih Program Studi!');
+            return;
+        }
+        if (!semester) {
+            alert('Mohon pilih Semester!');
+            return;
+        }
+
+        console.log('Prodi:', prodi);
+        console.log('Semester:', semester);
+
+        // Kirim permintaan filter
+        $.ajax({
+            url: '/dekan/jadwal/filter',  // Perbaikan URL yang benar
+            method: 'GET',
+            data: {
+                prodi: prodi,
+                semester: semester,
+            },
+            success: function (response) {
+                console.log('Response Data:', response); // Debugging seluruh respons
+
+                if (!response.jadwal || response.jadwal.length === 0) {
+                    alert('Tidak ada jadwal yang sesuai dengan filter.');
+                    return;
+                }
+
+                // Debug setiap elemen jadwal
+                response.jadwal.forEach(function (item) {
+                    console.log('Item Jadwal:', item);
+                });
+
+                // Menampilkan data di tabel
+                var tableBody = $('#jadwal-table-body');
+                tableBody.empty();  // Menghapus data lama sebelum menambah yang baru
+
+                response.jadwal.forEach(function (item) {
+                    // Pastikan format data yang ingin ditampilkan sudah sesuai dengan response
+                    tableBody.append(`
+                        <tr>
+                            <td>${item.matakuliah.nama_mk}</td>
+                            <td>${item.waktu.jam_mulai} - ${item.waktu.jam_selesai}</td>
+                            <td>${item.matakuliah.dosen ? item.matakuliah.dosen.nama : 'N/A'}</td>
+                            <td>${item.matakuliah.semester}</td>
+                            <td>${item.ruang.nama}</td>
+                            <td>${item.ruang.gedung}</td>
+                            <td>${item.id_TA}</td>
+                            <td><a href="#" class="text-blue-500">Edit</a></td>
+                            <td>${item.status || 'N/A'}</td>
+                        </tr>
+                    `);
+                });
+            },
+            error: function (xhr) {
+                console.error('Terjadi kesalahan:', xhr.responseText);
+                alert('Terjadi kesalahan saat memuat jadwal. Silakan coba lagi.');
+            }
+        });
+    });
+});
+
+</script>
+
 </body>
 </html>

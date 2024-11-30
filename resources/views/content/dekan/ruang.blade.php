@@ -24,19 +24,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Statistik Belum Disetujui -->
                 <div class="bg-yellow-400 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">120</h3>
+                    <h3 class="text-4xl font-bold mb-1">{{ $belum_disetujui }}</h3>
                     <p class="text-sm font-semibold mb-2">Belum Disetujui</p>
                     <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
                 </div>
                 <!-- Statistik Sudah Disetujui -->
                 <div class="bg-green-500 text-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">300</h3>
+                    <h3 class="text-4xl font-bold mb-1">{{ $sudah_disetujui }}</h3>
                     <p class="text-sm font-semibold mb-2">Sudah Disetujui</p>
                     <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
                 </div>
                 <!-- Statistik Ditolak -->
                 <div class="bg-red-600 text-white rounded-lg shadow-md p-6 mr-4 flex flex-col items-center">
-                    <h3 class="text-4xl font-bold mb-1">60</h3>
+                    <h3 class="text-4xl font-bold mb-1">{{ $ditolak }}</h3>
                     <p class="text-sm font-semibold mb-2">Ditolak</p>
                     <a class="bg-gray-300 text-gray-50 px-3 py-1 rounded-full mt-2 text-white text-sm font-bold">Baru saja</a>
                 </div>
@@ -74,9 +74,9 @@
                     </select>
                 </div>
                 <!-- Button Tampilkan -->
-                <button type="button" onclick="window.location.href='http://127.0.0.1:8000/verifikasi-jadwal'" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300">
+                <a href="{{ route('dekan.verifikasiruang') }}" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center">
                     Tampilkan
-                </button>
+                </a>
             </div>
         </div>
     </main>

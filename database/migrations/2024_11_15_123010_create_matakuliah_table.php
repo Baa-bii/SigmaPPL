@@ -30,6 +30,8 @@ return new class extends Migration
     {
         Schema::table('matakuliah', function (Blueprint $table) {
             $table->dropForeign(['kode_prodi']);
+            $table->unsignedBigInteger('id_ruang')->nullable();
+            $table->foreign('id_ruang')->references('id')->on('ruang')->onDelete('cascade');
         });
         Schema::dropIfExists('matakuliah');
     }

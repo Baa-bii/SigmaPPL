@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('jadwal', function (Blueprint $table) {
+        Schema::table('ruang', function (Blueprint $table) {
             $table->string('status')->default('menunggu')->after('kode_prodi');
         });
     }
@@ -21,8 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('jadwal', function (Blueprint $table) {
-            //
+        Schema::table('ruang', function (Blueprint $table) {
         });
     }
 };
