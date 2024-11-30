@@ -21,7 +21,7 @@ class MahasiswaSeeder extends Seeder
 
         // Mahasiswa Berdasarkan Angkatan
         foreach ($angkatanDosen as $angkatan => $nipDosen) {
-            for ($i = 1; $i <= 25; $i++) {
+            for ($i = 1; $i <= 10; $i++) {
                 $nim = $angkatan . str_pad($i, 3, '0', STR_PAD_LEFT);
 
                 // Ambil User dari tabel Users

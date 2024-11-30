@@ -100,9 +100,8 @@
                         </button>
                         
                         <!-- Dropdown menu -->
-                        <div id="dropdownAction" class="z-10 hidden bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                        <div id="dropdownAction" class="z-10 hidden bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownActionButton">
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua</a></li>
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Disetujui</a></li>
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Disetujui</a></li>
                                 <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Isi</a></li>
@@ -169,7 +168,6 @@
                     </thead>
                     <tbody>
                         @forelse($mahasiswa as $mhs)
-                            <!-- Example Row -->
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
@@ -185,20 +183,16 @@
                                     </div>
                                 </th>
                                 <td class="px-6 py-4">{{ $mhs->nim }}</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center whitespace-nowrap">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</div>
-                                </td>
+                                <td class="px-6 py-4">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</td>
                                 <td class="px-6 py-4">{{ $mhs->angkatan }}</td>
                                 <td class="px-6 py-4">{{ $mhs->jalur_masuk }}</td>
-                                <!--
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                </td>
-                                -->
+                                <td class="px-6 py-4">{{ number_format($mhs->ip_lalu, 2) }}</td>
+                                <td class="px-6 py-4">{{ $mhs->sks_diambil ?? '-' }}</td>
+                                <td class="px-6 py-4">{{ $mhs->status ?? 'Belum Diketahui' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center border px-4 py-2">Tidak ada data mahasiswa.</td>
+                                <td colspan="9" class="text-center border px-4 py-2">Tidak ada data mahasiswa.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -226,7 +220,7 @@
                             </li>
                         @else
                             <li>
-                                <a href="{{ $mahasiswa->previousPageUrl() }}&per_page={{ request('per_page') }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $mahasiswa->previousPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Previous
                                 </a>
                             </li>
@@ -242,9 +236,9 @@
                                 </li>
                             @else
                                 <li>
-                                <a href="{{ $mahasiswa->url($i) }}&per_page={{ request('per_page') }}&angkatan={{ request('angkatan') }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    {{ $i }}
-                                </a>
+                                    <a href="{{ $mahasiswa->url($i) }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        {{ $i }}
+                                    </a>
                                 </li>
                             @endif
                         @endfor
@@ -252,7 +246,7 @@
                         <!-- Tombol Next -->
                         @if($mahasiswa->hasMorePages())
                             <li>
-                                <a href="{{ $mahasiswa->nextPageUrl() }}&per_page={{ request('per_page') }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $mahasiswa->nextPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Next
                                 </a>
                             </li>
@@ -265,6 +259,7 @@
                         @endif
                     </ul>
                 </nav>
+
             </div>
         </div>
 
