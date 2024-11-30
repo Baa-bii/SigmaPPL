@@ -34,14 +34,14 @@
            
             <!-- Dropdown menu -->
             <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-64" type="button">Daftar Mata Kuliah Lain <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg>
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
             </button>
             <div id="dropdownSearch" class="z-10 hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700">
                 <div class="p-3">
                     <label for="input-group-search" class="sr-only">Search</label>
                     <div class="relative">
-                        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-auto">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
@@ -49,11 +49,14 @@
                         <input type="text" id="input-group-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mata Kuliah">
                     </div>
                 </div>
-                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                <ul id="dropdownSearchList" class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
                     @foreach ($mataKuliahDropdown as $mk)
-                        <li>
+                    <li>
                             <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input type="checkbox" id="checkbox-{{ $mk->kode_mk }}" value="{{ $mk->kode_mk }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input type="checkbox" id="checkbox-{{ $mk->kode_mk }}" 
+                                    value="{{ $mk->kode_mk }}" 
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                    {{ $mataKuliahDitampilkan->contains('kode_mk', $mk->kode_mk) ? 'checked' : '' }} />
                                 <label for="checkbox-{{ $mk->kode_mk }}" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
                                     {{ $mk->nama_mk }} - {{ $mk->sks }} SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }}
                                 </label>
@@ -62,6 +65,7 @@
                     @endforeach
                 </ul>
             </div>
+
         </div>
         <!-- Mata Kuliah Ditampilkan -->
         <div class="mt-6">
@@ -150,111 +154,136 @@
     </div>
 @endif
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('input-group-search');
-    const dropdownList = document.querySelector('#dropdownSearch ul');
-    const displayedCourses = document.querySelector('#displayedCourses');
-
-    // Sinkronisasi antara displayedCourses dan checkbox saat halaman dimuat
-    function syncCheckboxWithDisplayedCourses() {
-        const displayedCourseIds = Array.from(displayedCourses.children).map((course) =>
-            course.id.replace('selected-', '')
-        ); // Ambil semua ID mata kuliah yang ada di displayedCourses
-
-        const checkboxes = dropdownList.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = displayedCourseIds.includes(checkbox.value);
+   $(document).ready(function() {
+        // Ketika status checkbox berubah
+        $(document).on('change', '.course-checkbox', function() {
+            var kodeMk = $(this).val();
+            var isChecked = $(this).prop('checked');
+            
+            // Menentukan URL berdasarkan status checkbox
+            var url = isChecked ? '/mhs/irs/save-course-selection' : '/mhs/irs/remove-course-selection';
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    kode_mk: kodeMk,
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(isChecked ? 'Mata kuliah berhasil ditambahkan' : 'Mata kuliah berhasil dihapus');
+                        updateScheduleTable(); // Memperbarui tampilan jadwal
+                    } else {
+                        alert('Terjadi kesalahan saat menyimpan mata kuliah');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Terjadi kesalahan:', error);
+                }
+            });
         });
-    }
 
-    // Fungsi Pencarian: Filter mata kuliah berdasarkan input
-    searchInput.addEventListener('input', function (e) {
-        const query = e.target.value.toLowerCase();
-        const listItems = dropdownList.querySelectorAll('li');
-
-        listItems.forEach((item) => {
-            const label = item.querySelector('label').textContent.toLowerCase();
-            if (label.includes(query)) {
-                item.style.display = ''; // Tampilkan jika cocok
-            } else {
-                item.style.display = 'none'; // Sembunyikan jika tidak cocok
-            }
-        });
-    });
-
-    // Fungsi Tambah Mata Kuliah ke "Mata Kuliah Ditampilkan"
-    function addToDisplayedCourses(mk) {
-        // Cek apakah mata kuliah sudah ada
-        const existingCourse = displayedCourses.querySelector(`#selected-${mk.kode_mk}`);
-        if (existingCourse) return; // Jangan tambahkan jika sudah ada
-
-        // Buat elemen baru untuk mata kuliah
-        const courseDiv = document.createElement('div');
-        courseDiv.id = `selected-${mk.kode_mk}`;
-        courseDiv.className = 'p-4 bg-gray-50 rounded-lg shadow mb-3';
-
-        // Template HTML untuk mata kuliah
-        courseDiv.innerHTML = `
-            <div class="flex items-center gap-2">
-                <i class="fas fa-check text-green-500"></i>
-                <div>
-                    <h4 class="font-semibold text-sm">${mk.nama_mk}</h4>
-                    <p class="text-xs">${mk.jenis_mk.toUpperCase()} (${mk.kode_mk})</p>
-                    <p class="text-xs">SMT ${mk.semester}</p>
-                    <p class="text-xs">${mk.sks} SKS</p>
-                </div>
-            </div>
-        `;
-
-        // Tambahkan elemen ke dalam elemen `displayedCourses`
-        displayedCourses.appendChild(courseDiv);
-    }
-
-    // Fungsi Hapus Mata Kuliah dari "Mata Kuliah Ditampilkan"
-    function removeFromDisplayedCourses(kode_mk) {
-        // Cari elemen berdasarkan ID
-        const courseDiv = displayedCourses.querySelector(`#selected-${kode_mk}`);
-        if (courseDiv) {
-            // Hapus elemen
-            courseDiv.remove();
+        // Fungsi untuk memperbarui jadwal
+        function updateScheduleTable() {
+            $.ajax({
+                url: '/mhs/irs/get-selected-courses',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#displayedCourses').html(response.jadwalHtml);
+                    } else {
+                        alert('Gagal memuat jadwal');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         }
-    }
+        // Filter dropdown berdasarkan pencarian
+        $('#input-group-search').on('input', function() {
+            var query = $(this).val().toLowerCase();
+            $('#dropdownSearchList li').each(function() {
+                var text = $(this).find('label').text().toLowerCase();
+                $(this).toggle(text.includes(query)); // Tampilkan atau sembunyikan item
+            });
+        });
+        
 
-    // Event Listener untuk Checkbox
-    dropdownList.addEventListener('change', function (e) {
-        if (e.target.type === 'checkbox') {
-            const checkbox = e.target;
-            const kode_mk = checkbox.value;
-
-            // Ambil data mata kuliah dari label checkbox
-            const label = checkbox.nextElementSibling;
-            const mataKuliahInfo = label.textContent.split(' - '); // Format: [Nama MK] - [SKS] - [Semester] - [Jenis]
+        // Event Listener untuk Checkbox (Simpan atau Hapus Mata Kuliah)
+        $(document).on('change', 'input[type="checkbox"]', function(e) {
+            const kode_mk = $(this).val();
+            const label = $(this).next('label');
+            const mataKuliahInfo = label.text().split(' - ');
             const [nama_mk, sksText, semesterText, jenisText] = mataKuliahInfo;
-            const sks = parseInt(sksText.match(/\d+/)[0]); // Ambil angka dari teks SKS
-            const semester = parseInt(semesterText.match(/\d+/)[0]); // Ambil angka dari teks Semester
+            const sks = parseInt(sksText.match(/\d+/)[0]);
+            const semester = parseInt(semesterText.match(/\d+/)[0]);
             const jenis_mk = jenisText.trim();
 
-            if (checkbox.checked) {
-                // Tambahkan ke "Mata Kuliah Ditampilkan"
-                addToDisplayedCourses({
+            // Kirim data ke server menggunakan AJAX
+            const url = $(this).prop('checked') ? '/save-course-selection' : '/remove-course-selection';
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
                     kode_mk,
                     nama_mk,
                     sks,
                     semester,
                     jenis_mk,
-                });
-            } else {
-                // Hapus dari "Mata Kuliah Ditampilkan"
-                removeFromDisplayedCourses(kode_mk);
-            }
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Mata kuliah berhasil disimpan');
+                    updateScheduleTable(); // Update tampilan jadwal setelah data tersimpan
+                },
+                error: function(xhr, status, error) {
+                    console.error('Terjadi kesalahan:', error);
+                }
+            });
+        });
+
+
+        // Fungsi untuk memperbarui tampilan jadwal
+        function updateScheduleTable() {
+            $.ajax({
+                url: '/mhs/irs/get-selected-courses',  // Endpoint untuk mengambil data mata kuliah yang dipilih
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#displayedCourses').html(response.jadwalHtml);  // Update tampilan jadwal
+                    } else {
+                        alert('Gagal mengambil data mata kuliah');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Terjadi kesalahan:', error);
+                }
+            });
         }
     });
-
-    // Sinkronisasi saat halaman dimuat
-    syncCheckboxWithDisplayedCourses();
-});
+    // Fungsi untuk memperbarui tampilan jadwal
+function updateScheduleTable() {
+    $.ajax({
+        url: '/mhs/irs/get-selected-courses',  // Endpoint untuk mengambil data mata kuliah yang dipilih
+        type: 'GET',
+        success: function(response) {
+            if (response.success) {
+                $('#displayedCourses').html(response.jadwalHtml);  // Update tampilan jadwal
+            } else {
+                alert('Gagal mengambil data mata kuliah');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Terjadi kesalahan:', error);
+        }
+    });
+}
 
 </script>
 

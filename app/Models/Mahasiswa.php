@@ -32,26 +32,33 @@ class Mahasiswa extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'email', 'email'); // Relasi berdasarkan email
+        return $this->hasOne(User::class, 'email', 'email'); // Relasi berdasarkan email
     }
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'nip_dosen', 'nip_dosen'); // Relasi berdasarkan email
+        return $this->hasOne(Dosen::class, 'nip_dosen', 'nip_dosen'); // Relasi berdasarkan email
     }    
     public function programStudi(){
-        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
+        return $this->hasOne(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
     public function semester_aktif()
     {
-        return $this->hasOne(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
+        return $this->belongsTo(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
     }
-    public function matakuliah()
+    // Relasi ke Riwayat Semester Aktif
+    public function riwayatSemesterAktif()
     {
-        return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk')
-            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')
+        return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA');  // Menghubungkan ke riwayat semester aktif
+    }
+    // Relasi ke IRS (Indeks Rencana Studi)
+    public function irs()
+    {
+        return $this->hasMany(IRS::class, 'nim');
+    }
+    public function mataKuliah()
+    {
+        return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk') // Definisikan relasi many-to-many dengan tabel pivot 'irs'
+            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')  // Kolom tambahan yang ada di pivot
             ->withTimestamps();
     }
-
-
-   
 }
