@@ -100,14 +100,14 @@
                         </button>
                         
                         <!-- Dropdown menu -->
-                        <div id="dropdownAction" class="z-10 hidden bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
+                        <div id="dropdownAction" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownActionButton">
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Disetujui</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Disetujui</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Isi</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Isi</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Sudah Registrasi</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white">Semua Belum Registrasi</a></li>
+                            <li><a href="#" data-filter="sudah_disetujui" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
+                                <li><a href="#" data-filter="belum_disetujui" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_disetujui' ? 'bg-gray-300' : '' }}">Semua Belum Disetujui</a></li>
+                                <li><a href="#" data-filter="sudah_isi_irs" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_isi_irs' ? 'bg-gray-300' : '' }}">Semua Sudah Isi IRS</a></li>
+                                <li><a href="#" data-filter="belum_isi_irs" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_isi_irs' ? 'bg-gray-300' : '' }}">Semua Belum Isi IRS</a></li>
+                                <li><a href="#" data-filter="sudah_registrasi" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_registrasi' ? 'bg-gray-300' : '' }}">Semua Sudah Registrasi</a></li>
+                                <li><a href="#" data-filter="belum_registrasi" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_registrasi' ? 'bg-gray-300' : '' }}">Semua Belum Registrasi</a></li>
                             </ul>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                                         <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3 ">
                                         <a href="{{ route('dosen.perwalian.show', $mhs->nim) }}" class="text-blue-600 font:light hover:underline">
                                             {{ $mhs->nama_mhs }}
@@ -300,7 +300,7 @@
     });
   </script>
 
-<script>
+  <script>
     // Mengambil referensi elemen modal dan tombol
     const confirmationModal = document.getElementById('confirmationModal');
     const modalTitle = document.getElementById('modalTitle');
@@ -371,6 +371,17 @@
                 // Lakukan aksi nyata, seperti submit form atau AJAX request di sini
             }
         );
+    });
+  </script>
+
+  <!-- JS Script for filter handling -->
+  <script>
+    document.querySelectorAll('[data-filter]').forEach(function (filterOption) {
+        filterOption.addEventListener('click', function () {
+            const filterValue = this.getAttribute('data-filter');
+            // Redirect or make an AJAX request to filter data
+            window.location.href = `${window.location.pathname}?filter=${filterValue}`;
+        });
     });
   </script>
 
