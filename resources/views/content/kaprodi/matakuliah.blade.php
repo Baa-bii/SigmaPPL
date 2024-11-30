@@ -288,50 +288,32 @@
                                         </th>
                                         <th scope="col" class="p-4">Kode Mata Kuliah</th>
                                         <th scope="col" class="p-4">Nama Mata Kuliah</th>
-                                        <th scope="col" class="p-4">Jenis</th>
                                         <th scope="col" class="p-4">SKS</th>
                                         <th scope="col" class="p-4">Semester</th>
+                                        <th scope="col" class="p-4">Jenis</th>
+                                        <th scope="col" class="p-4">Program Studi</th>
                                         <th scope="col" class="p-4">Opsi</th> <!-- Kolom tambahan untuk opsi tombol -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        @forelse ($mataKuliah as $item)
+                                    @forelse ($mataKuliah as $item)
+                                        <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <td class="p-4 w-4">
                                                 <div class="flex items-center">
                                                     <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                     <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                                 </div>
                                             </td>
-                                        {{-- <th scope="row" class="px-4 py-3 font-medium text-gray-620 whitespace-nowrap dark:text-white">
-                                            <div class="flex items-center mr-3">
-                                                PAIK6102
-                                            </div>
-                                        </th>
-                                        <td class="px-4 py-3 font-medium text-gray-620 whitespace-nowrap dark:text-white">
-                                            <div class="flex items-center">
-                                                Dasar Pemrograman
-                                            </div>
-                                        </td>
-                                        <td class="px-4 py-3 font-medium text-gray-620 whitespace-nowrap dark:text-white">
-                                            <div class="flex items-center">
-                                                Wajib
-                                            </div>
-                                        </td> --}}
-                                        {{-- <td class="px-4 py-3 font-medium text-gray-620 whitespace-nowrap dark:text-white">3</td>
-                                        <td class="px-4 py-3 font-medium text-gray-620 whitespace-nowrap dark:text-white">1</td> --}}
-                                        
-                                        
-                                            <tr class="text-center">
-                                                <td class="px-4 py-2 border">{{ $item->kode_mk }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->nama_mk}}</td>                                                  
-                                                <td class="px-4 py-2 border">{{ $item->sks }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->semester}}</td>
-                                                <td class="px-4 py-2 border">{{ $item->jenis_mk}}</td> 
-                                                <td class="px-4 py-2 border">{{ $item->programStudi->nama_prodi}}</td>                                                                                                          
-                                            </tr>
-                                                                             
-                                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"> <!-- Kolom untuk tombol -->
+                                            <td class="px-4 py-2 border">{{ $item->kode_mk }}</td>
+                                            <td class="px-4 py-2 border">{{ $item->nama_mk }}</td>
+                                            <td class="px-4 py-2 border">{{ $item->sks }}</td>
+                                            <td class="px-4 py-2 border">{{ $item->semester }}</td>
+                                            <td class="px-4 py-2 border">{{ $item->jenis_mk }}</td>
+                                            <td class="px-4 py-2 border">{{ $item->programStudi->nama_prodi}}</td>
+                                            
+                                
+                                            <!-- Kolom untuk tombol -->
+                                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 <div class="flex items-center space-x-4">
                                                     <button type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
@@ -355,9 +337,14 @@
                                                     </button>
                                                 </div>
                                             </td>
-                                        @endforelse 
-                                    </tr>                                                                 
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4">Tidak ada data mata kuliah</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
+                                
                             </table>
                         </div>
                         

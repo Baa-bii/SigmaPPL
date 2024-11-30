@@ -28,6 +28,11 @@ class MataKuliah extends Model
         return $this->hasMany(IRS::class, 'kode_mk', 'kode_mk');
     }
 
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
+    }
+
      // Relasi MataKuliah ke Mahasiswa melalui tabel IRS
      public function mahasiswa()
      {
