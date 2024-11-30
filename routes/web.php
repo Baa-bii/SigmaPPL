@@ -9,6 +9,7 @@ use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Kaprodi\MataKuliahController;
+use App\Http\Controllers\Kaprodi\JadwalController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
@@ -51,12 +52,15 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
 });
 
-Route::group(['middleware'=>'auth:kaprodi'], function(){
-    Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
-    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('kaprodi.jadwal.index');
-    
-    // Menggunakan resource route untuk mata kuliah
+Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
+    // Dashboard
+    Route::get('/home', [DashboardKaprodiController::class, 'index'])->name('dashboard.index');
+
+    // Jadwal pada Dashboard (tanpa tumpang tindih dengan resource controller)
+    Route::get('/home/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('dashboard.jadwal');
+    // Resource Controllers
     Route::resource('mata_kuliah', MataKuliahController::class);
+    Route::resource('jadwal', JadwalController::class);
 });
 
 

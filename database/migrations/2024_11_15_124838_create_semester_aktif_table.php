@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status')->default('Belum Registrasi');
             $table->string('nim');
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
+            $table->boolean('is_active')->default(false); // Menambahkan kolom untuk menandai semester aktif
             $table->timestamps();
         });
     }

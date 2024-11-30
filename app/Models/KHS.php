@@ -11,7 +11,7 @@ class KHS extends Model
 
     protected $table = 'khs';
 
-    protected $fillable = ['nim', 'kode_mk', 'id_TA', 'nilai'];
+    protected $fillable = ['nim', 'kode_mk','id_jadwal', 'id_TA', 'nilai'];
 
     /**
      * Relasi ke tabel Mahasiswa.
@@ -35,5 +35,10 @@ class KHS extends Model
     public function semesterAktif()
     {
         return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
+    }
+    // relasi ke tabel jadwal
+    public function Jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
     }
 }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
+            $table->string('id_jadwal'); 
+            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
             $table->unsignedBigInteger('id_TA');
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
             $table->timestamps();
@@ -31,6 +33,7 @@ return new class extends Migration
         Schema::table('irs', function (Blueprint $table) {
             $table->dropForeign(['nim']);
             $table->dropForeign(['kode_mk']);
+            $table->dropForeign(['id_jadwal']);
             $table->dropForeign(['id_TA']);
         });
         Schema::dropIfExists('irs');

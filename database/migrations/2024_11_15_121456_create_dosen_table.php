@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->string('nip_dosen')->primary();
             $table->string('nama_dosen');
-            $table->string('email')->unique(); // Tambahkan kolom email
+            $table->string('email')->nullable(); // Tambahkan kolom email
             $table->foreign('email')->references('email')->on('users')->onDelete('cascade'); // Foreign key ke tabel users
             $table->string('dosen');
             $table->string('dosen_wali');
