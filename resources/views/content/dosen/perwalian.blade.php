@@ -188,7 +188,7 @@
                                 <td class="px-6 py-4">{{ $mhs->jalur_masuk }}</td>
                                 <td class="px-6 py-4">{{ number_format($mhs->ip_lalu, 2) }}</td>
                                 <td class="px-6 py-4">{{ $mhs->sks_diambil ?? '-' }}</td>
-                                <td class="px-6 py-4">{{ $mhs->status ?? 'Belum Diketahui' }}</td>
+                                <td class="px-6 py-4">{{ $mhs->status ?? 'Belum Registrasi' }}</td>
                             </tr>
                         @empty
                             <tr>
