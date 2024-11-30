@@ -11,18 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!-- <style>
-        * {
-            font-family: 'Libre Franklin', sans-serif;
-        }
-        .sticky-button-container {
-            position: sticky;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 20;
-        }
-    </style> -->
-    
+
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Header Sigma -->

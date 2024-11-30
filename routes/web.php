@@ -50,11 +50,13 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
-    Route::post('/update-status', [App\Http\Controllers\Mhs\RegistrasiController::class, 'updateStatus']);
+    Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-    Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
-    Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
-    Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
+    Route::post('/update-mata-kuliah', [BuatIRSController::class, 'updateMataKuliah'])->name('update-mata-kuliah');
+    // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
+    // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
+    // Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
+    // Route::post('mhs/irs/update-mata-kuliah', [IRSController::class, 'updateMataKuliah']);
 });
 
 Route::group(['middleware'=>'auth:kaprodi'], function(){

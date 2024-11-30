@@ -25,11 +25,12 @@ class BuatIRSController extends Controller
         $status = $mhs->semester_aktif->status ?? 'Belum Registrasi';
         $semester = $mhs->semester_aktif->semester ?? null;
 
-        $mataKuliahDropdown = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')->get();
+        $mataKuliah = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')->get();
+        //dd($mataKuliah); // Ini akan menampilkan seluruh data yang diambil
 
-        // Mata kuliah hanya untuk semester aktif mahasiswa
         $mataKuliahDitampilkan = MataKuliah::where('semester', $semester)->orderBy('jenis_mk', 'asc')->get();
-    
+
+        //dd($mataKuliahDitampilkan);
 
         $jadwal = Jadwal::with(['matakuliah', 'waktu'])
             ->whereHas('matakuliah', function ($query) use ($semester) {
@@ -38,85 +39,87 @@ class BuatIRSController extends Controller
             ->get()
             ->groupBy(['waktu.jam_mulai', 'hari']); // Kelompokkan berdasarkan jam dan hari
 
-        return view('content.mhs.akademik', compact('mhs', 'status', 'semester', 'mataKuliahDropdown', 'mataKuliahDitampilkan', 'jadwal'));
+        return view('content.mhs.akademik', compact('mhs', 'status', 'semester', 'mataKuliah', 'mataKuliahDitampilkan', 'jadwal'));
     }
-
-    public function saveCourseSelection(Request $request)
+    public function updateMataKuliah(Request $request)
     {
-        $validatedData = $request->validate([
-            'nim' => 'required',
-            'kode_mk' => 'required',
-            'id_TA' => 'required',  // Semester aktif
-        ]);
-    
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
-    
-        // Cari mata kuliah berdasarkan kode MK
-        $mataKuliah = MataKuliah::where('kode_mk', $request->kode_mk)->first();
-    
-        if ($mataKuliah) {
-            // Menambahkan mata kuliah ke mahasiswa di tabel pivot IRS
-            $mhs->mataKuliah()->attach($mataKuliah->kode_mk, [
-                'status' => 'Belum Disetujui', // Status default
-                'status_mata_kuliah' => 'BARU', // Status mata kuliah default
-                'id_TA' => $request->id_TA,  // Semester aktif yang dipilih
-                'tanggal_registrasi' => now(), // Tanggal registrasi saat ini
-            ]);
-            return response()->json(['success' => true]);
-        }
-    
-        return response()->json(['error' => 'Mata kuliah tidak ditemukan'], 400);
-    }
+        // Ambil data yang dikirimkan dari frontend
+        $selectedCourses = $request->input('courses');
+        $nim = $request->input('nim'); // Pastikan NIM ada dalam request
 
-    public function removeCourseSelection(Request $request)
-    {
-        $validated = $request->validate([
-            'nim' => 'required|string',
-            'kode_mk' => 'required|string',
-        ]);
+        // Mendapatkan ID Semester Aktif (bisa Anda sesuaikan dengan logika yang ada)
+        $id_TA = SemesterAktif::where('status', 'aktif')->first()->id; 
 
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
-
-        // Cari mata kuliah berdasarkan kode MK
-        $mataKuliah = MataKuliah::where('kode_mk', $request->kode_mk)->first();
-
-        if ($mataKuliah && $mhs) {
-            // Menghapus mata kuliah dari IRS mahasiswa di tabel pivot
-            $mhs->mataKuliah()->detach($mataKuliah->kode_mk);
-            return response()->json(['success' => true]);
+        foreach ($selectedCourses as $kode_mk) {
+            // Cek apakah mata kuliah sudah ada dalam IRS untuk mahasiswa yang sama pada semester ini
+            $irs = Irs::updateOrCreate(
+                [
+                    'nim' => $nim,
+                    'kode_mk' => $kode_mk,
+                    'id_TA' => $id_TA,
+                ],
+                [
+                    'status' => 'Belum Disetujui',
+                    'status_mata_kuliah' => 'BARU',
+                ]
+            );
         }
 
-        return response()->json(['error' => 'Mata kuliah tidak ditemukan'], 400);
+        return response()->json(['message' => 'Mata kuliah diperbarui']);
     }
 
-    public function getSelectedCourses()
-    {
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
+    // public function updateMataKuliah(Request $request)
+    // {
+    //     $user = auth()->user();
+    //     $mhs = $user->mahasiswa;
 
-        // Ambil semua mata kuliah yang dipilih oleh mahasiswa
-        $mataKuliahDitampilkan = $mhs->mataKuliah;
+    //     if (!$mhs) {
+    //         return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 400);
+    //     }
 
-        // Tampilkan status dan tanggal registrasi dari pivot
-        foreach ($mataKuliahDitampilkan as $mk) {
-            echo $mk->pivot->status; // Mengakses status dari pivot
-            echo $mk->pivot->status_mata_kuliah; // Mengakses status mata kuliah dari pivot
-            echo $mk->pivot->id_TA; // Mengakses id_TA (semester aktif) dari pivot
-            echo $mk->pivot->tanggal_registrasi; // Mengakses tanggal registrasi dari pivot
-        }
+    //     // Ambil mata kuliah yang dipilih dari request
+    //     $selectedCourses = $request->courses;
 
-        // Kirim data ke view atau frontend
-        $jadwalHtml = view('path.to.selected_courses_view', compact('mataKuliahDitampilkan'))->render();
+    //     // Update atau simpan mata kuliah yang ditampilkan untuk mahasiswa
+    //     // Menggunakan metode attach atau sync
+    //     foreach ($selectedCourses as $kodeMk) {
+    //         Irs::updateOrCreate(
+    //             [
+    //                 'nim' => $mhs->nim,
+    //                 'kode_mk' => $kodeMk,
+    //                 'id_TA' => $mhs->semester_aktif->id,  // ID semester aktif
+    //             ],
+    //             [
+    //                 'status' => 'Belum Disetujui',  // Default status
+    //                 'status_mata_kuliah' => 'BARU',
+    //             ]
+    //         );
+    //     }
 
-        return response()->json([
-            'success' => true,
-            'jadwalHtml' => $jadwalHtml
-        ]);
-    }
+    //     // Ambil semua mata kuliah yang ditampilkan untuk mahasiswa setelah update
+    //     $mataKuliahDitampilkan = $mhs->mataKuliahDitampilkan;
 
+    //     // Render HTML baru untuk ditampilkan di halaman utama
+    //     $html = '';
+    //     if ($mataKuliahDitampilkan->isEmpty()) {
+    //         $html = '<p class="text-xs text-gray-500">Tidak ada mata kuliah untuk semester ini.</p>';
+    //     } else {
+    //         foreach ($mataKuliahDitampilkan as $mk) {
+    //             $html .= '<div id="selected-' . $mk->kode_mk . '" class="p-4 bg-gray-50 rounded-lg shadow mb-3">
+    //                         <div class="flex items-center gap-2">
+    //                             <i class="fas fa-check text-green-500"></i>
+    //                             <div>
+    //                                 <h4 class="font-semibold text-sm">' . $mk->nama_mk . '</h4>
+    //                                 <p class="text-xs">' . strtoupper($mk->jenis_mk) . ' (' . $mk->kode_mk . ')</p>
+    //                                 <p class="text-xs">SMT ' . $mk->semester . '</p>
+    //                                 <p class="text-xs">' . $mk->sks . ' SKS</p>
+    //                             </div>
+    //                         </div>
+    //                     </div>';
+    //         }
+    //     }
 
-
+    //     return response()->json(['html' => $html]);
+    // }
 
 }
