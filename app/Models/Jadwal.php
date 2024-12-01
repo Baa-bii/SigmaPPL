@@ -53,10 +53,6 @@ class Jadwal extends Model
         return $this->hasMany(KHS::class, 'id_jadwal');
     }
 }
-    // Relasi ke model SemesterAktif
-    // public function riwayatsemesterAktif();
-    // {
-    //     return $this->belongsTo(riwayatsemesterAktif::class, 'id_TA');
-    // }
+    
 
 

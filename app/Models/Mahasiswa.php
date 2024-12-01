@@ -45,11 +45,7 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
     }
-    // Relasi ke Riwayat Semester Aktif
-    public function riwayatSemesterAktif()
-    {
-        return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA');  // Menghubungkan ke riwayat semester aktif
-    }
+    
     //Relasi ke IRS (Indeks Rencana Studi)
     public function irs()
     {

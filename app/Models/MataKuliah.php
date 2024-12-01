@@ -39,10 +39,12 @@ class MataKuliah extends Model
          return $this->belongsToMany(Mahasiswa::class, 'irs', 'kode_mk', 'nim')
                      ->withPivot('status', 'status_mata_kuliah'); // kolom tambahan di tabel pivot
      }
-    // public function jadwal()
-    // {
-    //     return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
-    // }
+     
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
+    }
+
     // // Relasi many-to-many dengan Mahasiswa
     // public function mahasiswa()
     // {
