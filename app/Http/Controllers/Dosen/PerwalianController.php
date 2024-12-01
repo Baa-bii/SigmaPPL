@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
-use App\Models\RiwayatSemesterAktif;  
 use App\Models\IRS;                    
 use App\Models\KHS;                   
 use App\Models\MataKuliah; 
@@ -40,21 +39,32 @@ class PerwalianController extends Controller
     
         // Hitung IP Lalu untuk setiap mahasiswa
         foreach ($mahasiswa as $mhs) {
-            $mhs->ip_lalu = $this->hitungIPLalu($mhs->nim); // Menghitung IP Lalu
+            $mhs->ip_lalu = $this->hitungIPLalu($mhs->nim)['ip_lalu']; // Menghitung IP Lalu
+            $mhs->sks_ips = $this->hitungIPLalu($mhs->nim)['sks']; // Menghitung SKS untuk IPS
         }
 
         // Loop untuk menghitung SKS Diambil dan menentukan Status
         foreach ($mahasiswa as $mhs) {
-            // Cek status registrasi di semester_aktif
-            $semesterAktif = RiwayatSemesterAktif::where('nim', $mhs->nim)->latest()->first();
-            
+            // Cek semester aktif terakhir
+            $semesterAktif = SemesterAktif::where('nim', $mhs->nim)
+                ->where('is_active', 1)  // Semester yang sedang aktif
+                ->latest('tahun_akademik') // Ambil semester terakhir
+                ->first();
+
             if ($semesterAktif) {
+                // Tentukan status berdasarkan semester aktif
                 if ($semesterAktif->status == 'Belum Registrasi') {
                     $mhs->status = 'Belum Registrasi';
                     $mhs->sks_diambil = '-';
-                } else {
-                    // Cek IRS
-                    $irs = IRS::where('id_TA', $semesterAktif->id)->where('nim', $mhs->nim)->first();
+                } elseif ($semesterAktif->status == 'Cuti') {
+                    $mhs->status = 'Cuti';
+                    $mhs->sks_diambil = '-';
+                } elseif ($semesterAktif->status == 'Aktif') {
+                    // Cek IRS untuk semester aktif
+                    $irs = IRS::where('id_TA', $semesterAktif->id)
+                        ->where('nim', $mhs->nim)
+                        ->first(); // Ambil IRS berdasarkan semester aktif dan NIM
+
                     if (!$irs) {
                         $mhs->status = 'Belum Isi IRS';
                         $mhs->sks_diambil = '-';
@@ -66,7 +76,7 @@ class PerwalianController extends Controller
                         }
                         $mhs->sks_diambil = $totalSKS;
 
-                        // Cek status IRS
+                        // Tentukan status berdasarkan IRS
                         if ($irs->status == 'Sudah Disetujui') {
                             $mhs->status = 'Sudah Disetujui';
                         } else {
@@ -91,40 +101,45 @@ class PerwalianController extends Controller
     private function hitungIPLalu($nim)
     {
         // Ambil semester aktif terakhir berdasarkan NIM
-        $riwayatSemesterAktif = RiwayatSemesterAktif::where('nim', $nim)
-            ->latest('tahun_akademik') // Ambil semester terakhir
+        $semesterAktif = SemesterAktif::where('nim', $nim)
+            ->where('status', 'Aktif') // Semester yang statusnya aktif
+            ->where('is_active', 0)    // Semester yang is_active = 0
+            ->latest('tahun_akademik') // Ambil semester yang paling terakhir
             ->first();
-    
+
         // Jika tidak ditemukan riwayat semester aktif, kembalikan nilai IP 0
-        if (!$riwayatSemesterAktif) {
-            return 0; // Tidak ada data semester aktif, IP Lalu 0
+        if (!$semesterAktif) {
+            return ['ip_lalu' => 0, 'sks' => 0]; // Tidak ada data semester aktif, IP Lalu 0
         }
-    
-        // Ambil data IRS yang diambil pada semester terakhir
-        $irs = IRS::where('id_riwayat_TA', $riwayatSemesterAktif->id)->get();
-    
+
+        // Ambil id semester aktif yang ditemukan
+        $idSemesterAktif = $semesterAktif->id;
+
+        // Ambil IRS berdasarkan id_TA yang didapat dari semester aktif dan nim
+        $irs = IRS::where('id_TA', $idSemesterAktif)
+            ->where('nim', $nim)
+            ->get(); // Ambil semua mata kuliah yang diambil pada semester aktif tersebut
+
+        // Jika tidak ada IRS ditemukan, kembalikan nilai IP 0
+        if ($irs->isEmpty()) {
+            return ['ip_lalu' => 0, 'sks' => 0]; // Tidak ada IRS berarti IP Lalu 0
+        }
+
         // Variabel untuk menghitung total SKS dan total bobot
         $totalSKS = 0;
         $totalBobot = 0;
-    
+
+        // Loop untuk menghitung total SKS dan total bobot
         foreach ($irs as $ir) {
-            // Ambil nilai KHS
+            // Ambil data KHS berdasarkan id_irs yang ada di IRS
             $khs = KHS::where('id_irs', $ir->id)->first();
-            
-            // Pastikan ada nilai KHS yang ditemukan
+
+            // Jika tidak ada data KHS, skip IRS ini
             if (!$khs) {
-                continue; // Skip jika tidak ada nilai KHS untuk IRS ini
+                continue; // Jika tidak ada nilai KHS, skip IRS ini
             }
-    
-            // Ambil data mata kuliah
-            $matakuliah = MataKuliah::where('kode_mk', $ir->kode_mk)->first();
-            
-            // Pastikan ada data mata kuliah
-            if (!$matakuliah) {
-                continue; // Skip jika tidak ada data mata kuliah untuk IRS ini
-            }
-    
-            // Menentukan bobot berdasarkan nilai KHS
+
+            // Tentukan bobot berdasarkan nilai yang ada di KHS
             $bobot = 0;
             switch ($khs->nilai) {
                 case 'A': $bobot = 4.00; break;
@@ -135,16 +150,116 @@ class PerwalianController extends Controller
                 case 'D': $bobot = 1.00; break;
                 case 'E': $bobot = 0.00; break;
             }
-    
-            // Hitung total SKS dan total bobot
+
+            // Ambil SKS mata kuliah yang diambil dari IRS
+            $matakuliah = MataKuliah::where('kode_mk', $ir->kode_mk)->first();
+
+            // Jika mata kuliah tidak ditemukan, skip
+            if (!$matakuliah) {
+                continue; // Skip jika tidak ada data mata kuliah
+            }
+
+            // Tambahkan SKS dan bobot * SKS ke total
             $totalSKS += $matakuliah->sks;
-            $totalBobot += $bobot * $matakuliah->sks;
+            $totalBobot += $matakuliah->sks * $bobot;
         }
-    
-        // Menghitung IP
-        return $totalSKS > 0 ? $totalBobot / $totalSKS : 0;
+
+        // Menghitung IP: (Total SKS * Bobot) / Total SKS
+        $ipLalu = $totalSKS > 0 ? $totalBobot / $totalSKS : 0;
+
+        // Mengembalikan nilai IP dan total SKS
+        return [
+            'ip_lalu' => number_format($ipLalu, 2),  // Format dengan 2 angka di belakang koma
+            'sks' => $totalSKS
+        ];
     }
-        
+
+    // Function untuk menghitung IPK (Kumulatif)
+    private function hitungIPK($nim)
+    {
+        // Ambil semua semester yang sudah selesai (is_active = 0) berdasarkan NIM
+        $semesterAktif = SemesterAktif::where('nim', $nim)
+            ->where('status', 'Aktif') // Semester yang statusnya aktif
+            ->where('is_active', 0) // Semester yang sudah selesai
+            ->get(); // Ambil semua semester yang sudah selesai
+
+        // Jika tidak ada semester ditemukan, kembalikan nilai IPK 0
+        if ($semesterAktif->isEmpty()) {
+            return ['ipk' => 0, 'sks' => 0];
+        }
+
+        // Variabel untuk menghitung total SKS dan total bobot
+        $totalSKS = 0;
+        $totalBobot = 0;
+
+        // Loop untuk menghitung total SKS dan total bobot untuk setiap semester
+        foreach ($semesterAktif as $semester) {
+            // Ambil IRS berdasarkan id_TA yang didapat dari semester aktif dan nim
+            $irs = IRS::where('id_TA', $semester->id)
+                ->where('nim', $nim)
+                ->get();
+
+            // Loop untuk menghitung total SKS dan total bobot untuk setiap IRS
+            foreach ($irs as $ir) {
+                // Ambil data KHS berdasarkan id_irs yang ada di IRS
+                $khs = KHS::where('id_irs', $ir->id)->first();
+
+                // Jika tidak ada data KHS, skip IRS ini
+                if (!$khs) {
+                    continue;
+                }
+
+                // Tentukan bobot berdasarkan nilai yang ada di KHS
+                $bobot = 0;
+                switch ($khs->nilai) {
+                    case 'A': $bobot = 4.00; break;
+                    case 'AB': $bobot = 3.50; break;
+                    case 'B': $bobot = 3.00; break;
+                    case 'BC': $bobot = 2.50; break;
+                    case 'C': $bobot = 2.00; break;
+                    case 'D': $bobot = 1.00; break;
+                    case 'E': $bobot = 0.00; break;
+                }
+
+                // Ambil SKS mata kuliah yang diambil dari IRS
+                $matakuliah = MataKuliah::where('kode_mk', $ir->kode_mk)->first();
+
+                // Jika mata kuliah tidak ditemukan, skip
+                if (!$matakuliah) {
+                    continue;
+                }
+
+                // Tambahkan SKS dan bobot * SKS ke total
+                $totalSKS += $matakuliah->sks;
+                $totalBobot += $matakuliah->sks * $bobot;
+            }
+        }
+
+        // Menghitung IPK: (Total SKS * Bobot) / Total SKS
+        $ipk = $totalSKS > 0 ? $totalBobot / $totalSKS : 0;
+
+        // Mengembalikan nilai IPK dan total SKS
+        return [
+            'ipk' => number_format($ipk, 2),  // Format dengan 2 angka di belakang koma
+            'sks' => $totalSKS
+        ];
+    }
+
+    // Function untuk menghitung Max Beban SKS
+    private function hitungMaxBebanSKS($ips, $sks)
+    {
+        // Tentukan max beban SKS berdasarkan nilai IPS
+        if ($ips < 2.00) {
+            return ['max_beban_sks' => 18, 'sks' => $sks]; // Maksimal 18 SKS untuk IPS < 2.00
+        } elseif ($ips >= 2.00 && $ips <= 2.49) {
+            return ['max_beban_sks' => 20, 'sks' => $sks]; // Maksimal 20 SKS untuk IPS 2.00 - 2.49
+        } elseif ($ips >= 2.50 && $ips <= 2.99) {
+            return ['max_beban_sks' => 22, 'sks' => $sks]; // Maksimal 22 SKS untuk IPS 2.50 - 2.99
+        } else {
+            return ['max_beban_sks' => 24, 'sks' => $sks]; // Maksimal 24 SKS untuk IPS >= 3.00
+        }
+    }
+
     public function show($nim)
     {
         // Ambil data mahasiswa beserta program studi yang terkait
@@ -152,15 +267,80 @@ class PerwalianController extends Controller
         
         // Ambil data semester aktif berdasarkan NIM mahasiswa
         $semesterAktif = SemesterAktif::where('nim', $nim)
-            ->latest() // Ambil semester yang terbaru
-            ->first();
+            ->where('is_active', 1) // Pastikan semester aktif
+            ->first(); // Ambil yang pertama atau yang terbaru
 
         // Jika data semester aktif tidak ditemukan, set nilai default
         $tahunAkademik = $semesterAktif ? $semesterAktif->tahun_akademik : 'Not Found';
         $semester = $semesterAktif ? $semesterAktif->semester : 'Not Found';
         
-        // Kirim data mahasiswa dan semester aktif ke view
-        return view('content.dosen.detailmhs', compact('mahasiswa', 'tahunAkademik', 'semester'));
+        // Hitung IPS dan IPK
+        $ipsData = $this->hitungIPLalu($nim);
+        $ipkData = $this->hitungIPK($nim);
+
+        $ips = $ipsData['ip_lalu'];
+        $ipk = $ipkData['ipk'];
+
+        // Hitung Max Beban SKS berdasarkan IPS yang dihitung
+        $maxBebanSKSData = $this->hitungMaxBebanSKS($ips, $ipsData['sks']);
+
+        // Panggil fungsi private untuk mendapatkan data semester aktif dan status IRS untuk accordion
+        list($semesterAktifData, $hasIRS) = $this->accordionData($nim);
+
+        // Kirim data ke view
+        return view('content.dosen.detailmhs', compact(
+            'mahasiswa', 
+            'tahunAkademik', 
+            'semester', 
+            'ips', 
+            'ipk', 
+            'ipsData', 
+            'ipkData', 
+            'maxBebanSKSData', 
+            'semesterAktifData', 
+            'hasIRS'
+        ));
+    }
+
+    private function accordionData($nim)
+    {
+        // Ambil semua semester aktif mahasiswa berdasarkan NIM
+        $semesterAktif = SemesterAktif::where('nim', $nim)
+            ->orderBy('tahun_akademik', 'asc')
+            ->get();
+
+        // Ambil semester terbaru yang is_active = 1
+        $semesterTerbaru = $semesterAktif->firstWhere('is_active', 1);
+
+        // Cek apakah semester terbaru sudah memiliki IRS
+        $hasIRS = false;
+        $semesterAktifData = []; // Menyimpan data semester aktif dengan jumlah SKS
+        
+        if ($semesterTerbaru) {
+            $hasIRS = IRS::where('id_TA', $semesterTerbaru->id)->exists();
+        }
+
+        // Loop untuk menghitung total SKS per semester
+        foreach ($semesterAktif as $semester) {
+            // Cek apakah semester ini memiliki IRS
+            $irs = IRS::where('id_TA', $semester->id)->get();
+            
+            // Hitung total SKS untuk semester ini
+            $totalSKS = 0;
+            foreach ($irs as $ir) {
+                $mataKuliah = MataKuliah::where('kode_mk', $ir->kode_mk)->first();
+                if ($mataKuliah) {
+                    $totalSKS += $mataKuliah->sks;
+                }
+            }
+            
+            // Tambahkan data semester dan jumlah SKS ke array
+            $semester->jumlah_sks = $totalSKS;
+            $semesterAktifData[] = $semester;
+        }
+
+        // Kembalikan data semester aktif dan status IRS
+        return [$semesterAktifData, $hasIRS];
     }
 
 }

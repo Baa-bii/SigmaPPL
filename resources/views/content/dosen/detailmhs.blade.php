@@ -66,13 +66,13 @@
                 <!-- Kolom Kanan -->
                 <div class="w-1/2 text-left pl-24">
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPs/SKSs:</strong> {{ $mahasiswa->IPs ?? 'Not Found' }}
+                        <strong>IPS / SKSs :</strong> {{ $ips }} / {{ $ipsData['sks'] }}
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPk/SKSk:</strong> {{ $mahasiswa->IPk ?? 'Not Found' }}
+                        <strong>IPK / SKSk :</strong> {{ $ipk }} / {{ $ipkData['sks'] }}
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Max Beban SKS:</strong> {{ $mahasiswa->SKS ?? 'Not Found' }}
+                        <strong>Max Beban SKS :</strong> {{ $maxBebanSKSData['max_beban_sks'] }}
                     </p>
                 </div>
             </div>
@@ -93,16 +93,26 @@
         <div id="tabs-content">
             <!-- Konten 2 IRS -->
             <div id="content-irs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6">
-                <div id="tabs-title" class="text-xl font-semibold pt-8 pb-4 text-center">Isian Rencana Semester</div>
-                    <!-- Accordion IRS content here -->
-                    <div id="accordion-irs">    
-                        <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
-                            <!-- 1 -->
-                            <h2 id="accordion-flush-heading-1">
-                                <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="false" aria-controls="accordion-flush-body-1">
+                <div id="tabs-title" class="text-xl font-semibold pt-8 pb-6 text-center">Isian Rencana Semester</div>
+                <!-- Accordion IRS content here -->
+                <div id="accordion-irs">
+                    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+                        @foreach ($semesterAktifData as $index => $semester)
+                            @php
+                                // Periksa apakah semester ini sudah memiliki IRS
+                                $hasIRSForSemester = App\Models\IRS::where('id_TA', $semester->id)->exists();
+                            @endphp
+
+                            @if (!$hasIRSForSemester)
+                                <!-- Jika belum ada IRS, jangan tampilkan accordion untuk semester ini -->
+                                @continue
+                            @endif
+                            
+                            <h2 id="accordion-flush-heading-{{ $semester->id }}" class="pb-4">
+                                <button type="button" class="flex items-center justify-between bg-gray-100 rounded-lg border-gray-300 w-full pl-3 pr-3 py-3 font-medium rtl:text-right text-black border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-{{ $semester->id }}" aria-expanded="false" aria-controls="accordion-flush-body-{{ $semester->id }}">
                                     <div class="flex flex-col items-start">
-                                        <span>Semester 1  |  Tahun Ajaran 2022/2023 Ganjil</span>
-                                        <span class="text-sm text-gray-500 mt-2">Jumlah SKS 21</span>
+                                        <span>Semester {{ $semester->semester }} | Tahun Ajaran {{ $semester->tahun_akademik }}</span>
+                                        <span class="text-sm text-gray-500 mt-2">Jumlah SKS {{ $semester->jumlah_sks ?? 'N/A' }}</span>
                                     </div>
                                     <!-- Ikon defaultnya mengarah ke bawah, menggunakan rotate-0 -->
                                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -111,44 +121,43 @@
                                 </button>
                             </h2>
 
-                            <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
-                                <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                                    <p class="mb-2 text-gray-500 dark:text-gray-400">
-                                        <!-- Table -->
-                                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                <caption class="p-5 text-center text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                                                    Sudah Disetujui Wali
-                                                </caption>
-                                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                    <tr>
-                                                        <th scope="col" class="px-6 py-3">
+                            <div id="accordion-flush-body-{{ $semester->id }}" class="hidden" aria-labelledby="accordion-flush-heading-{{ $semester->id }}">  
+                                <!-- Table -->
+                                <div class="relative overflow-x-auto rounded-lg border border-gray-300 shadow-md mb-4 sm:rounded-lg">
+                                    <table class="w-full text-sm text-left roundertl:text-right text-gray-500 dark:text-gray-400">
+                                        <caption class="p-5 text-center text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                                            Status IRS : Sudah Disetujui Wali
+                                        </caption>
+                                        <thead class="text-xs text-gray-700 uppercase rounded-lg border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
                                                             No
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Kode
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Mata Kuliah
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Kelas
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             SKS
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Ruang
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Status
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                             Nama Dosen
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
                                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                             1
@@ -178,107 +187,10 @@
                                                         </td>
                                                     </tr>
                                                 </tbody>
-                                            </table>
-                                        </div>
-                                    </p> 
-                                    <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-8 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">  
-                                        <svg class="w-3 h-3 text-gray-900 dark:text-gray-400 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-                                            <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
-                                            <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
-                                        </svg>    
-                                        Cetak IRS
-                                    </button>
-                                </div>
+                                    </table>
+                                </div>  
                             </div>
-
-                            <!-- 2 -->
-                            <h2 id="accordion-flush-heading-2">
-                                <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
-                                    <div class="flex flex-col items-start">
-                                        <span>Semester 2  |  Tahun Ajaran 2022/2023 Genap</span>
-                                        <span class="text-sm text-gray-500 mt-2">Jumlah SKS 21</span>
-                                    </div>
-                                    <!-- Ikon defaultnya mengarah ke bawah, menggunakan rotate-0 -->
-                                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                                    </svg>
-                                </button>
-                            </h2>
-
-                            <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-                                <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                                    <p class="mb-2 text-gray-500 dark:text-gray-400">
-                                        <!-- Table -->
-                                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                <caption class="p-5 text-center text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                                                    Belum Disetujui Wali
-                                                </caption>
-                                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                    <tr>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            No
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Kode
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Mata Kuliah
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Kelas
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            SKS
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Ruang
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Status
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Nama Dosen
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            1
-                                                        </th>
-                                                        <td class="px-6 py-4">
-                                                            PAIK
-                                                        </td>
-                                                        <td class="px-6 py-4">
-                                                            Metnum
-                                                        </td>
-                                                        <td class="px-6 py-4">
-                                                            B
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            1
-                                                        </th>
-                                                        <td class="px-6 py-4">
-                                                            PAIK
-                                                        </td>
-                                                        <td class="px-6 py-4">
-                                                            Metnum
-                                                        </td>
-                                                        <td class="px-6 py-4">
-                                                            B
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </p>  
-                                    <button type="button" class="text-gray-900 border border-gray-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-8 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">Setujui IRS</button>      
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
