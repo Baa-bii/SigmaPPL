@@ -20,11 +20,11 @@ class MataKuliah extends Model
 
     protected $fillable = ['kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk', 'kode_prodi', 'created_at', 'updated_at'];
 
-    // Assuming a Dosen belongs to MataKuliah
     public function dosen()
     {
         return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
     }
+
     // Relasi ke IRS
     public function irs()
     {

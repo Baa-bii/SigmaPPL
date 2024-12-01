@@ -59,4 +59,3 @@ class WaktuSeeder extends Seeder
     
     }
 }
-

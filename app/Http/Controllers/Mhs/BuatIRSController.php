@@ -9,11 +9,76 @@ use App\Models\Mahasiswa;
 use App\Models\Jadwal;
 use App\Models\RuangKelas;
 use App\Models\MataKuliah;
+use App\Models\IRS;
 
 
 class BuatIRSController extends Controller
 {
+    public function addDefaultMK(){
+        $user = auth()->user();
+        $mhs = $user->mahasiswa;
+
+        if (!$mhs) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+        // Ambil semester aktif yang sesuai dengan kondisi
+        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+        if (!$semesterAktif) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+        }
+        $status = $semesterAktif?->status ?? 'Belum Registrasi';
+        $semester = $semesterAktif?->semester ?? null;
+
+        $mataKuliahDefault = MataKuliah::where('semester', $semester)->get();
+        // Loop untuk menyimpan mata kuliah default yang sesuai dengan semester aktif
+        foreach ($mataKuliahDefault as $mk) {
+            Irs::updateOrCreate(
+                [
+                    'nim' => $mhs->nim,          // NIM mahasiswa
+                    'kode_mk' => $mk->kode_mk,   // Kode mata kuliah
+                    'id_TA' => $semesterAktif->id,  // ID semester aktif
+                ],
+                [
+                    'status' => 'Belum Disetujui',  // Status awal mata kuliah
+                    'status_mata_kuliah' => 'BARU' // Status mata kuliah (baru pertama kali)
+                ]
+            );
+        }
+    }
     public function index()
+    {
+        $user = auth()->user();
+        $mhs = $user->mahasiswa;
+        $this->addDefaultMK();
+
+        if (!$mhs) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+        // Ambil semester aktif yang sesuai dengan kondisi
+        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+        $status = $semesterAktif?->status ?? 'Belum Registrasi';
+        $semester = $semesterAktif?->semester ?? null;
+
+        // permatakuliahan
+        $mataKuliah = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')->get();
+    
+        $mataKuliahDitampilkan = Irs::where('nim', $mhs->nim)
+            ->where('id_TA', SemesterAktif::where('is_active', true)->first()->id)
+            ->get()
+            ->map(function($irs) {
+                return MataKuliah::where('kode_mk', $irs->kode_mk)->first();
+        });
+
+        $mataKuliahDipilih = Irs::where('nim', $mhs->nim)
+            ->where('id_TA', SemesterAktif::where('status', 'aktif')->first()->id)
+            ->get()
+            ->map(function($irs) {
+                return MataKuliah::where('kode_mk', $irs->kode_mk)->first();
+            });
+
+        return view('content.mhs.akademik', compact('mhs', 'status', 'semester', 'mataKuliah', 'mataKuliahDitampilkan', 'mataKuliahDipilih'));
+    }
+    public function updateMK(Request $request)
     {
         $user = auth()->user();
         $mhs = $user->mahasiswa;
@@ -22,104 +87,126 @@ class BuatIRSController extends Controller
             return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
         }
 
-        $status = $mhs->semester_aktif->status ?? 'Belum Registrasi';
-        $semester = $mhs->semester_aktif->semester ?? null;
+        // Ambil semester aktif
+        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+        if (!$semesterAktif) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+        }
 
-        $mataKuliah = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')->get();
-        //dd($mataKuliah); // Ini akan menampilkan seluruh data yang diambil
+        // Ambil data mata kuliah yang dipilih
+        $mataKuliahDipilih = $request->input('mata_kuliah', []);
 
-        $mataKuliahDitampilkan = MataKuliah::where('semester', $semester)->orderBy('jenis_mk', 'asc')->get();
+        // Hapus mata kuliah yang sebelumnya di-IRS
+        Irs::where('nim', $mhs->nim)
+            ->where('id_TA', $semesterAktif->id)
+            ->delete();  // Hapus data yang lama
 
-        //dd($mataKuliahDitampilkan);
-
-        $jadwal = Jadwal::with(['matakuliah', 'waktu'])
-            ->whereHas('matakuliah', function ($query) use ($semester) {
-                $query->where('semester', $semester);
-            })
-            ->get()
-            ->groupBy(['waktu.jam_mulai', 'hari']); // Kelompokkan berdasarkan jam dan hari
-
-        return view('content.mhs.akademik', compact('mhs', 'status', 'semester', 'mataKuliah', 'mataKuliahDitampilkan', 'jadwal'));
-    }
-    public function updateMataKuliah(Request $request)
-    {
-        // Ambil data yang dikirimkan dari frontend
-        $selectedCourses = $request->input('courses');
-        $nim = $request->input('nim'); // Pastikan NIM ada dalam request
-
-        // Mendapatkan ID Semester Aktif (bisa Anda sesuaikan dengan logika yang ada)
-        $id_TA = SemesterAktif::where('status', 'aktif')->first()->id; 
-
-        foreach ($selectedCourses as $kode_mk) {
-            // Cek apakah mata kuliah sudah ada dalam IRS untuk mahasiswa yang sama pada semester ini
-            $irs = Irs::updateOrCreate(
+        // Simpan mata kuliah yang baru
+        foreach ($mataKuliahDipilih as $kodeMk) {
+            Irs::updateOrCreate(
                 [
-                    'nim' => $nim,
-                    'kode_mk' => $kode_mk,
-                    'id_TA' => $id_TA,
+                    'nim' => $mhs->nim,
+                    'kode_mk' => $kodeMk,
+                    'id_TA' => $semesterAktif->id,
                 ],
                 [
-                    'status' => 'Belum Disetujui',
-                    'status_mata_kuliah' => 'BARU',
+                    'status' => 'Belum Disetujui',  // Status awal mata kuliah
+                    'status_mata_kuliah' => 'BARU' // Status mata kuliah
                 ]
             );
         }
 
-        return response()->json(['message' => 'Mata kuliah diperbarui']);
+        return redirect()->route('mhs.akademik.index')->with('success', 'Mata kuliah berhasil diperbarui.');
     }
-
-    // public function updateMataKuliah(Request $request)
+    // public function showJadwal()
     // {
     //     $user = auth()->user();
-    //     $mhs = $user->mahasiswa;
+    //     $mahasiswa = $user->mahasiswa;
 
-    //     if (!$mhs) {
-    //         return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 400);
+    //     // Ambil semester aktif mahasiswa
+    //     $semesterAktif = $mahasiswa->semester_aktif()->where('is_active', true)->first();
+    //     if (!$semesterAktif) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
     //     }
 
-    //     // Ambil mata kuliah yang dipilih dari request
-    //     $selectedCourses = $request->courses;
+    //     // Ambil daftar IRS untuk semester aktif mahasiswa
+    //     $irs = Irs::where('id_TA', $semesterAktif->id)->get();
 
-    //     // Update atau simpan mata kuliah yang ditampilkan untuk mahasiswa
-    //     // Menggunakan metode attach atau sync
-    //     foreach ($selectedCourses as $kodeMk) {
-    //         Irs::updateOrCreate(
-    //             [
-    //                 'nim' => $mhs->nim,
-    //                 'kode_mk' => $kodeMk,
-    //                 'id_TA' => $mhs->semester_aktif->id,  // ID semester aktif
-    //             ],
-    //             [
-    //                 'status' => 'Belum Disetujui',  // Default status
-    //                 'status_mata_kuliah' => 'BARU',
-    //             ]
-    //         );
-    //     }
+    //     // Ambil jadwal sesuai dengan kode mata kuliah yang ada di IRS
+    //     $jadwals = Jadwal::whereIn('kode_mk', $irs->pluck('kode_mk'))
+    //                     ->where('id_TA', $semesterAktif->id)
+    //                     ->get();
+        
+    //     dd($jadwals); // Menampilkan data jadwals
 
-    //     // Ambil semua mata kuliah yang ditampilkan untuk mahasiswa setelah update
-    //     $mataKuliahDitampilkan = $mhs->mataKuliahDitampilkan;
-
-    //     // Render HTML baru untuk ditampilkan di halaman utama
-    //     $html = '';
-    //     if ($mataKuliahDitampilkan->isEmpty()) {
-    //         $html = '<p class="text-xs text-gray-500">Tidak ada mata kuliah untuk semester ini.</p>';
-    //     } else {
-    //         foreach ($mataKuliahDitampilkan as $mk) {
-    //             $html .= '<div id="selected-' . $mk->kode_mk . '" class="p-4 bg-gray-50 rounded-lg shadow mb-3">
-    //                         <div class="flex items-center gap-2">
-    //                             <i class="fas fa-check text-green-500"></i>
-    //                             <div>
-    //                                 <h4 class="font-semibold text-sm">' . $mk->nama_mk . '</h4>
-    //                                 <p class="text-xs">' . strtoupper($mk->jenis_mk) . ' (' . $mk->kode_mk . ')</p>
-    //                                 <p class="text-xs">SMT ' . $mk->semester . '</p>
-    //                                 <p class="text-xs">' . $mk->sks . ' SKS</p>
-    //                             </div>
-    //                         </div>
-    //                     </div>';
-    //         }
-    //     }
-
-    //     return response()->json(['html' => $html]);
+    //     // Kirim data jadwals ke view
+    //     return view('mhs.akademik.index', compact('jadwals', 'semesterAktif'));
     // }
 
+    public function showJadwal()
+    {
+        $user = auth()->user();
+        $mahasiswa = $user->mahasiswa;
+    
+        // Pastikan mahasiswa ada
+        if (!$mahasiswa) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+    
+        // Ambil semester aktif mahasiswa
+        $semesterAktif = $mahasiswa->semester_aktif()->where('is_active', true)->first();
+        if (!$semesterAktif) {
+            return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+        }
+    
+        // Ambil data IRS berdasarkan semester aktif mahasiswa
+        $irs = Irs::where('nim', $mahasiswa->nim) // Filter berdasarkan nim mahasiswa
+        ->where('id_TA', $semesterAktif->id) // Filter berdasarkan semester aktif (id_TA)
+        ->get();
+        // Ambil jadwal mata kuliah yang ada di IRS pada semester aktif
+        $jadwals = Jadwal::with('waktu') // Menambahkan eager load untuk relasi 'waktu'
+        ->whereIn('kode_mk', $irs->pluck('kode_mk'))
+        ->where('id_TA', $semesterAktif->id)
+        ->get();
+
+        // Kelompokkan jadwal berdasarkan hari dan jam
+        $jadwalGrouped = $jadwals->groupBy(function($jadwal) {
+        return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00';
+        });
+
+        // Kirim data ke view
+        dd($jadwalGrouped);
+        return view('content.mhs.akademik', compact('jadwalGrouped', 'semesterAktif'));
+    }
+     // // Ambil jadwal mata kuliah yang ada di IRS pada semester aktif
+        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $irs->pluck('kode_mk')) // Ambil jadwal yang sesuai dengan kode mata kuliah di IRS
+        // ->where('id_TA', $semesterAktif->id) // Pastikan hanya jadwal di semester aktif
+        // ->get()
+        // ->groupBy(function($jadwal) {
+        //     return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00'; // Mengelompokkan jadwal berdasarkan hari dan jam
+        // });
+         // Tambahkan debug statement
+    // // Ambil mata kuliah yang dipilih oleh mahasiswa pada semester aktif
+        // $mataKuliahDipilih = Irs::where('nim', $mahasiswa->nim)
+        //     ->where('id_TA', $semesterAktif->id)
+        //     ->get()
+        //     ->pluck('kode_mk');
+    
+        // Ambil jadwal berdasarkan mata kuliah yang dipilih pada semester aktif
+        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $mataKuliahDipilih)
+        //     ->where('id_TA', $semesterAktif->id) // Filter berdasarkan tahun ajaran
+        //     ->get()
+        //     ->groupBy(function($jadwal) {
+        //         return $jadwal->hari; // Mengelompokkan jadwal berdasarkan hari
+        //     });
+
+        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $mataKuliahDipilih)
+        // ->where('id_TA', $semesterAktif->id)
+        // ->get()
+        // ->groupBy(function($jadwal) {
+        //     return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00'; // Menggabungkan hari dan jam
+        // });
+        // Ambil IRS yang sesuai dengan semester aktif
+
 }
+

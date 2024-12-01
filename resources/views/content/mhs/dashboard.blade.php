@@ -57,21 +57,21 @@
                             <div class="flex justify-between items-center gap-4">
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Semester Akademik Sekarang</p>
-                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->tahun_akademik ?? 'Tidak Diketahui' }}</p>
+                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->where('is_active', true)->first()->tahun_akademik ?? 'Tidak Diketahui' }}</p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Semester Studi</p>
-                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->semester ?? 'Tidak Diketahui' }}</p>
+                                    <p class="text-lg font-bold mt-1">{{ $mhs->semester_aktif->where('is_active', true)->first()->semester ?? 'Tidak Diketahui' }}</p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center flex-1">
                                     <p class="text-sm">Status Akademik</p>
                                     <p class="text-lg font-bold mt-1 
-                                        @if(isset($mhs->semester_aktif) && $mhs->semester_aktif->status === 'Aktif') text-green-600
-                                        @elseif(isset($mhs->semester_aktif) && $mhs->semester_aktif->status === 'Cuti') text-blue-600
+                                        @if(isset($mhs->semester_aktif) && $mhs->semester_aktif->where('is_active', true)->first()->status === 'Aktif') text-green-600
+                                        @elseif(isset($mhs->semester_aktif) && $mhs->semester_aktif->where('is_active', true)->first()->status === 'Cuti') text-blue-600
                                         @else text-red-600 @endif">
-                                        {{ $mhs->semester_aktif->status ?? 'Belum Registrasi' }}
+                                        {{ $mhs->semester_aktif->where('is_active', true)->first()->status ?? 'Belum Registrasi' }}
                                     </p>
                                 </div>
                             </div>
@@ -101,22 +101,21 @@
                             <div class="flex justify-start">
                                 <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2">Pilih Status Akademik</p>
                                 <span class="px-2 py-2 text-sm text-white
-                                    @if(isset($mhs->semester_aktif) && $mhs->semester_aktif->status === 'Aktif') bg-green-600
-                                    @elseif(isset($mhs->semester_aktif) && $mhs->semester_aktif->status === 'Cuti') bg-blue-700
+                                    @if(isset($mhs->semester_aktif) && $mhs->semester_aktif->where('is_active', true)->first()->status === 'Aktif') bg-green-600
+                                    @elseif(isset($mhs->semester_aktif) && $mhs->semester_aktif->where('is_active', true)->first()->status === 'Cuti') bg-blue-700
                                     @else bg-red-600 @endif">
-                                    Mahasiswa {{ $mhs->semester_aktif->status ?? 'Mahasiswa Belum Registrasi' }}
+                                    Mahasiswa {{ $mhs->semester_aktif->where('is_active', true)->first()->status ?? 'Belum Registrasi' }}
                                 </span>
                             </div>
 
                         </div>
                         <div class=" bg-yellow-300 p-4 shadow-lg rounded-md hover:transition transform hover:scale-105">
                             <a href="/mhs/akademik"</a>
-                            <h3 class="text-lg font-bold mb-4">Akademik</h3>
+                            <h3 class="text-lg font-bold mb-4">Isian Rencana Studi</h3>
                             <div class="flex justify-start">
-                                <p class="text-sm py-2 mr-2">TA {{ $mhs->semester_aktif->tahun_akademik ?? 'Tidak Diketahui' }}</p>
+                                <p class="text-sm py-2 mr-2">TA {{ $mhs->semester_aktif->where('is_active', true)->first()->tahun_akademik ?? 'Tidak Diketahui' }}</p>
                                 <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2">Buat IRS</p>
-                                <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2"> Cetak IRS</p>
-                                <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2">Cetak KHS</p>
+                                <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2"> Lihat IRS</p>
                             </div>
                         </div>
                     </div>

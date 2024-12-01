@@ -14,9 +14,8 @@ class Waktu extends Model
     protected $fillable = ['id', 'jam_mulai', 'created_at', 'updated_at'];
 
     // Relasi dengan Jadwal
-    public function jadwals()
+    public function jadwal()
     {
         return $this->hasMany(Jadwal::class, 'id_waktu', 'id');
     }
 }
-
