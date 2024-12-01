@@ -52,4 +52,3 @@ class IRS extends Model
         return $this->hasManyThrough(Jadwal::class, Matakuliah::class, 'kode_mk', 'kode_mk');
     }
 }
-    
