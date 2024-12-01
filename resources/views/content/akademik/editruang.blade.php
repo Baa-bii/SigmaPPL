@@ -22,7 +22,7 @@
             <label for="gedung" class="form-label font-sans font-medium">Gedung: </label>
             <select name="gedung" id="gedung" class="rounded-lg w-full" required>
                 <option value="">Select Gedung</option>
-                @foreach (['A', 'B', 'C', 'D', 'E'] as $gedung)
+                @foreach (['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','OR'] as $gedung)
                     <option value="{{ $gedung }}" {{ (old('gedung', $ruangKelas->gedung ?? '') == $gedung) ? 'selected' : '' }}>
                         {{ $gedung }}
                     </option>
