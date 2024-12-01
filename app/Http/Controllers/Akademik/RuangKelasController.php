@@ -67,7 +67,7 @@ class RuangKelasController extends Controller
         // Validate the request data
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'gedung' => 'required|string|max:1',
+            'gedung' => 'required|string|max:2',
             'kapasitas' => 'required|integer|min:1',
             'kode_prodi' => 'required|string|exists:program_studi,kode_prodi',
         ]);

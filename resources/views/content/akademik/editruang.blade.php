@@ -46,7 +46,7 @@
         </div>
         <div>
                 <button class="bg-blue-500 p-2 text-white rounded hover:bg-blue-600" type="submit">
-                Edit
+                Simpan
                 </button>
         </div>
     </form>

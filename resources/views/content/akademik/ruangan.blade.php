@@ -22,7 +22,7 @@
 
             <div>
                 <form method="GET" action="{{ route('akademik.ruang.index') }}">
-                    <label for="filter_gedung" class="form-label font-sans font-medium">Filter by Gedung</label>
+                    <label for="filter_gedung" class="form-label font-sans font-medium ">Filter by Gedung</label>
                     <select name="filter_gedung" id="filter_gedung" class="rounded-lg text-sm" onchange="this.form.submit()">
                         <option value="">All Gedung</option>
                         <option value="A" {{ request('filter_gedung') == 'A' ? 'selected' : '' }}>A</option>
@@ -38,7 +38,7 @@
                         <option value="K" {{ request('filter_gedung') == 'K' ? 'selected' : '' }}>K</option>
                     </select>
             
-                    <label for="filter_prodi" class="form-label font-sans font-medium">Filter by Prodi</label>
+                    <label for="filter_prodi" class="form-label font-sans font-medium ml-4">Filter by Prodi</label>
                     <select name="filter_prodi" id="filter_prodi" class="rounded-lg text-sm" onchange="this.form.submit()">
                         <option value="">All Prodi</option>
                         @foreach ($programStudi as $prodi)
@@ -83,7 +83,7 @@
                                 <p class="text-sm text-blue-gray-900">{{ $ruang->gedung }}</p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
-                                <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi }}</p>
+                                <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi}}</p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <a href="{{ route('akademik.ruang.edit', $ruang->id) }}">
@@ -109,11 +109,12 @@
                         Tambahkan Ruangan
                     </button>
                 </a>
+                <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                    Ajukan
+                    </button>
             </div>
             
-    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class=" m-4 p-2 text-white bg-green-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-        Ajukan
-        </button>
+   
         
         <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-md max-h-full">
@@ -130,9 +131,10 @@
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Anda yakin ingin mengajukan?</h3>
                         <button data-modal-hide="popup-modal" type="button" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                            Yes, I'm sure
+                            Ya, ajukan
                         </button>
-                        <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                        <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            Tidak, batalkan</button>
                     </div>
                 </div>
             </div>
