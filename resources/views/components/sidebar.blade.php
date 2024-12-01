@@ -343,7 +343,7 @@
                            
                             
                         </svg>
-                        <span class="ml-3">Akademik</span>
+                        <span class="ml-3">IRS</span>
                     </a>
                 </li>
             @endif

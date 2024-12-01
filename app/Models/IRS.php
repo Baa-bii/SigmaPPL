@@ -42,9 +42,14 @@ class IRS extends Model
     }
 
     // relasi ke tabel jadwal
-    public function Jadwal()
+    public function jadwal()
     {
         return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
+    }
+    // Model Irs
+    public function jadwals()
+    {
+        return $this->hasManyThrough(Jadwal::class, Matakuliah::class, 'kode_mk', 'kode_mk');
     }
 }
     

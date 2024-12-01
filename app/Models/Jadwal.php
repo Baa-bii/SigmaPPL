@@ -29,7 +29,6 @@ class Jadwal extends Model
     public function matakuliah()
     {
         return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
-    return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
     }
 
     // Relasi ke model ProgramStudi
