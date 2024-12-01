@@ -17,13 +17,10 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
-            // Relasi ke Semester Aktif (untuk IRS semester sekarang)
-            $table->unsignedBigInteger('id_TA')->nullable();  // Semester Aktif untuk IRS sekarang
+            $table->string('id_jadwal')->nullable(); 
+            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
+            $table->unsignedBigInteger('id_TA');
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
-
-            // Relasi ke Riwayat Semester Aktif (untuk IRS semester sebelumnya)
-            $table->unsignedBigInteger('id_riwayat_TA')->nullable();  // Semester Aktif untuk IRS sebelumnya
-            $table->foreign('id_riwayat_TA')->references('id')->on('riwayat_semester_aktif')->onDelete('cascade');
             $table->enum('status', ['Sudah Disetujui', 'Belum Disetujui'])->default('Belum Disetujui');
             $table->enum('status_mata_kuliah', ['BARU', 'PERBAIKAN', 'ULANG'])->default('BARU');            
             $table->timestamps();
@@ -40,8 +37,8 @@ return new class extends Migration
         Schema::table('irs', function (Blueprint $table) {
             $table->dropForeign(['nim']);
             $table->dropForeign(['kode_mk']);
+            $table->dropForeign(['id_jadwal']);
             $table->dropForeign(['id_TA']);
-            $table->dropForeign(['id_riwayat_TA']);
         });
         Schema::dropIfExists('irs');
     }

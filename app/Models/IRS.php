@@ -10,20 +10,24 @@ class IRS extends Model
     use HasFactory;
 
     protected $table = 'irs';
+    protected $primaryKey = 'id';
+    protected $fillable = ['nim', 'kode_mk', 'id_jadwal', 'id_TA','status', 'status_mata_kuliah'];
 
-    protected $fillable = ['nim', 'kode_mk', 'id_TA', 'id_riwayat_TA'];
 
     /**
      * Relasi ke tabel Mahasiswa.
      */
+    // Relasi dengan Mahasiswa
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 
-    /**
-     * Relasi ke tabel Mata Kuliah.
-     */
+    public function KHS()
+    {
+        return $this->hasOne(KHS::class, 'id');
+    }
+    
     public function matakuliah()
     {
         return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
@@ -36,9 +40,15 @@ class IRS extends Model
     {
         return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
     }
-    
-    public function riwayatSemesterAktif()
+
+    // relasi ke tabel jadwal
+    public function jadwal()
     {
-        return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA', 'id');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
+    }
+    // Model Irs
+    public function jadwals()
+    {
+        return $this->hasManyThrough(Jadwal::class, Matakuliah::class, 'kode_mk', 'kode_mk');
     }
 }

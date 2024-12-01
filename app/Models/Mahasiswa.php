@@ -32,26 +32,38 @@ class Mahasiswa extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'email', 'email'); // Relasi berdasarkan email
+        return $this->hasOne(User::class, 'email', 'email'); // Relasi berdasarkan email
     }
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'nip_dosen', 'nip_dosen'); // Relasi berdasarkan email
+        return $this->hasOne(Dosen::class, 'nip_dosen', 'nip_dosen'); // Relasi berdasarkan email
     }    
     public function programStudi(){
-        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
+        return $this->hasOne(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
     public function semester_aktif()
     {
-        return $this->hasOne(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
+        return $this->hasMany(SemesterAktif::class, 'nim', 'nim'); // Relasi one-to-one dengan SemesterAktif
     }
-    public function matakuliah()
+    
+    //Relasi ke IRS (Indeks Rencana Studi)
+    public function irs()
+    {
+        return $this->hasMany(IRS::class, 'nim', 'nim'); // Relasi one-to-many dengan IRS
+    }
+    
+    
+
+    // Relasi Mahasiswa ke MataKuliah melalui tabel IRS
+    public function mataKuliah()
     {
         return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk')
-            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')
-            ->withTimestamps();
+                    ->withPivot('status', 'status_mata_kuliah'); // kolom tambahan di tabel pivot
     }
-
-
-   
+    // Pada model Mahasiswa
+    public function mataKuliahDitampilkan()
+    {
+        // Ambil mata kuliah berdasarkan relasi IRS
+        return $this->hasManyThrough(MataKuliah::class, Irs::class, 'nim', 'kode_mk', 'nim', 'kode_mk');
+    }
 }

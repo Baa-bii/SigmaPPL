@@ -19,4 +19,3 @@ class Waktu extends Model
         return $this->hasMany(Jadwal::class, 'id_waktu', 'id');
     }
 }
-

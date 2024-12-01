@@ -23,4 +23,9 @@ class RuangKelas extends Model
         return $this->hasMany(Jadwal::class, 'id_ruang', 'id');
     }
 
+    public function jadwal()
+    {
+    return $this->hasMany(Jadwal::class, 'id_jadwal');
+    }
+
 }

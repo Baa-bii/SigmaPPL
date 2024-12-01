@@ -38,23 +38,23 @@ class RegistrasiController extends Controller
             'nim' => 'required|string|exists:mahasiswa,nim', // NIM harus valid dan ada di tabel mahasiswa
         ]);
 
-        // Cari data semester aktif berdasarkan NIM
-        $semesterAktif = SemesterAktif::where('nim', $validated['nim'])->first();
-
+        // Cari data semester aktif berdasarkan NIM dan atribut 'is_active'
+        $semesterAktif = SemesterAktif::where('nim', $validated['nim'])->where('is_active', true)->first();
+        
         if (!$semesterAktif) {
             // Jika data belum ada, buat entri baru
             $semesterAktif = SemesterAktif::create([
                 'nim' => $validated['nim'],
-                'tahun_akademik' => '2024/2025', // Tahun akademik aktif (disesuaikan)
-                'semester' => 1, // Bisa diambil dari konfigurasi atau input
+                'tahun_akademik' => $this->getTahunAkademik(), // Ambil tahun akademik dari helper atau konfigurasi
+                'semester' => $this->getCurrentSemester(), // Ambil semester aktif dari helper atau logika
                 'status' => $validated['status'],
+                'is_active' => true,
             ]);
         } else {
             // Jika data sudah ada, update status
-            $semesterAktif->status = $validated['status'];
-            $semesterAktif->save();
+            $semesterAktif->update(['status' => $validated['status']]);
         }
-
-        return response()->json(['message' => 'Status berhasil diperbarui'], 200);
+        
+        return redirect()->route('mhs.registrasi.index')->with('message', 'Status berhasil diperbarui');
         }
 }

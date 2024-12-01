@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
 use App\Http\Controllers\Controller;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
 class MataKuliahController extends Controller
@@ -13,7 +14,8 @@ class MataKuliahController extends Controller
     {
         $mataKuliah = MataKuliah::with('dosen')->get();
         $dosen = Dosen::all(); // Pastikan ini ditambahkan
-        return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen')); // Mengirimkan dosen
+        $programStudi = ProgramStudi::all(); // Pastikan ini ditambahkan
+        return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen', 'programStudi')); // Mengirimkan dosen
     }
 
     public function create()
@@ -31,7 +33,7 @@ class MataKuliahController extends Controller
             'sks' => 'required|integer',
             'jenis_mk' => 'required',
             'nip_dosen' => 'required|array', 
-            'rombel_kelas' => 'required|integer',
+            
         ]);
 
         // Simpan mata kuliah terlebih dahulu
@@ -41,7 +43,7 @@ class MataKuliahController extends Controller
             'semester' => $request->semester,
             'sks' => $request->sks,
             'jenis_mk' => $request->jenis_mk,
-            'rombel_kelas' => $request->rombel_kelas,
+           
         ]);
 
        

@@ -171,7 +171,7 @@
                 <!-- Kelola Mata Kuliah -->
                 <li>
                     <a
-                        href="{{ route('mata_kuliah.index') }}"
+                        href="{{ route('kaprodi.mata_kuliah.index') }}"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
                         {{ Request::is('kaprodi/matakuliah') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     >
@@ -343,7 +343,7 @@
                            
                             
                         </svg>
-                        <span class="ml-3">Akademik</span>
+                        <span class="ml-3">IRS</span>
                     </a>
                 </li>
             @endif
