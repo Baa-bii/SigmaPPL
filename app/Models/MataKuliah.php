@@ -17,10 +17,14 @@ class MataKuliah extends Model
 
     protected $fillable = ['kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk', 'kode_prodi', 'created_at', 'updated_at'];
 
-    // Assuming a Dosen belongs to MataKuliah
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_id', 'nip_dosen');
+        return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
     }
     // Relasi ke IRS
     public function irs()

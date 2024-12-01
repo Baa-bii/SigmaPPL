@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('jadwal', function (Blueprint $table) {
-            if (!Schema::hasColumn('jadwal', 'status')) {
+        Schema::table('ruang', function (Blueprint $table) {
+            if (!Schema::hasColumn('ruang', 'status')) {
                 $table->string('status')->default('menunggu')->after('kode_prodi');
             }
         });
@@ -23,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('jadwal', function (Blueprint $table) {
-            if (Schema::hasColumn('jadwal', 'status')) {
+        Schema::table('ruang', function (Blueprint $table) {
+            if (Schema::hasColumn('ruang', 'status')) {
                 $table->dropColumn('status');
             }
         });

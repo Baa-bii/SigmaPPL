@@ -24,7 +24,7 @@
                 <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28 flex items-center">
                 <!-- Nama Dosen -->
                 <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
-                    {{ $dekan->nama_dekan ?? 'Nama tidak ditemukan' }}
+                    {{ $user->name ?? 'Nama tidak ditemukan' }}
                 </h1>
                 </div>
             <div class="relative flex items-center">
@@ -65,14 +65,18 @@
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index }}</td> <!-- Nomor urut yang memperhitungkan pagination -->
                             <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->matakuliah->nama_mk ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->waktu->jam_mulai }} - {{ $item->waktu->jam_selesai }}</td>
-                            <td class="p-4 whitespace-nowrap text-sm">{{ $item->matakuliah->dosen->nama ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm">{{ $item->matakuliah->dosenmatkul->dosen->nama_dosen ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->nama ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->gedung ?? 'N/A' }}</td> 
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->id_TA }}</td>
                             <td class="p-4 whitespace-nowrap">
-                                <span class="statusCell bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full">
-                                    {{ $item->status ?? 'Menunggu' }}
+                                <span 
+                                    class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full
+                                    {{ $item->status === 'disetujui' ? 'bg-green-200 text-green-600' : '' }}
+                                    {{ $item->status === 'ditolak' ? 'bg-red-200 text-red-600' : '' }}
+                                    {{ $item->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : '' }} ">
+                                    {{ $item->status }}
                                 </span>
                             </td>
                         </tr>
@@ -90,27 +94,31 @@
             <thead>
                 <tr class="bg-gray-200 text-black">
                     <th scope="col" class="p-4 whitespace-nowrap text-center">NO</th>
-                    <th scope="col" class="p-4 whitespace-nowrap text-center">MATA KULIAH</th>
-                    <th scope="col" class="p-4 whitespace-nowrap text-center">WAKTU</th>
-                    <th scope="col" class="p-4 whitespace-nowrap text-center">RUANGAN</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">KELAS</th>
                     <th scope="col" class="p-4 whitespace-nowrap text-center">GEDUNG</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">RUANGAN</th>
                     <th scope="col" class="p-4 whitespace-nowrap text-center">KAPASITAS</th>
+                    <th scope="col" class="p-4 whitespace-nowrap text-center">WAKTU</th>
                     <th scope="col" class="p-4 whitespace-nowrap text-center">STATUS</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-transparent">
             <!-- Loop untuk menampilkan data jadwal -->
-            @foreach($jadwal as $index => $data)
+            @foreach($ruang as $index => $data)
                 <tr class="bg-white text-black dark:bg-gray-800">
                     <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index + 1 }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->matakuliah->nama_mk }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->waktu->jam_mulai }} - {{ $data->waktu->jam_selesai }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->nama }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->gedung }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->ruang->kapasitas }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->jadwal->first()?->kelas ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->gedung ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->nama ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->kapasitas ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->jadwal->first()?->waktu?->jam_mulai ?? 'N/A' }} - {{ $data->jadwal->first()?->waktu?->jam_selesai ?? 'N/A' }}</td>
                     <td class="p-4 whitespace-nowrap">
-                        <span class="statusCell bg-yellow-200 text-yellow-600 rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full">
-                            {{ $item->status ?? 'Menunggu' }}
+                        <span 
+                            class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full
+                            {{ $item->status === 'disetujui' ? 'bg-green-200 text-green-600' : '' }}
+                            {{ $item->status === 'ditolak' ? 'bg-red-200 text-red-600' : '' }}
+                            {{ $item->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : '' }} ">
+                            {{ $item->status }}
                         </span>
                     </td>
                 </tr>
