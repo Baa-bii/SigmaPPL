@@ -53,13 +53,13 @@
                 <!-- Kolom Kiri -->
                 <div class="w-1/2 text-left pl-64">
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>NIM:</strong> {{ $mahasiswa->nim }}
+                        <strong>NIM :</strong> {{ $mahasiswa->nim }}
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Semester:</strong> {{ $mahasiswa->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}
+                        <strong>Semester :</strong> {{ $semester }}
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Tahun Ajaran:</strong> {{ $mahasiswa->angkatan }}
+                        <strong>Tahun Ajaran :</strong> {{ $tahunAkademik }}
                     </p>
                 </div>
 
