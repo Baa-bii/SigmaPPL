@@ -27,11 +27,7 @@ class Jadwal extends Model
     // Relasi dengan matakuliah menggunakan kode_mk
     public function matakuliah()
     {
-<<<<<<< HEAD
         return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
-=======
-        return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
->>>>>>> 360f4fe71950aa9f2a9170ef059261534103fab5
     }
 
     // Relasi ke model ProgramStudi
@@ -45,9 +41,6 @@ class Jadwal extends Model
     {
         return $this->belongsTo(SemesterAktif::class, 'id_TA');
     }
-<<<<<<< HEAD
-}
-=======
 
     public function IRS()
     {
@@ -58,4 +51,3 @@ class Jadwal extends Model
         return $this->hasMany(KHS::class, 'id_jadwal');
     }
 }
->>>>>>> 360f4fe71950aa9f2a9170ef059261534103fab5
