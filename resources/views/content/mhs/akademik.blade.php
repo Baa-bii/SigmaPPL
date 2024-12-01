@@ -43,11 +43,11 @@
                             IRS
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#"  onclick="showTabContent(event, 'khs')" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
                             KHS
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
 
@@ -65,7 +65,7 @@
             @include('content.mhs.buatIrs')
             <!-- Tab Contents Lainnya -->
             @include('content.mhs.irs')
-            @include('content.mhs.khs')
+            <!-- @include('content.mhs.khs') -->
 
          
         </div>

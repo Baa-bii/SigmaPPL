@@ -20,7 +20,7 @@ class SemesterAktif extends Model
 
     public function IRS()
     {
-        return $this->hasMany(IRS::class, 'id');  // Relasi satu ke banyak ke irs
+        return $this->hasMany(IRS::class, 'id_TA', 'id');  // Relasi satu ke banyak ke irs
     }
 
     // Relasi ke RiwayatIRS (RiwayatIRS mengarah ke RiwayatSemesterAktif)
