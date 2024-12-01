@@ -11,7 +11,7 @@ class Jadwal extends Model
 
     protected $table = 'jadwal';
 
-    protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
+    protected $fillable = ['id_jadwal', 'hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi', 'status'];
 
     // Relasi ke model Waktu
     public function waktu()
@@ -29,7 +29,7 @@ class Jadwal extends Model
     public function matakuliah()
     {
         return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
-    return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
+    
     }
 
     // Relasi ke model ProgramStudi

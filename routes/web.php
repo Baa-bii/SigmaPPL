@@ -63,12 +63,17 @@ Route::group(['middleware' => 'auth:mhs'], function () {
 Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
     // Dashboard
     Route::get('/home', [DashboardKaprodiController::class, 'index'])->name('dashboard.index');
-
-    // Jadwal pada Dashboard (tanpa tumpang tindih dengan resource controller)
     Route::get('/home/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('dashboard.jadwal');
-    // Resource Controllers
+    Route::get('/kaprodi/matakuliah', [MataKuliahController::class, 'create'])->name('content.kaprodi.matakuliah');
+    Route::post('/kaprodi/mata_kuliah', [MataKuliahController::class, 'store'])->name('kaprodi.mata_kuliah.store');
+    Route::get('/kaprodi/mata_kuliah', [MataKuliahController::class, 'index'])->name('content.kaprodi.index');
     Route::resource('mata_kuliah', MataKuliahController::class);
     Route::resource('jadwal', JadwalController::class);
+    Route::resource('kaprodi/mata-kuliah', MataKuliahController::class)->names([
+        'index' => 'content.kaprodi.matakuliah.index',
+    ]);
+    // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
+
 });
 
 

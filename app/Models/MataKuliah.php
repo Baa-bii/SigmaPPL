@@ -10,17 +10,20 @@ class MataKuliah extends Model
     use HasFactory;
 
     protected $table = 'matakuliah';
+    protected $primaryKey = 'kode_mk';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    protected $casts = [
-        'kode_mk' => 'string', // Pastikan kode_mk di-cast sebagai string
-    ];
+    // protected $casts = [
+    //     'kode_mk' => 'string', // Pastikan kode_mk di-cast sebagai string
+    // ];
 
     protected $fillable = ['kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk', 'kode_prodi', 'created_at', 'updated_at'];
 
     // Assuming a Dosen belongs to MataKuliah
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_id', 'nip_dosen');
+        return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
     }
     // Relasi ke IRS
     public function irs()
@@ -39,7 +42,7 @@ class MataKuliah extends Model
          return $this->belongsToMany(Mahasiswa::class, 'irs', 'kode_mk', 'nim')
                      ->withPivot('status', 'status_mata_kuliah'); // kolom tambahan di tabel pivot
      }
-     
+
     public function jadwal()
     {
         return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
