@@ -62,18 +62,7 @@ class MataKuliahSeeder extends Seeder
             [
                 'kode_mk' => 'PAIK6503',
                 'nama_mk' => 'Sistem Informasi',
-                'sks' => 4,
-                'semester' => '5',
-                'jenis_mk' => 'wajib',
-                'kode_prodi' => 'INF123',
-                'created_at' => now(),
-                'updated_at' => now(),
-
-            ],
-            [
-                'kode_mk' => 'PAIK6505',
-                'nama_mk' => 'Pembelajaran Mesin',
-                'sks' => 4,
+                'sks' => 3,
                 'semester' => '5',
                 'jenis_mk' => 'wajib',
                 'kode_prodi' => 'INF123',
@@ -341,7 +330,7 @@ class MataKuliahSeeder extends Seeder
             ],
             [
                 'kode_mk' => 'PAIK6305',
-                'nama_mk' => 'INteraksi Manusia dan Komputer',
+                'nama_mk' => 'Interaksi Manusia dan Komputer',
                 'sks' => 3,
                 'semester' => '3',
                 'jenis_mk' => 'wajib',
@@ -414,6 +403,17 @@ class MataKuliahSeeder extends Seeder
                 'nama_mk' => 'Analisis dan Strategi Algoritma',
                 'sks' => 3,
                 'semester' => '6',
+                'jenis_mk' => 'wajib',
+                'kode_prodi' => 'INF123',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            
+            [
+                'kode_mk' => 'PAIK6505',
+                'nama_mk' => 'Pembelajaran Mesin',
+                'sks' => 3,
+                'semester' => '5',
                 'jenis_mk' => 'wajib',
                 'kode_prodi' => 'INF123',
                 'created_at' => now(),

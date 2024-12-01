@@ -17,9 +17,9 @@ class SemesterAktif extends Model
         return $this->hasMany(Mahasiswa::class, 'id_TA');  // Relasi satu ke banyak ke mahasiswa
     }
     // Relasi ke RiwayatIRS (RiwayatIRS mengarah ke RiwayatSemesterAktif)
-    public function irs()
-    {
-        return $this->hasOne(IRS::class, 'id_TA');
-    }
+    // public function irs()
+    // {
+    //     return $this->hasOne(IRS::class, 'id_TA');
+    // }
     
 }

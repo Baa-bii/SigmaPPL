@@ -50,15 +50,23 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA');  // Menghubungkan ke riwayat semester aktif
     }
-    // Relasi ke IRS (Indeks Rencana Studi)
+    //Relasi ke IRS (Indeks Rencana Studi)
     public function irs()
     {
-        return $this->hasMany(IRS::class, 'nim');
+        return $this->hasMany(IRS::class, 'nim', 'nim'); // Relasi one-to-many dengan IRS
     }
+    
+
+    // Relasi Mahasiswa ke MataKuliah melalui tabel IRS
     public function mataKuliah()
     {
-        return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk') // Definisikan relasi many-to-many dengan tabel pivot 'irs'
-            ->withPivot('status', 'status_mata_kuliah', 'id_TA', 'id_riwayat_TA')  // Kolom tambahan yang ada di pivot
-            ->withTimestamps();
+        return $this->belongsToMany(MataKuliah::class, 'irs', 'nim', 'kode_mk')
+                    ->withPivot('status', 'status_mata_kuliah'); // kolom tambahan di tabel pivot
+    }
+    // Pada model Mahasiswa
+    public function mataKuliahDitampilkan()
+    {
+        // Ambil mata kuliah berdasarkan relasi IRS
+        return $this->hasManyThrough(MataKuliah::class, Irs::class, 'nim', 'kode_mk', 'nim', 'kode_mk');
     }
 }

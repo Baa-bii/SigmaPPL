@@ -9,6 +9,7 @@ use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Kaprodi\MataKuliahController;
+use App\Http\Controllers\Kaprodi\JadwalController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
@@ -50,19 +51,24 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
-    Route::post('/update-status', [App\Http\Controllers\Mhs\RegistrasiController::class, 'updateStatus']);
+    Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-    Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
-    Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
-    Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
+    Route::post('/update-mata-kuliah', [BuatIRSController::class, 'updateMataKuliah'])->name('update-mata-kuliah');
+    // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
+    // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
+    // Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
+    // Route::post('mhs/irs/update-mata-kuliah', [IRSController::class, 'updateMataKuliah']);
 });
 
-Route::group(['middleware'=>'auth:kaprodi'], function(){
-    Route::get('/kaprodi/home', [DashboardKaprodiController::class, 'index'])->name('kaprodi.dashboard.index');
-    Route::get('/kaprodi/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('kaprodi.jadwal.index');
-    
-    // Menggunakan resource route untuk mata kuliah
+Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
+    // Dashboard
+    Route::get('/home', [DashboardKaprodiController::class, 'index'])->name('dashboard.index');
+
+    // Jadwal pada Dashboard (tanpa tumpang tindih dengan resource controller)
+    Route::get('/home/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('dashboard.jadwal');
+    // Resource Controllers
     Route::resource('mata_kuliah', MataKuliahController::class);
+    Route::resource('jadwal', JadwalController::class);
 });
 
 

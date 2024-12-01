@@ -1,5 +1,4 @@
 <!-- BUAT IRS -->
-
 <div class="tab-content flex flex-col lg:flex-row gap-6" id="buat-irs">
 @if(isset($status) && $status === 'Aktif')
     <!-- Sidebar Informasi Mahasiswa -->
@@ -50,15 +49,20 @@
                     </div>
                 </div>
                 <ul id="dropdownSearchList" class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
-                    @foreach ($mataKuliahDropdown as $mk)
-                    <li>
+                    @foreach ($mataKuliah as $mk)
+                        <li>
                             <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                                 <input type="checkbox" id="checkbox-{{ $mk->kode_mk }}" 
                                     value="{{ $mk->kode_mk }}" 
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                    class="course-checkbox" 
                                     {{ $mataKuliahDitampilkan->contains('kode_mk', $mk->kode_mk) ? 'checked' : '' }} />
                                 <label for="checkbox-{{ $mk->kode_mk }}" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                    {{ $mk->nama_mk }} - {{ $mk->sks }} SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }}
+                                    {{ $mk->nama_mk }} - {{ $mk->sks }}  SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }} - ({{ $mk->kode_mk }})
+                                    <!-- <h4 class="font-semibold text-sm">{{ $mk->nama_mk }}</h4>
+                                    <p class="text-xs">{{ strtoupper($mk->jenis_mk) }} ({{ $mk->kode_mk }})</p>
+                                    <p class="text-xs">Semester {{ $mk->semester }}</p>
+                                    <p class="text-xs">{{ $mk->sks }} SKS</p> -->
+                                   
                                 </label>
                             </div>
                         </li>
@@ -74,15 +78,16 @@
                 @if ($mataKuliahDitampilkan->isEmpty())
                     <p class="text-xs text-gray-500">Tidak ada mata kuliah untuk semester ini.</p>
                 @else
-                    @foreach ($mataKuliahDitampilkan as $mk)
-                        <div id="selected-{{ $mk->kode_mk }}"class="p-4 bg-gray-50 rounded-lg shadow mb-3">
+                    @foreach ($mataKuliahDitampilkan as $matkul)
+                        <div id="selected-{{ $matkul->kode_mk }}"class="p-4 bg-gray-50 rounded-lg shadow mb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-check text-green-500"></i>
                                 <div>
-                                    <h4 class="font-semibold text-sm">{{ $mk->nama_mk }}</h4>
-                                    <p class="text-xs">{{ strtoupper($mk->jenis_mk) }} ({{ $mk->kode_mk }})</p>
-                                    <p class="text-xs">SMT {{ $mk->semester }}</p>
-                                    <p class="text-xs">{{ $mk->sks }} SKS</p>
+                                    <!-- <h4 class="font-semibold text-sm">{{ $matkul->nama_mk }}</h4>
+                                    <p class="text-xs">{{ strtoupper($matkul->jenis_mk) }} ({{ $mk->kode_mk }})</p>
+                                    <p class="text-xs">Semester {{ $matkul->semester }}</p>
+                                    <p class="text-xs">{{ $matkul->sks }} SKS</p> -->
+                                    <h4 class="font-semibold text-sm">{{ $matkul->nama_mk }} - {{ $matkul->sks }}  SKS (Semester {{ $matkul->semester }}) - {{ strtoupper($matkul->jenis_mk) }} - ({{ $matkul->kode_mk }})</h4>
                                 </div>
                             </div>
                         </div>
@@ -158,53 +163,94 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-   $(document).ready(function() {
-        // Ketika status checkbox berubah
-        $(document).on('change', '.course-checkbox', function() {
-            var kodeMk = $(this).val();
-            var isChecked = $(this).prop('checked');
-            
-            // Menentukan URL berdasarkan status checkbox
-            var url = isChecked ? '/mhs/irs/save-course-selection' : '/mhs/irs/remove-course-selection';
-            
+    $(document).ready(function() {
+    // Ketika checkbox berubah status (checked/unchecked)
+        $('.course-checkbox').change(function () {
+        var selectedCourses = [];
+        var nim = $('#nim').val(); // Ambil NIM mahasiswa dari input
+
+        // Ambil semua kode mata kuliah yang dipilih (checked)
+        $('.course-checkbox:checked').each(function () {
+            selectedCourses.push($(this).val());
+        });
+
+        // Update tampilan mata kuliah yang dipilih
+        var html = '';
+        if (selectedCourses.length === 0) {
+            html = '<p class="text-xs text-gray-500">Tidak ada mata kuliah yang dipilih.</p>';
+        } else {
+            // Loop untuk menampilkan mata kuliah yang dipilih
+            selectedCourses.forEach(function(kodeMk) {
+                var mataKuliah = $('#checkbox-' + kodeMk).parent().find('label').text();
+                html += '<div id="selected-' + kodeMk + '" class="p-4 bg-gray-50 rounded-lg shadow mb-3"' +
+                            '<div class="flex items-center gap-2">' +
+                                '<i class="fas fa-check text-green-500"></i>' +
+                                    '<div>' +
+                                        '<h4 class="font-semibold text-sm">' + mataKuliah + '</h4>' +
+                                    '</div>' +
+                                '</div>' +
+                        '</div>';
+            });
+        }
+
+        // Update konten #displayedCourses dengan HTML yang baru
+        $('#displayedCourses').html(html);
+
+        // Mengirim data ke server untuk memperbarui mata kuliah yang dipilih
+        $.ajax({
+            url: '/update-mata-kuliah', // URL untuk mengupdate mata kuliah
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                nim: nim,
+                courses: selectedCourses
+            },
+            success: function(response) {
+                console.log('Mata kuliah diperbarui di server');
+            }
+        });
+    });
+
+    // Filter dropdown berdasarkan pencarian
+    $('#input-group-search').on('input', function() {
+        var query = $(this).val().toLowerCase();
+        $('#dropdownSearchList li').each(function() {
+            var text = $(this).find('label').text().toLowerCase();
+            $(this).toggle(text.includes(query)); // Tampilkan atau sembunyikan item
+        });
+    });
+});
+
+
+</script>
+<!-- <script>
+    $(document).ready(function() {
+        // Ketika checkbox berubah status
+        $('.course-checkbox').change(function () {
+            // Ambil semua kode mata kuliah yang dipilih
+            var selectedCourses = [];
+            $('.course-checkbox:checked').each(function () {
+                selectedCourses.push($(this).val());
+            });
+
+            // Kirim data ke controller menggunakan AJAX
             $.ajax({
-                url: url,
-                type: 'POST',
+                url: '/update-mata-kuliah', // URL untuk mengupdate mata kuliah
+                method: 'POST',
                 data: {
-                    kode_mk: kodeMk,
                     _token: '{{ csrf_token() }}',
+                    courses: selectedCourses
                 },
-                success: function(response) {
-                    if (response.success) {
-                        alert(isChecked ? 'Mata kuliah berhasil ditambahkan' : 'Mata kuliah berhasil dihapus');
-                        updateScheduleTable(); // Memperbarui tampilan jadwal
-                    } else {
-                        alert('Terjadi kesalahan saat menyimpan mata kuliah');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                success: function (response) {
+                    // Update konten #displayedCourses dengan HTML baru
+                    $('#displayedCourses').html(response.html);
                 }
             });
         });
+        $(document).on('change', '.course-checkbox', function() {
+        updateDisplayedCourses();
+    });
 
-        // Fungsi untuk memperbarui jadwal
-        function updateScheduleTable() {
-            $.ajax({
-                url: '/mhs/irs/get-selected-courses',
-                type: 'GET',
-                success: function(response) {
-                    if (response.success) {
-                        $('#displayedCourses').html(response.jadwalHtml);
-                    } else {
-                        alert('Gagal memuat jadwal');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        }
         // Filter dropdown berdasarkan pencarian
         $('#input-group-search').on('input', function() {
             var query = $(this).val().toLowerCase();
@@ -213,77 +259,84 @@
                 $(this).toggle(text.includes(query)); // Tampilkan atau sembunyikan item
             });
         });
-        
-
-        // Event Listener untuk Checkbox (Simpan atau Hapus Mata Kuliah)
-        $(document).on('change', 'input[type="checkbox"]', function(e) {
-            const kode_mk = $(this).val();
-            const label = $(this).next('label');
-            const mataKuliahInfo = label.text().split(' - ');
-            const [nama_mk, sksText, semesterText, jenisText] = mataKuliahInfo;
-            const sks = parseInt(sksText.match(/\d+/)[0]);
-            const semester = parseInt(semesterText.match(/\d+/)[0]);
-            const jenis_mk = jenisText.trim();
-
-            // Kirim data ke server menggunakan AJAX
-            const url = $(this).prop('checked') ? '/save-course-selection' : '/remove-course-selection';
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    kode_mk,
-                    nama_mk,
-                    sks,
-                    semester,
-                    jenis_mk,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log('Mata kuliah berhasil disimpan');
-                    updateScheduleTable(); // Update tampilan jadwal setelah data tersimpan
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
-                }
-            });
-        });
-
-
-        // Fungsi untuk memperbarui tampilan jadwal
-        function updateScheduleTable() {
-            $.ajax({
-                url: '/mhs/irs/get-selected-courses',  // Endpoint untuk mengambil data mata kuliah yang dipilih
-                type: 'GET',
-                success: function(response) {
-                    if (response.success) {
-                        $('#displayedCourses').html(response.jadwalHtml);  // Update tampilan jadwal
-                    } else {
-                        alert('Gagal mengambil data mata kuliah');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
-                }
-            });
-        }
     });
-    // Fungsi untuk memperbarui tampilan jadwal
-function updateScheduleTable() {
-    $.ajax({
-        url: '/mhs/irs/get-selected-courses',  // Endpoint untuk mengambil data mata kuliah yang dipilih
-        type: 'GET',
-        success: function(response) {
-            if (response.success) {
-                $('#displayedCourses').html(response.jadwalHtml);  // Update tampilan jadwal
-            } else {
-                alert('Gagal mengambil data mata kuliah');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Terjadi kesalahan:', error);
-        }
-    });
-}
+        // // Ketika status checkbox berubah
+        // $(document).on('change', '.course-checkbox', function() {
+        //     var kodeMk = $(this).val();
+        //     var isChecked = $(this).prop('checked');
 
-</script>
+        //     console.log("Kode MK:", kodeMk, "Checked:", isChecked);
+        //     console.log("CSRF Token:", '{{ csrf_token() }}');  // Tambahkan ini untuk memastikan token ada
 
+        //     // Menentukan URL berdasarkan status checkbox
+        //     var url = isChecked ? '/mhs/irs/save-course-selection' : '/mhs/irs/remove-course-selection';
+
+        //     // Kirim data ke server menggunakan AJAX
+        //     $.ajax({
+        //         url: url,
+        //         type: 'POST',
+        //         data: {
+        //             kode_mk: kodeMk,
+        //             _token: '{{ csrf_token() }}',
+        //         },
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 alert(isChecked ? 'Mata kuliah berhasil ditambahkan' : 'Mata kuliah berhasil dihapus');
+        //                 updateScheduleTable(); // Memperbarui tampilan jadwal
+        //             } else {
+        //                 alert('Terjadi kesalahan saat menyimpan mata kuliah');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Terjadi kesalahan:', error);
+        //         }
+        //     });
+        // });
+
+        // // Fungsi untuk memperbarui jadwal
+        // function updateScheduleTable() {
+        //     $.ajax({
+        //         url: '/mhs/irs/get-selected-courses',
+        //         type: 'GET',
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 $('#displayedCourses').html(response.jadwalHtml);
+        //             } else {
+        //                 alert('Gagal memuat jadwal');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+        // Fungsi untuk mengupdate daftar mata kuliah ditampilkan
+        // function updateDisplayedCourses() {
+        //     var selectedCourses = [];
+
+        //     // Mengambil semua checkbox yang dicentang
+        //     $('.course-checkbox:checked').each(function() {
+        //         selectedCourses.push($(this).val());
+        //     });
+
+        //     // Mengirimkan data dengan AJAX
+        //     $.ajax({
+        //         url: '/update-mata-kuliah', // Ganti dengan URL yang sesuai
+        //         method: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}', // CSRF token untuk keamanan
+        //             courses: selectedCourses // Daftar kode mata kuliah yang dipilih
+        //         },
+        //         success: function(response) {
+        //             // Menampilkan mata kuliah yang baru ditambahkan
+        //             $('#displayedCourses').html(response.html);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Terjadi kesalahan:', error);
+        //         }
+        //     });
+        // }
+
+    // Event listener untuk perubahan pada checkbox
+   
+</script> -->

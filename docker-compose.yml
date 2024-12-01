@@ -29,7 +29,7 @@ services:
      - "2022:80"
     volumes:
       - .:/var/www/sigmappl
-      - ./storage/:/etc/nginx/conf.d/
+      - ./storage/app.conf:/etc/nginx/conf.d/app.conf
     networks:
       - sigmappl
 

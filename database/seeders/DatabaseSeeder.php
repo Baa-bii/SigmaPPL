@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -78,19 +77,23 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Panggil Seeder lainnya
+        // Panggil Seeder Dosen
+        
+
+        // Panggil Seeder Lainnya
         $this->call([
             ProgramStudiSeeder::class,
-            DosenSeeder::class, 
+            DosenSeeder::class,
             RuangKelasSeeder::class,
             MataKuliahSeeder::class,
             MahasiswaSeeder::class,
             SemesterAktifSeeder::class,
-            RiwayatSemesterAktifSeeder::class,
-            WaktuSeeder::class,
             JadwalSeeder::class,
             IRSSeeder::class,
             khsSeeder::class,
+            DosenMatkulSeeder::class,
+            // RiwayatSemesterAktifSeeder::class,
+        
         ]);
     }
 }
