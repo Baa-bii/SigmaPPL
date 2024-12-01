@@ -47,3 +47,4 @@ class IRS extends Model
         return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
     }
 }
+    

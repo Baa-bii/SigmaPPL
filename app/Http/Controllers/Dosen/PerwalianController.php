@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
-use App\Models\RiwayatSemesterAktif;  // Tambahkan import untuk model RiwayatSemesterAktif
-use App\Models\IRS;                    // Tambahkan import untuk model IRS
-use App\Models\KHS;                    // Tambahkan import untuk model KHS
+use App\Models\RiwayatSemesterAktif;  
+use App\Models\IRS;                    
+use App\Models\KHS;                   
 use App\Models\MataKuliah; 
+use App\Models\SemesterAktif; 
 
 class PerwalianController extends Controller
 {
@@ -146,8 +147,20 @@ class PerwalianController extends Controller
         
     public function show($nim)
     {
+        // Ambil data mahasiswa beserta program studi yang terkait
         $mahasiswa = Mahasiswa::with('programStudi')->where('nim', $nim)->firstOrFail();
+        
+        // Ambil data semester aktif berdasarkan NIM mahasiswa
+        $semesterAktif = SemesterAktif::where('nim', $nim)
+            ->latest() // Ambil semester yang terbaru
+            ->first();
 
-        return view('content.dosen.detailmhs', compact('mahasiswa'));
+        // Jika data semester aktif tidak ditemukan, set nilai default
+        $tahunAkademik = $semesterAktif ? $semesterAktif->tahun_akademik : 'Not Found';
+        $semester = $semesterAktif ? $semesterAktif->semester : 'Not Found';
+        
+        // Kirim data mahasiswa dan semester aktif ke view
+        return view('content.dosen.detailmhs', compact('mahasiswa', 'tahunAkademik', 'semester'));
     }
+
 }

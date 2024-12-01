@@ -41,7 +41,6 @@ class KHS extends Model
     // public function semesterAktif()
     // {
     //     return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
-    // }
-   
 
 }
+
