@@ -11,21 +11,21 @@ class IRS extends Model
 
     protected $table = 'irs';
     protected $primaryKey = 'id';
-    protected $fillable = ['nim', 'kode_mk', 'id_TA', 'id_riwayat_TA','status', 'status_mata_kuliah'];
-
-<<<<<<< HEAD
-    protected $fillable = ['nim', 'kode_mk', 'id_jadwal','id_TA'];
+    protected $fillable = ['nim', 'kode_mk', 'id_jadwal', 'id_TA','status', 'status_mata_kuliah'];
 
 
     /**
      * Relasi ke tabel Mahasiswa.
      */
-=======
     // Relasi dengan Mahasiswa
->>>>>>> f03fc4a985f0c6b9c61a22a085fea44175286c26
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+    }
+
+    public function KHS()
+    {
+        return $this->hasOne(KHS::class, 'id');
     }
     
     public function matakuliah()
@@ -40,17 +40,10 @@ class IRS extends Model
     {
         return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
     }
-<<<<<<< HEAD
 
     // relasi ke tabel jadwal
     public function Jadwal()
     {
         return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
-=======
-    
-    public function riwayatSemesterAktif()
-    {
-        return $this->belongsTo(RiwayatSemesterAktif::class, 'id_riwayat_TA', 'id');
->>>>>>> f03fc4a985f0c6b9c61a22a085fea44175286c26
     }
 }
