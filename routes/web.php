@@ -67,12 +67,13 @@ Route::prefix('dekan')->middleware(['auth:dekan'])->group(function () {
     Route::get('/home', [DashboardDekanController::class, 'dashboard'])->name('dekan.dashboard.index');
     Route::get('/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
     Route::get('/jadwal', [DashboardDekanController::class, 'index'])->name('dekan.jadwal.index');
-    Route::get('/jadwal/filter', [DashboardDekanController::class, 'filterJadwal']);
-    Route::patch('/dekan/verifikasi/{id}', [DashboardDekanController::class, 'updateStatus'])->name('dekan.verifikasi.update');
-    Route::patch('/dekan/verifikasiruang/{id}', [DashboardDekanController::class, 'updateRuang'])->name('dekan.verifikasiruang.update');
-    Route::get('/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
-    Route::get('/ruang/verifikasiruang', [DashboardDekanController::class, 'verifikasiRuang'])->name('dekan.verifikasiruang');
+    Route::get('/jadwal/filter', [DashboardDekanController::class, 'filterJadwal'])->name('dekan.jadwal.filter'); // Memastikan route terdaftar
+    Route::get('/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
+    Route::get('/verifikasiruang', [DashboardDekanController::class, 'verifikasiruang'])->name('dekan.verifikasiruang');
+    Route::patch('/verifikasi/{id}', [DashboardDekanController::class, 'updateStatus'])->name('dekan.verifikasi.update');
+    Route::patch('/verifikasiruang/{id}', [DashboardDekanController::class, 'updateRuang'])->name('dekan.verifikasiruang.update');
 });
+
 
 Route::get('/dekan', function () {
     return view('content.dekan.dashboard');

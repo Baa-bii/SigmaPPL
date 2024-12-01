@@ -49,24 +49,25 @@
             <h3 class="text-lg font-semibold mb-4">Persetujuan Usulan Jadwal Kuliah</h3>
             <div class="space-y-4">
                 <!-- Dropdown Program Studi -->
+                <form action="{{ route('dekan.jadwal.filter') }}" method="GET" class="space-y-4">
                 <div>
                     <label for="program-studi" class="block font-semibold mb-1">Program Studi</label>
-                    <select id="program-studi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <select id="program-studi" name="prodi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
                         <option value="">Pilih Prodi</option>
-                        <option value="biologi">Biologi</option>
-                        <option value="kimia">Kimia</option>
-                        <option value="fisika">Fisika</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="statistika">Statistika</option>
-                        <option value="informatika">Informatika</option>
-                        <option value="bioteknologi">Bioteknologi</option>
+                        <option value="BIO123">Biologi</option>
+                        <option value="KIM123">Kimia</option>
+                        <option value="FIS123">Fisika</option>
+                        <option value="MAT123">Matematika</option>
+                        <option value="STA123">Statistika</option>
+                        <option value="INF123">Informatika</option>
+                        <option value="TEK123">Bioteknologi</option>
                     </select>
                 </div>
         
                 <!-- Dropdown Semester -->
                 <div>
                     <label for="semester" class="block font-semibold mb-1">Semester</label>
-                    <select id="semester" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <select id="semester" name="semester" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
                         <option value="">Pilih Semester</option>
                         <option value="1">Semester 1</option>
                         <option value="2">Semester 2</option>
@@ -79,85 +80,93 @@
                     </select>
                 </div>
                 <!-- Button Tampilkan -->
-                <a href="{{ route('dekan.verifikasijadwal') }}" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center">
+                <a href="{{ route('dekan.verifikasijadwal') }}" id="show-button" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center" onclick="applyFilter()" type="submit">
                     Tampilkan
                 </a>
+                </form>
             </div>
         </div>
     </main>
         <x-footerdosen></x-footerdosen>
     </div>
-
-    <script>
         
-        <script>
-$(document).ready(function () {
-    $('#program-studi, #semester').on('change', function () {
-        var prodi = $('#program-studi').val();
-        var semester = $('#semester').val();
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const showButton = document.getElementById('show-button');
+    const programStudi = document.getElementById('program-studi');
+    const semester = document.getElementById('semester');
+    const errorMessage = document.getElementById('error-message');
+    const tableBody = document.getElementById('data-tabel-jadwal');
+    const emptyPlaceholder = document.getElementById('empty-placeholder');
+    const loadingIndicator = document.getElementById('loading-indicator');
 
-        // Validasi input untuk Program Studi dan Semester
-        if (!prodi) {
-            alert('Mohon pilih Program Studi!');
+    showButton.addEventListener('click', function () {
+        const prodi = programStudi.value;
+        const sem = semester.value;
+
+        // Validasi input
+        if (!prodi || !sem) {
+            errorMessage.textContent = 'Mohon pilih Program Studi dan Semester!';
+            errorMessage.classList.remove('hidden');
             return;
         }
-        if (!semester) {
-            alert('Mohon pilih Semester!');
-            return;
-        }
 
-        console.log('Prodi:', prodi);
-        console.log('Semester:', semester);
+        errorMessage.classList.add('hidden'); // Sembunyikan pesan error
+        loadingIndicator.classList.remove('hidden'); // Tampilkan loading
 
-        // Kirim permintaan filter
-        $.ajax({
-            url: '/dekan/jadwal/filter',  // Perbaikan URL yang benar
+        // Kirim permintaan AJAX
+        fetch(`/dekan/jadwal/filter?prodi=${prodi}&semester=${sem}`, {
             method: 'GET',
-            data: {
-                prodi: prodi,
-                semester: semester,
-            },
-            success: function (response) {
-                console.log('Response Data:', response); // Debugging seluruh respons
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => response.json())
+            .then(data => {
+                loadingIndicator.classList.add('hidden'); // Sembunyikan loading
+                tableBody.innerHTML = ''; // Bersihkan tabel sebelumnya
 
-                if (!response.jadwal || response.jadwal.length === 0) {
-                    alert('Tidak ada jadwal yang sesuai dengan filter.');
+                if (!data.jadwal || data.jadwal.length === 0) {
+                    emptyPlaceholder.classList.remove('hidden');
                     return;
                 }
 
-                // Debug setiap elemen jadwal
-                response.jadwal.forEach(function (item) {
-                    console.log('Item Jadwal:', item);
-                });
+                emptyPlaceholder.classList.add('hidden');
 
-                // Menampilkan data di tabel
-                var tableBody = $('#jadwal-table-body');
-                tableBody.empty();  // Menghapus data lama sebelum menambah yang baru
-
-                response.jadwal.forEach(function (item) {
-                    // Pastikan format data yang ingin ditampilkan sudah sesuai dengan response
-                    tableBody.append(`
-                        <tr>
-                            <td>${item.matakuliah.nama_mk}</td>
-                            <td>${item.waktu.jam_mulai} - ${item.waktu.jam_selesai}</td>
-                            <td>${item.matakuliah.dosen ? item.matakuliah.dosen.nama : 'N/A'}</td>
-                            <td>${item.matakuliah.semester}</td>
-                            <td>${item.ruang.nama}</td>
-                            <td>${item.ruang.gedung}</td>
-                            <td>${item.id_TA}</td>
-                            <td><a href="#" class="text-blue-500">Edit</a></td>
-                            <td>${item.status || 'N/A'}</td>
-                        </tr>
-                    `);
+                data.jadwal.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.matakuliah?.nama_mk || 'Tidak Ada Data'}</td>
+                        <td>${item.waktu?.jam_mulai || 'N/A'} - ${item.waktu?.jam_selesai || 'N/A'}</td>
+                        <td>${item.matakuliah?.dosenmatkul?.dosen?. nama_dosen || 'N/A'}</td>
+                        <td>${item.matakuliah?.semester || 'N/A'}</td>
+                        <td>${item.ruang?.nama || 'Tidak Ada Ruangan'}</td>
+                        <td>${item.ruang?.gedung || 'N/A'}</td>
+                        <td>${item.id_TA || 'N/A'}</td>
+                    `;
+                    tableBody.appendChild(row);
                 });
-            },
-            error: function (xhr) {
-                console.error('Terjadi kesalahan:', xhr.responseText);
-                alert('Terjadi kesalahan saat memuat jadwal. Silakan coba lagi.');
-            }
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.textContent = 'Terjadi kesalahan saat memuat data.';
+                errorMessage.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+            });
     });
 });
+
+function applyFilter() {
+        const prodi = document.getElementById('program-studi').value;
+        const semester = document.getElementById('semester').value;
+
+        if (!prodi || !semester) {
+            alert('Silakan pilih Program Studi dan Semester!');
+            return;
+        }
+
+        // Redirect ke filter route
+        const url = `/dekan/jadwal/filter?prodi=${prodi}&semester=${semester}`;
+        window.location.href = url;
+    }
 
 </script>
 
