@@ -36,9 +36,9 @@
                         <h3 class="text-lg font-bold mb-2">Aktif</h3>
                         <p class="mb-4">Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).</p>
                         <button id="status-aktif" 
-                            class="px-4 py-2 rounded-md text-sm transition
-                                @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
-                            @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') disabled @endif>
+                        class="px-4 py-2 rounded-md text-sm transition
+                                @if(optional($semesterAktif->where('is_active', true)->first())->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
+                            @if(optional($semesterAktif->where('is_active', true)->first())->status !== 'Belum Registrasi') disabled @endif>
                             Pilih
                         </button>
                     </div>
@@ -47,9 +47,9 @@
                         <h3 class="text-lg font-bold mb-2">Cuti</h3>
                         <p class="mb-4">Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.</p>
                         <button id="status-cuti" 
-                            class="px-4 py-2 rounded-md text-sm transition
-                                @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
-                            @if(isset($semesterAktif) && $semesterAktif->status !== 'Belum Registrasi') disabled @endif>
+                        class="px-4 py-2 rounded-md text-sm transition
+                                @if(optional($semesterAktif->where('is_active', true)->first())->status !== 'Belum Registrasi') bg-gray-400 text-gray-700 cursor-not-allowed @else bg-yellow-300 hover:bg-yellow-600 @endif"
+                            @if(optional($semesterAktif->where('is_active', true)->first())->status !== 'Belum Registrasi') disabled @endif>
                             Pilih
                         </button>
                     </div>
@@ -59,10 +59,10 @@
                     <h3 class="text-lg font-semibold mr-4">Status Akademik:</h3>
                     <span id="status-akademik" 
                         class="px-4 py-2 rounded-md text-white text-sm
-                            @if(isset($semesterAktif) && $semesterAktif->status === 'Aktif') bg-green-500
-                            @elseif(isset($semesterAktif) && $semesterAktif->status === 'Cuti') bg-blue-500
+                            @if(isset($semesterAktif) && $semesterAktif->where('is_active', true)->first()->status === 'Aktif') bg-green-500
+                            @elseif(isset($semesterAktif) && $semesterAktif->where('is_active', true)->first()->status === 'Cuti') bg-blue-500
                             @else bg-red-600 @endif">
-                        {{ $semesterAktif->status ?? 'Belum Tersedia' }}
+                        {{ $semesterAktif->where('is_active', true)->first()->status ?? 'Belum Tersedia' }}
                     </span>
                 </div>
 
@@ -95,8 +95,16 @@
             const statusAkademik = document.getElementById('status-akademik');
             statusAkademik.textContent = status; // Update teks status
             statusAkademik.classList.remove('bg-red-600'); // Hapus warna merah
-            statusAkademik.classList.add('bg-blue-600'); // Tambahkan warna biru
-
+            statusAkademik.classList.add('bg-green-600'); // Tambahkan warna biru
+            // Tambahkan warna sesuai status
+            
+            // if (response.data.status === 'Aktif') {
+            //     statusAkademik.classList.add('bg-green-600'); // Hijau untuk Aktif
+            // } else if (response.data.status === 'Cuti') {
+            //     statusAkademik.classList.add('bg-blue-600'); // Biru untuk Cuti
+            // } else {
+            //     statusAkademik.classList.add('bg-red-600'); // Merah untuk status lain
+            // }
             // Disable tombol Aktif dan Cuti
             const statusAktifBtn = document.getElementById('status-aktif');
             const statusCutiBtn = document.getElementById('status-cuti');
@@ -108,6 +116,7 @@
             statusCutiBtn.disabled = true;
             statusCutiBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
             statusCutiBtn.classList.remove('bg-yellow-300', 'hover:bg-yellow-600');
+            
         })
         .catch(error => {
             if (error.response) {

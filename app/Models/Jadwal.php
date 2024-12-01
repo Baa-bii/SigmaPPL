@@ -11,25 +11,26 @@ class Jadwal extends Model
 
     protected $table = 'jadwal';
 
-    protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
+    protected $fillable = ['id_jadwal', 'hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi', 'status'];
 
     // Relasi ke model Waktu
     public function waktu()
     {
-        return $this->belongsTo(Waktu::class, 'id_waktu');
+        return $this->belongsTo(Waktu::class, 'id_waktu', 'id');
     }
 
-    // Relasi ke model Ruang
     public function ruang()
     {
-        return $this->belongsTo(RuangKelas::class, 'id_ruang');
+        return $this->belongsTo(RuangKelas::class, 'id_ruang', 'id');
     }
 
-    // Relasi ke model Matakuliah
+    // Relasi dengan matakuliah menggunakan kode_mk
     public function matakuliah()
     {
+
         return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
-    return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
+    
+        return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
     }
 
     // Relasi ke model ProgramStudi

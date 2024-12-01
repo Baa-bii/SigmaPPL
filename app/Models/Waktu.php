@@ -11,10 +11,10 @@ class Waktu extends Model
 
     protected $table = 'waktu';
 
-    protected $fillable = ['id', 'jam_mulai', 'jam_selesai','tanggal', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'jam_mulai', 'created_at', 'updated_at'];
 
     // Relasi dengan Jadwal
-    public function jadwals()
+    public function jadwal()
     {
         return $this->hasMany(Jadwal::class, 'id_waktu', 'id');
     }

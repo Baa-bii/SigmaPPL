@@ -53,7 +53,11 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-    Route::post('/update-mata-kuliah', [BuatIRSController::class, 'updateMataKuliah'])->name('update-mata-kuliah');
+    Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK']);
+    Route::post('/update-mk', [BuatIRSController::class, 'updateMK']);
+    Route::post('/jadwal', [BuatIRSController::class, 'showJadwal']);
+
+
     // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
     // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
     // Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
@@ -63,22 +67,30 @@ Route::group(['middleware' => 'auth:mhs'], function () {
 Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
     // Dashboard
     Route::get('/home', [DashboardKaprodiController::class, 'index'])->name('dashboard.index');
-
-    // Jadwal pada Dashboard (tanpa tumpang tindih dengan resource controller)
     Route::get('/home/jadwal', [DashboardKaprodiController::class, 'jadwal'])->name('dashboard.jadwal');
-    // Resource Controllers
+    Route::get('/kaprodi/matakuliah', [MataKuliahController::class, 'create'])->name('content.kaprodi.matakuliah');
+    Route::post('/kaprodi/mata_kuliah', [MataKuliahController::class, 'store'])->name('kaprodi.mata_kuliah.store');
+    Route::get('/kaprodi/mata_kuliah', [MataKuliahController::class, 'index'])->name('content.kaprodi.index');
     Route::resource('mata_kuliah', MataKuliahController::class);
     Route::resource('jadwal', JadwalController::class);
-});
+    Route::resource('kaprodi/mata-kuliah', MataKuliahController::class)->names([
+        'index' => 'content.kaprodi.matakuliah.index',
+    ]);
+    // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 
+});
 
 Route::prefix('dekan')->middleware(['auth:dekan'])->group(function () {
     Route::get('/home', [DashboardDekanController::class, 'dashboard'])->name('dekan.dashboard.index');
     Route::get('/ruang', [DashboardDekanController::class, 'ruang'])->name('dekan.ruang.index');
     Route::get('/jadwal', [DashboardDekanController::class, 'index'])->name('dekan.jadwal.index');
-    Route::patch('/dekan/verifikasi/{id}', [DashboardDekanController::class, 'updateStatus'])->name('dekan.verifikasi.update');
-    Route::get('/jadwal/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
+    Route::get('/jadwal/filter', [DashboardDekanController::class, 'filterJadwal'])->name('dekan.jadwal.filter'); // Memastikan route terdaftar
+    Route::get('/verifikasijadwal', [DashboardDekanController::class, 'verifikasijadwal'])->name('dekan.verifikasijadwal');
+    Route::get('/verifikasiruang', [DashboardDekanController::class, 'verifikasiruang'])->name('dekan.verifikasiruang');
+    Route::patch('/verifikasi/{id}', [DashboardDekanController::class, 'updateStatus'])->name('dekan.verifikasi.update');
+    Route::patch('/verifikasiruang/{id}', [DashboardDekanController::class, 'updateRuang'])->name('dekan.verifikasiruang.update');
 });
+
 
 Route::get('/dekan', function () {
     return view('content.dekan.dashboard');
