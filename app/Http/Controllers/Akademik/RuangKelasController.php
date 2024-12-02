@@ -57,6 +57,15 @@ class RuangKelasController extends Controller
             'kode_prodi' => 'required|exists:program_studi,kode_prodi',
         ]);
 
+        // Check for uniqueness
+        $exists = RuangKelas::where('nama', $validatedData['nama'])
+                ->where('gedung', $validatedData['gedung'])
+                ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['nama' => 'Ruangan ini sudah dialokasikan dengan prodi lain.']);
+        }
+
         RuangKelas::create($validatedData);
 
         return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully created!');
@@ -71,6 +80,15 @@ class RuangKelasController extends Controller
             'kapasitas' => 'required|integer|min:1',
             'kode_prodi' => 'required|string|exists:program_studi,kode_prodi',
         ]);
+
+        $exists = RuangKelas::where('nama', $validated['nama'])
+                ->where('gedung', $validated['gedung'])
+                ->where('id', '!=', $id)
+                ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['nama' => 'Ruangan ini sudah dialokasikan dengan prodi lain.']);
+        }
 
         // Find the RuangKelas by ID
         $ruangKelas = RuangKelas::findOrFail($id);
