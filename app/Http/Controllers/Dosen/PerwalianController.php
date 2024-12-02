@@ -333,9 +333,6 @@ class PerwalianController extends Controller
                 ->where('id_TA', $semester->id)
                 ->get();
 
-            
-
-            
             // Hitung total SKS untuk semester ini
             $totalSKS = 0;
             foreach ($irs as $ir) {
