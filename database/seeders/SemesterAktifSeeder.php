@@ -33,7 +33,7 @@ class SemesterAktifSeeder extends Seeder
         SemesterAktif::updateOrCreate([
             'tahun_akademik' => '2022/2023 Genap',
             'semester' => '2',
-            'status' => 'AKtif',
+            'status' => 'Aktif',
             'nim' => '24060122140999',
         ], [
             'created_at' => now(),
