@@ -127,19 +127,46 @@
     <!-- Jadwal Mata Kuliah -->
     <div class="w-full lg:w-2/3 scroll-smooth">
         <div class="overflow-x-auto">
-            <table class="w-full border-collapse border border-gray-300 bg-white">
-                <thead>
+        <table class="w-full border-collapse border border-gray-300 bg-white">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2 text-center">WAKTU</th>
+                    <th class="border border-gray-300 p-2 text-center">SENIN</th>
+                    <th class="border border-gray-300 p-2 text-center">SELASA</th>
+                    <th class="border border-gray-300 p-2 text-center">RABU</th>
+                    <th class="border border-gray-300 p-2 text-center">KAMIS</th>
+                    <th class="border border-gray-300 p-2 text-center">JUMAT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for ($hour = 6; $hour <= 22; $hour++)
                     <tr>
-                        <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
-                        <th class="border border-gray-300 p-2">SENIN<br><span class="italic text-sm font-medium">MONDAY</span></th>
-                        <th class="border border-gray-300 p-2">SELASA<br><span class="italic text-sm font-medium">TUESDAY</span></th>
-                        <th class="border border-gray-300 p-2">RABU<br><span class="italic text-sm font-medium">WEDNESDAY</span></th>
-                        <th class="border border-gray-300 p-2">KAMIS<br><span class="italic text-sm font-medium">THURSDAY</span></th>
-                        <th class="border border-gray-300 p-2">JUMAT<br><span class="italic text-sm font-medium">FRIDAY</span></th>
+                        <td class="border border-gray-300 p-2 text-center">{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00</td>
+                        @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $hari)
+                            <td class="border border-gray-300 p-2">
+                            @if(isset($jadwalPerHari[$hari][$hour]))
+                                @foreach ($jadwalPerHari[$hari][$hour] as $jadwalItem)
+                                    <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2">
+                                        <h5 class="mb-2 text-xs font-bold text-gray-900">{{ $jadwalItem->matakuliah->nama_mk }}</h5>
+                                        <p class="text-xs text-red-500 font-semibold">{{ strtoupper($jadwalItem->matakuliah->jenis_mk) }} ({{ $jadwalItem->matakuliah->kode_mk }})</p>
+                                        <p class="text-xs text-gray-700">(SMT {{ $jadwalItem->matakuliah->semester }}) ({{ $jadwalItem->matakuliah->sks }} SKS)</p>
+                                        <p class="text-xs text-gray-700">Kelas: {{ $jadwalItem->kelas }}</p>
+                                        <div class="flex items-center mt-2 text-xs text-gray-600">
+                                            {{ $jadwalItem->waktu->jam_mulai }} - {{ $jadwalItem->waktu->jam_selesai }}
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-center text-xs text-gray-400">Tidak ada jadwal</p>
+                            @endif
+                            </td>
+                        @endforeach
                     </tr>
-                </thead>
-                
-            </table> 
+                @endfor
+            </tbody>
+        </table>
+
+
             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Simpan</button>
             <button type="button" class="focus:outline-none text-white bg-purple-800 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Lihat</button>
         
