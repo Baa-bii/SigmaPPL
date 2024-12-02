@@ -77,6 +77,36 @@ class SemesterAktifSeeder extends Seeder
             'updated_at' => now(),
             'is_active' => true, // Semester 5 aktif
         ]);
+         // Semester 6 
+         SemesterAktif::updateOrCreate([
+            'tahun_akademik' => '2024/2025 Genap',
+            'semester' => '6',
+            'nim' => '24060122140999',
+        ], [
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_active' => false, 
+        ]);
+         // Semester 7 
+         SemesterAktif::updateOrCreate([
+            'tahun_akademik' => '2025/2026 Ganjil',
+            'semester' => '7',
+            'nim' => '24060122140999',
+        ], [
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_active' => false,
+        ]);
+         // Semester 8
+         SemesterAktif::updateOrCreate([
+            'tahun_akademik' => '2025/2026 Genap',
+            'semester' => '8',
+            'nim' => '24060122140999',
+        ], [
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_active' => false,
+        ]);
 
         $tahunSekarang = 2024;
         $semesters = ['Ganjil', 'Genap'];
