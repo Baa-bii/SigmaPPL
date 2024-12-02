@@ -10,6 +10,7 @@ use App\Models\IRS;
 use App\Models\KHS;                   
 use App\Models\MataKuliah; 
 use App\Models\SemesterAktif; 
+use Barryvdh\DomPDF\Facade as PDF;
 
 class PerwalianController extends Controller
 {
@@ -357,4 +358,20 @@ class PerwalianController extends Controller
         return [$semesterAktifData, $hasIRS];
     }
 
+    public function cetakIRS($semesterId)
+    {
+        $irsData = IRS::with(['matakuliah', 'jadwal', 'jadwal.waktu'])
+            ->where('id_TA', $semesterId)
+            ->get();
+
+        $semester = SemesterAktif::findOrFail($semesterId);
+
+        // Generate PDF menggunakan view
+        $pdf = PDF::loadView('pdf.irs', [
+            'irsData' => $irsData,
+            'semester' => $semester,
+        ]);
+
+        return $pdf->stream("IRS_Semester_{$semester->semester}.pdf");
+    }
 }
