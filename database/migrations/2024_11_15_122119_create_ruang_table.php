@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('gedung');
-            $table->string('kapasitas');
+            $table->integer('kapasitas');
             $table->string('kode_prodi');
             $table->foreign('kode_prodi')->references('kode_prodi')->on('program_studi')->onDelete('cascade');
             $table->timestamps();

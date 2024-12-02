@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\SemesterAktif;
+use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\DB;
 
 class SemesterAktifSeeder extends Seeder
 {
@@ -33,7 +35,7 @@ class SemesterAktifSeeder extends Seeder
         SemesterAktif::updateOrCreate([
             'tahun_akademik' => '2022/2023 Genap',
             'semester' => '2',
-            'status' => 'AKtif',
+            'status' => 'Aktif',
             'nim' => '24060122140999',
         ], [
             'created_at' => now(),
@@ -75,6 +77,45 @@ class SemesterAktifSeeder extends Seeder
             'updated_at' => now(),
             'is_active' => true, // Semester 5 aktif
         ]);
+
+        $tahunSekarang = 2024;
+        $semesters = ['Ganjil', 'Genap'];
+
+        // Ambil semua mahasiswa dari database
+        $mahasiswaList = Mahasiswa::all();
+
+        foreach ($mahasiswaList as $mahasiswa) {
+            $tahunMasuk = (int)$mahasiswa->angkatan;
+            $nim = $mahasiswa->nim;
+
+            // Hitung jumlah semester hingga sekarang
+            $totalSemester = ($tahunSekarang - $tahunMasuk) * 2 + 1;
+
+            for ($semester = 1; $semester <= $totalSemester; $semester++) {
+                $isActive = ($semester === $totalSemester) ? true : false;
+
+                // Tentukan tahun akademik
+                $tahunAkademikAwal = $tahunMasuk + intdiv($semester - 1, 2);
+                $tahunAkademikAkhir = $tahunAkademikAwal + 1;
+                $ganjilGenap = $semesters[($semester - 1) % 2];
+                $tahunAkademik = "$tahunAkademikAwal/$tahunAkademikAkhir $ganjilGenap";
+
+                // Tentukan status
+                $status = $isActive ? ['Belum Registrasi', 'Aktif'][array_rand(['Belum Registrasi', 'Aktif'])] : 'Aktif';
+
+                // Buat data semester_aktif
+                SemesterAktif::updateOrCreate([
+                    'tahun_akademik' => $tahunAkademik,
+                    'semester' => $semester,
+                    'nim' => $nim,
+                ], [
+                    'status' => $status,
+                    'is_active' => $isActive,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
         
     }
 }

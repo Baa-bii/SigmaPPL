@@ -214,7 +214,7 @@ class MataKuliahSeeder extends Seeder
             ],
             [
                 'kode_mk' => 'PAIK6203',
-                'nama_mk' => 'Ogranisasi dan Arsitektur Komputer',
+                'nama_mk' => 'Organisasi dan Arsitektur Komputer',
                 'sks' => 3,
                 'semester' => '2',
                 'jenis_mk' => 'wajib',
@@ -408,7 +408,6 @@ class MataKuliahSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            
             [
                 'kode_mk' => 'PAIK6505',
                 'nama_mk' => 'Pembelajaran Mesin',
@@ -420,6 +419,37 @@ class MataKuliahSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
+            //ida nambahin darisini
+            [
+                'kode_mk' => 'PAIK6604',
+                'nama_mk' => 'Praktik Kerja Lapangan',
+                'sks' => 3,
+                'semester' => '6',
+                'jenis_mk' => 'wajib',
+                'kode_prodi' => 'INF123',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_mk' => 'PAIK6605',
+                'nama_mk' => 'Manajemen Proyek',
+                'sks' => 3,
+                'semester' => '6',
+                'jenis_mk' => 'wajib',
+                'kode_prodi' => 'INF123',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_mk' => 'PAIK6602',
+                'nama_mk' => 'Uji Perangkat Lunak',
+                'sks' => 3,
+                'semester' => '6',
+                'jenis_mk' => 'wajib',
+                'kode_prodi' => 'INF123',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

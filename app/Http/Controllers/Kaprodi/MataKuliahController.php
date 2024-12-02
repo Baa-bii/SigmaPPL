@@ -18,23 +18,29 @@ class MataKuliahController extends Controller
         return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen', 'programStudi')); // Mengirimkan dosen
     }
 
+    
     public function create()
     {
         $dosen = Dosen::all(); // Mendapatkan data dosen
-        return view('content.kaprodi.matakuliah', compact('dosen')); // Mengirimkan variabel dosen ke view
+        $programStudi = ProgramStudi::all(); // Mendapatkan data program studi
+        return view('content.kaprodi.matakuliah', compact('dosen', 'programStudi')); // Mengirimkan variabel dosen ke view
     }
 
     public function store(Request $request)
     {
+        $kode_prodi = ProgramStudi::where('kode_prodi', 'INF123')->value('kode_prodi');
         $request->validate([
             'kode_mk' => 'required|string',
             'nama_mk' => 'required|string',
             'semester' => 'required|string',
             'sks' => 'required|integer',
             'jenis_mk' => 'required',
-            'nip_dosen' => 'required|array', 
+            'kode_prodi' => $kode_prodi,
+            'nip_dosen' => 'nullable|array', 
+            // 'nip_dosen.*' => 'exists:dosen,nip', 
             
         ]);
+        // dd($request->all());
 
         // Simpan mata kuliah terlebih dahulu
         $mataKuliah = MataKuliah::create([
@@ -43,13 +49,17 @@ class MataKuliahController extends Controller
             'semester' => $request->semester,
             'sks' => $request->sks,
             'jenis_mk' => $request->jenis_mk,
+            'kode_prodi' => $kode_prodi,
            
         ]);
 
        
         // Simpan relasi ke tabel pivot
-        $mataKuliah->dosen()->attach($request->nip_dosen);
+        
+        if ($request->has('nip_dosen') && !empty($request->nip_dosen)) {
+            $mataKuliah->dosen()->attach($request->nip_dosen);
+        }
 
-        return redirect()->route('mata_kuliah.index')->with('success', 'Mata kuliah berhasil disimpan!');
+        return redirect()->route('kaprodi.mata_kuliah.store')->with('success', 'Mata kuliah berhasil disimpan!');
     }
 };
