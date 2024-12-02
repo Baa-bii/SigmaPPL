@@ -418,7 +418,7 @@ class MataKuliahSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            
+
             //ida nambahin darisini
             [
                 'kode_mk' => 'PAIK6604',
@@ -433,16 +433,6 @@ class MataKuliahSeeder extends Seeder
             [
                 'kode_mk' => 'PAIK6605',
                 'nama_mk' => 'Manajemen Proyek',
-                'sks' => 3,
-                'semester' => '6',
-                'jenis_mk' => 'wajib',
-                'kode_prodi' => 'INF123',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kode_mk' => 'PAIK6602',
-                'nama_mk' => 'Uji Perangkat Lunak',
                 'sks' => 3,
                 'semester' => '6',
                 'jenis_mk' => 'wajib',
