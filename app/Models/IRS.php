@@ -44,7 +44,7 @@ class IRS extends Model
     // relasi ke tabel jadwal
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
     }
     // Model Irs
     public function jadwals()

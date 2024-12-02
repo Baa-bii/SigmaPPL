@@ -323,7 +323,18 @@ class PerwalianController extends Controller
         // Loop untuk menghitung total SKS per semester
         foreach ($semesterAktif as $semester) {
             // Cek apakah semester ini memiliki IRS
-            $irs = IRS::where('id_TA', $semester->id)->get();
+            $irs = IRS::with([
+                'matakuliah', 
+                'jadwal', 
+                'jadwal.ruang', // Ruang terkait dengan jadwal
+                'jadwal.waktu',
+                'matakuliah.dosen' // Dosen yang mengampu mata kuliah
+            ])
+                ->where('id_TA', $semester->id)
+                ->get();
+
+            
+
             
             // Hitung total SKS untuk semester ini
             $totalSKS = 0;
@@ -333,6 +344,12 @@ class PerwalianController extends Controller
                     $totalSKS += $mataKuliah->sks;
                 }
             }
+
+            // Ambil status IRS dari tabel IRS untuk semester ini
+            $statusIRS = $irs->pluck('status')->first(); // Ambil status dari IRS pertama
+            // Menambahkan data IRS dan status ke semester aktif
+            $semester->irsData = $irs;
+            $semester->statusIRS = $statusIRS ?? 'Belum Disetujui'; // Default jika tidak ada status
             
             // Tambahkan data semester dan jumlah SKS ke array
             $semester->jumlah_sks = $totalSKS;
