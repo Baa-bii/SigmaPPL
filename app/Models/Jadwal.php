@@ -16,7 +16,7 @@ class Jadwal extends Model
     // Relasi ke model Waktu
     public function waktu()
     {
-        return $this->belongsTo(Waktu::class, 'id_waktu');
+        return $this->belongsTo(Waktu::class, 'id_waktu', 'id');
     }
 
     // Relasi ke model Ruang

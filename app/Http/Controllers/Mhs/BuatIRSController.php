@@ -143,70 +143,239 @@ class BuatIRSController extends Controller
     //     return view('mhs.akademik.index', compact('jadwals', 'semesterAktif'));
     // }
 
-    public function showJadwal()
-    {
-        $user = auth()->user();
-        $mahasiswa = $user->mahasiswa;
+    // public function showJadwal($nim)
+    // {
+    //     $user = auth()->user();
+    //     $mahasiswa = $user->mahasiswa;
     
-        // Pastikan mahasiswa ada
-        if (!$mahasiswa) {
-            return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
-        }
+    //     // Pastikan mahasiswa ada
+    //     if (!$mahasiswa) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+    //     }
+    //     // Ambil data mahasiswa berdasarkan NIM
+    //     $mahasiswa = Mahasiswa::where('nim', $nim)->first();
     
-        // Ambil semester aktif mahasiswa
-        $semesterAktif = $mahasiswa->semester_aktif()->where('is_active', true)->first();
-        if (!$semesterAktif) {
-            return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
-        }
+    //     // Ambil semester aktif mahasiswa
+    //     $semesterAktif = $mahasiswa->semester_aktif()->where('is_active', true)->first();
+    //     if (!$semesterAktif) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+    //     }
     
-        // Ambil data IRS berdasarkan semester aktif mahasiswa
-        $irs = Irs::where('nim', $mahasiswa->nim) // Filter berdasarkan nim mahasiswa
-        ->where('id_TA', $semesterAktif->id) // Filter berdasarkan semester aktif (id_TA)
-        ->get();
-        // Ambil jadwal mata kuliah yang ada di IRS pada semester aktif
-        $jadwals = Jadwal::with('waktu') // Menambahkan eager load untuk relasi 'waktu'
-        ->whereIn('kode_mk', $irs->pluck('kode_mk'))
-        ->where('id_TA', $semesterAktif->id)
-        ->get();
+    //    // Ambil data IRS berdasarkan semester aktif mahasiswa
+    //     $irs = Irs::where('nim', $mahasiswa->nim) // Filter berdasarkan nim mahasiswa
+    //     ->where('id_TA', $semesterAktif->id) // Filter berdasarkan semester aktif (id_TA)
+    //     ->where('status', 'active') // Pastikan status IRS adalah 'active'
+    //     ->get();
+   
+        
+    //     // Ambil jadwal mata kuliah yang ada di IRS pada semester aktif
+    //     $jadwals = Jadwal::with('waktu') // Menambahkan eager load untuk relasi 'waktu'
+    //     ->whereIn('kode_mk', $irs->pluck('kode_mk')) // Ambil jadwal berdasarkan kode mata kuliah dari IRS
+    //     ->where('id_TA', $semesterAktif->id) // Pastikan jadwal pada semester aktif
+    //     ->get();
+       
 
-        // Kelompokkan jadwal berdasarkan hari dan jam
-        $jadwalGrouped = $jadwals->groupBy(function($jadwal) {
-        return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00';
-        });
+    //     // // Kelompokkan jadwal berdasarkan hari dan jam
+    //     // $jadwalGrouped = $jadwals->groupBy(function ($jadwal) {
+    //     //     return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00';
+    //     // });
+    //     // Organisasi jadwal per hari dan jam
+    //     $jadwalPerHari = $this->organizeJadwalByDay($jadwals);
+    
+    //     return view('content.mhs.akademik', compact('mahasiswa', 'jadwalPerHari', 'semesterAktif'));
+    // }
+    // private function organizeJadwalByTime($jadwals)
+    // {
+    //     $jadwalPerHari = [
+    //         'Senin' => [],
+    //         'Selasa' => [],
+    //         'Rabu' => [],
+    //         'Kamis' => [],
+    //         'Jumat' => [],
+    //         'Sabtu' => [],
+    //     ];
+    //     // Organisasi jadwal berdasarkan hari dan jam
+    // foreach ($jadwals as $jadwal) {
+    //     $hari = $jadwal->waktu->hari;  // Hari dalam jadwal
+    //     $jam = $jadwal->waktu->jam;    // Jam dalam jadwal
 
-        // Kirim data ke view
-        dd($jadwalGrouped);
-        return view('content.mhs.akademik', compact('jadwalGrouped', 'semesterAktif'));
+    //     // Menambahkan jadwal ke dalam array sesuai hari dan jam
+    //     $jadwalPerHari[$hari][$jam][] = $jadwal;
+    // }
+
+    // return $jadwalPerHari;
+    // }
+    public function showJadwal($nim)
+{
+    // Ambil data mahasiswa berdasarkan NIM
+    $mhs = Mahasiswa::where('nim', $nim)->first();
+
+    // Pastikan mahasiswa ditemukan
+    if (!$mhs) {
+        return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
     }
-     // // Ambil jadwal mata kuliah yang ada di IRS pada semester aktif
-        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $irs->pluck('kode_mk')) // Ambil jadwal yang sesuai dengan kode mata kuliah di IRS
-        // ->where('id_TA', $semesterAktif->id) // Pastikan hanya jadwal di semester aktif
-        // ->get()
-        // ->groupBy(function($jadwal) {
-        //     return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00'; // Mengelompokkan jadwal berdasarkan hari dan jam
-        // });
-         // Tambahkan debug statement
-    // // Ambil mata kuliah yang dipilih oleh mahasiswa pada semester aktif
-        // $mataKuliahDipilih = Irs::where('nim', $mahasiswa->nim)
-        //     ->where('id_TA', $semesterAktif->id)
-        //     ->get()
-        //     ->pluck('kode_mk');
-    
-        // Ambil jadwal berdasarkan mata kuliah yang dipilih pada semester aktif
-        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $mataKuliahDipilih)
-        //     ->where('id_TA', $semesterAktif->id) // Filter berdasarkan tahun ajaran
-        //     ->get()
-        //     ->groupBy(function($jadwal) {
-        //         return $jadwal->hari; // Mengelompokkan jadwal berdasarkan hari
-        //     });
 
-        // $jadwalGrouped = Jadwal::whereIn('kode_mk', $mataKuliahDipilih)
-        // ->where('id_TA', $semesterAktif->id)
-        // ->get()
-        // ->groupBy(function($jadwal) {
-        //     return $jadwal->hari . '-' . str_pad($jadwal->waktu->jam_mulai, 2, '0', STR_PAD_LEFT) . ':00'; // Menggabungkan hari dan jam
-        // });
-        // Ambil IRS yang sesuai dengan semester aktif
+    // Ambil semester aktif berdasarkan id_TA yang ada di model Mahasiswa
+    $semesterAktif = SemesterAktif::where('is_active', 1)
+        ->where('id', $mhs->semester_aktif_id) // Pastikan semester_aktif_id ada di model Mahasiswa
+        ->first();
+
+    // Pastikan semester aktif ditemukan
+    if (!$semesterAktif) {
+        return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+    }
+
+    // Query untuk mengambil jadwal berdasarkan data IRS dan semester aktif
+    $jadwals = DB::table('irs')
+        ->join('semester_aktif', 'irs.id_TA', '=', 'semester_aktif.id')
+        ->join('jadwal', 'irs.kode_mk', '=', 'jadwal.kode_mk')
+        ->join('waktu', 'jadwal.id_waktu', '=', 'waktu.id')
+        ->join('matakuliah', 'jadwal.kode_mk', '=', 'matakuliah.kode_mk')
+        ->select(
+            'jadwal.kode_mk',
+            'jadwal.id_jadwal AS jadwal_id',
+            'jadwal.kode_mk AS jadwal_kode_mk',
+            'jadwal.kelas',
+            'jadwal.hari',
+            'waktu.jam_mulai',
+            'matakuliah.nama_mk',
+            'matakuliah.jenis_mk',
+            'matakuliah.semester',
+            'matakuliah.sks'
+        )
+        ->where('irs.nim', $nim)  // Pastikan NIM sesuai
+        ->where('semester_aktif.is_active', 1)  // Pastikan semester aktif
+        ->orderBy('jadwal.hari')
+        ->orderBy('waktu.jam_mulai')
+        ->get();
+
+    // Pastikan data jadwal ditemukan
+    if ($jadwals->isEmpty()) {
+        return redirect()->route('mhs.dashboard.index')->with('error', 'Data jadwal tidak ditemukan.');
+    }
+
+    // Mengorganisasi jadwal berdasarkan hari dan jam
+    $jadwalPerHari = [
+        'Senin' => [],
+        'Selasa' => [],
+        'Rabu' => [],
+        'Kamis' => [],
+        'Jumat' => [],
+        'Sabtu' => [],
+    ];
+
+    // Organisasi jadwal berdasarkan hari dan jam
+    foreach ($jadwals as $jadwal) {
+        $hari = $jadwal->hari; // Hari dalam jadwal
+        $jam = (int) $jadwal->jam_mulai; // Ubah menjadi integer
+
+        // Pastikan hari dan jam sesuai dengan data yang ada
+        if (isset($jadwalPerHari[$hari])) {
+            // Menambahkan jadwal ke dalam array sesuai hari dan jam
+            $jadwalPerHari[$hari][$jam][] = $jadwal;
+        }
+    }
+
+    // Kembalikan ke view dengan data yang sudah diproses
+    return view('content.mhs.akademik', compact('mhs', 'jadwalPerHari', 'semesterAktif'));
+}
+
+    
+    
+    
+    // public function showJadwal($nim)
+    // {
+    //     $user = auth()->user();
+        
+    //     // Ambil data mahasiswa berdasarkan NIM
+    //     $mhs = Mahasiswa::where('nim', $nim)->first();
+    
+    //     // Pastikan mahasiswa ditemukan
+    //     if (!$mhs) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+    //     }
+    
+    //     // Ambil semester aktif berdasarkan id_TA di tabel semester_aktif
+    //     $semesterAktif = SemesterAktif::where('is_active', 1)
+    //         ->where('id', $mhs->semester_aktif_id) // Pastikan ini ada di model Mahasiswa
+    //         ->first();
+    
+    //     // Pastikan semester aktif ditemukan
+    //     if (!$semesterAktif) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Semester aktif tidak ditemukan.');
+    //     }
+    
+    //     // Ambil data IRS berdasarkan NIM dan id_TA
+    //     $irs = Irs::where('nim', $nim)
+    //         ->where('id_TA', $semesterAktif->id)
+    //         ->get();
+    
+    //     // Pastikan data IRS ditemukan
+    //     if ($irs->isEmpty()) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Data IRS tidak ditemukan.');
+    //     }
+    
+    //     // Query untuk mengambil jadwal berdasarkan data IRS dan semester aktif
+    //     $jadwals = DB::table('irs')
+    //         ->join('semester_aktif', 'irs.id_TA', '=', 'semester_aktif.id')
+    //         ->join('jadwal', 'irs.kode_mk', '=', 'jadwal.kode_mk')
+    //         ->join('waktu', 'jadwal.id_waktu', '=', 'waktu.id')
+    //         ->join('matakuliah', 'jadwal.kode_mk', '=', 'matakuliah.kode_mk')
+    //         ->select(
+    //             'jadwal.kelas',
+    //             'jadwal.hari',
+    //             'waktu.jam_mulai',
+    //             'matakuliah.nama_mk',
+    //             'matakuliah.jenis_mk',
+    //             'matakuliah.semester',
+    //             'matakuliah.sks'
+    //         )
+    //         ->where('irs.nim', $mhs->nim)
+    //         ->where('semester_aktif.is_active', 1) // Pastikan semester aktif
+    //         ->orderBy('jadwal.hari')
+    //         ->orderBy('waktu.jam_mulai')
+    //         ->get();
+    
+    //     // Debugging untuk melihat data jadwal
+    //     dd($jadwals);
+    
+    //     // Organisasi jadwal per hari dan jam
+    //     $jadwalPerHari = $this->organizeJadwalByTime($jadwals);
+    
+    //     // Debugging untuk melihat hasil organisasi jadwal
+    //     dd($jadwalPerHari);
+    
+    //     // Kembalikan ke view dengan data yang sudah diproses
+    //     return view('content.mhs.akademik', compact('mhs', 'jadwalPerHari', 'semesterAktif'));
+    // }
+    
+    // private function organizeJadwalByTime($jadwals)
+    // {
+    //     $jadwalPerHari = [
+    //         'Senin' => [],
+    //         'Selasa' => [],
+    //         'Rabu' => [],
+    //         'Kamis' => [],
+    //         'Jumat' => [],
+    //         'Sabtu' => [],
+    //     ];
+    
+    //     // Mengorganisasi jadwal berdasarkan hari dan jam
+    //     foreach ($jadwals as $jadwal) {
+    //         $hari = $jadwal->hari; // Hari dalam jadwal
+    //         $jam = (int) $jadwal->jam_mulai; // Ubah menjadi integer
+    
+    //         // Pastikan hari dan jam sesuai dengan data yang ada
+    //         if (isset($jadwalPerHari[$hari])) {
+    //             // Menambahkan jadwal ke dalam array sesuai hari dan jam
+    //             $jadwalPerHari[$hari][$jam][] = $jadwal;
+    //         }
+    //     }
+    
+    //     return $jadwalPerHari;
+    // }
+    
+
 
 }
 
