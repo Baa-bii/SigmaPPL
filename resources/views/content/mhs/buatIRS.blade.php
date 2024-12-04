@@ -127,49 +127,57 @@
     <!-- Jadwal Mata Kuliah -->
     <div class="w-full lg:w-2/3 scroll-smooth">
         <div class="overflow-x-auto">
-        <table class="w-full border-collapse border border-gray-300 bg-white">
-            <thead>
-                <tr>
-                    <th class="border border-gray-300 p-2 text-center">WAKTU</th>
-                    <th class="border border-gray-300 p-2 text-center">SENIN</th>
-                    <th class="border border-gray-300 p-2 text-center">SELASA</th>
-                    <th class="border border-gray-300 p-2 text-center">RABU</th>
-                    <th class="border border-gray-300 p-2 text-center">KAMIS</th>
-                    <th class="border border-gray-300 p-2 text-center">JUMAT</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for ($hour = 6; $hour <= 22; $hour++)
+            <table class="w-full border-collapse border border-gray-300 bg-white">
+                <thead>
                     <tr>
-                        <td class="border border-gray-300 p-2 text-center">{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00</td>
-                        @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $hari)
-                            <td class="border border-gray-300 p-2">
-                            @if(isset($jadwalPerHari[$hari][$hour]))
-                                @foreach ($jadwalPerHari[$hari][$hour] as $jadwalItem)
-                                    <div class="w-40 h-32 p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2">
-                                        <h5 class="mb-2 text-xs font-bold text-gray-900">{{ $jadwalItem->matakuliah->nama_mk }}</h5>
-                                        <p class="text-xs text-red-500 font-semibold">{{ strtoupper($jadwalItem->matakuliah->jenis_mk) }} ({{ $jadwalItem->matakuliah->kode_mk }})</p>
-                                        <p class="text-xs text-gray-700">(SMT {{ $jadwalItem->matakuliah->semester }}) ({{ $jadwalItem->matakuliah->sks }} SKS)</p>
-                                        <p class="text-xs text-gray-700">Kelas: {{ $jadwalItem->kelas }}</p>
-                                        <div class="flex items-center mt-2 text-xs text-gray-600">
-                                            {{ $jadwalItem->waktu->jam_mulai }} - {{ $jadwalItem->waktu->jam_selesai }}
-                                        </div>
+                        <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
+                        <th class="border border-gray-300 p-2">SENIN<br><span class="italic text-sm font-medium">MONDAY</span></th>
+                        <th class="border border-gray-300 p-2">SELASA<br><span class="italic text-sm font-medium">TUESDAY</span></th>
+                        <th class="border border-gray-300 p-2">RABU<br><span class="italic text-sm font-medium">WEDNESDAY</span></th>
+                        <th class="border border-gray-300 p-2">KAMIS<br><span class="italic text-sm font-medium">THURSDAY</span></th>
+                        <th class="border border-gray-300 p-2">JUMAT<br><span class="italic text-sm font-medium">FRIDAY</span></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                @php
+                    $timeslots = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+                    $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
+                @endphp
+
+                @foreach ($timeslots as $slot)
+                <tr>
+                    <td class="border border-gray-300 p-2 text-center">{{ $slot }}</td>
+                    @foreach ($days as $day)
+                        <td class="border border-gray-300 p-2 text-center">
+                            @php
+                                $currentJadwal = $jadwal->filter(function ($j) use ($day, $slot) {
+                                    return strtoupper($j->hari) === $day && $j->jam_mulai === $slot;
+                                });
+                            @endphp
+
+                            @if ($currentJadwal->isNotEmpty())
+                                @foreach ($currentJadwal as $item)
+                                    <div class="w-40 h-auto p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2">
+                                        <h5 class="mb-2 text-xs font-bold text-gray-900">{{$item->nama_mk }}</h5>
+                                        <p class="text-xs text-red-500 font-semibold"> {{ strtoupper($item->jenis_mk) }} ({{ $item->kode_mk }})</p>
+                                        <p class="text-xs text-gray-700">(SMT {{ $item->semester }}) ({{ $item->sks }} SKS)</p>
+                                        <p class="text-xs text-gray-700">Kelas: {{ $item->kelas }}</p>
+                                        <div class="flex items-center mt-2 text-xs text-gray-600">{{ $item->jam_mulai }}</div>
                                     </div>
                                 @endforeach
                             @else
-                                <p class="text-center text-xs text-gray-400">Tidak ada jadwal</p>
+                                <span class="text-gray-400 text-xs">-</span>
                             @endif
-                            </td>
-                        @endforeach
-                    </tr>
-                @endfor
-            </tbody>
-        </table>
-
-
+                        </td>
+                    @endforeach
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Simpan</button>
             <button type="button" class="focus:outline-none text-white bg-purple-800 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Lihat</button>
-        
         </div>
     </div>
 @else

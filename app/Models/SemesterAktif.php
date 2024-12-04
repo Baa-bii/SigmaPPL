@@ -15,12 +15,17 @@ class SemesterAktif extends Model
     
     public function mahasiswa()
     {
-        return $this->hasMany(Mahasiswa::class, 'id_TA');  // Relasi satu ke banyak ke mahasiswa
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');  // Relasi satu ke banyak ke mahasiswa
     }
 
-    public function IRS()
+    public function irs()
     {
         return $this->hasMany(IRS::class, 'id_TA', 'id');  // Relasi satu ke banyak ke irs
+    }
+
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'id_TA', 'id'); 
     }
 
     // Relasi ke RiwayatIRS (RiwayatIRS mengarah ke RiwayatSemesterAktif)
