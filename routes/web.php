@@ -54,9 +54,10 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-    Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK']);
-    Route::post('/update-mk', [BuatIRSController::class, 'updateMK']);
-    Route::post('/jadwal', [BuatIRSController::class, 'showJadwal']);
+    // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
+    Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
+    Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
+
 
 
     // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
