@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Akademik;
 use App\Models\RuangKelas;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class RuangKelasController extends Controller
@@ -110,4 +112,11 @@ class RuangKelasController extends Controller
         return redirect()->route('akademik.ruang.index')->with('success', 'Ruang deleted successfully.');
     }
     
+    public function ajukanAll(Request $request)
+    {
+        RuangKelas::where('status', 'menunggu')->update(['status' => 'diajukan']); // Change 'new_status' to the desired status
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'All statuses have been updated successfully.');
+    }
 }
