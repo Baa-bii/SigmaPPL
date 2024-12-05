@@ -202,11 +202,11 @@
                 <!-- Pagination -->
                 <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
-                        Showing 
+                        Menampilkan 
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ $mahasiswa->firstItem() }}-{{ $mahasiswa->lastItem() }}
                         </span> 
-                        of 
+                        dari 
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ $mahasiswa->total() }}
                         </span>
