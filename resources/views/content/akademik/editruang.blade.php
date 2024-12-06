@@ -51,7 +51,7 @@
         </div>
     </form>
     @if ($errors->any())
-    <div class="alert alert-danger text-red-400">
+    <div class="alert alert-danger text-red-500">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
