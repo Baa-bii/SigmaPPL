@@ -119,9 +119,8 @@
                 </a>
                 <form action="{{ route('akademik.ruang.ajukan-all') }}" method="POST" class="inline">
                     @csrf
-                    @method('PATCH')
                     <button type="submit" class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Ajukan Semua
+                        Ajukan
                     </button>
                 </form>
             </div>

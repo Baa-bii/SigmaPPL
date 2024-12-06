@@ -114,9 +114,22 @@ class RuangKelasController extends Controller
     
     public function ajukanAll(Request $request)
     {
-        RuangKelas::where('status', 'menunggu')->update(['status' => 'diajukan']); // Change 'new_status' to the desired status
+        try {
+            // Validasi input
+            $validated = $request->validate([
+                'status' => 'required|in:diajukan',
+            ]);
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'All statuses have been updated successfully.');
+            // Perbarui semua status dalam tabel RuangKelas
+            RuangKelas::query()
+            ->where('status', 'menunggu')
+            ->update(['status' => $validated['status']]);
+
+            return redirect()->back()->with('success', 'Semua status berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
+
+    
 }
