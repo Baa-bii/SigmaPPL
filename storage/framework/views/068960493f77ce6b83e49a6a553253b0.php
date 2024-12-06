@@ -1,4 +1,4 @@
-@vite(['resources/css/app.css','resources/js/app.js'])
+<?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
 <!-- Header -->
@@ -22,16 +22,16 @@
 
         <!-- Logo -->
         <a 
-            href="{{ route(
+            href="<?php echo e(route(
                 $user->role === 'dosen' ? 'dosen.dashboard.index' : 
                 ($user->role === 'mhs' ? 'mhs.dashboard.index' : 
                 ($user->role === 'akademik' ? 'akademik.dashboard.index' : 
                 ($user->role === 'kaprodi' ? 'kaprodi.dashboard.index' : 
                 ($user->role === 'dekan' ? 'dekan.dashboard.index' : 'home'))))
-            ) }}" 
+            )); ?>" 
             class="flex items-center md:pl-10 md:justify-start justify-center md:w-auto"
         >
-            <img src="{{ asset('img/fix.png') }}" class="mr-5 h-10" alt="SiGMA Logo" />
+            <img src="<?php echo e(asset('img/fix.png')); ?>" class="mr-5 h-10" alt="SiGMA Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap text-yellow-400 dark:text-white">SiGMA</span>
         </a>
 
@@ -44,16 +44,16 @@
                 aria-expanded="false"
             >
                 <!-- Nama dan Foto User -->
-                @if($user)
+                <?php if($user): ?>
                     <span class="hidden md:block self-center text-sm font-light whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
-                        <b>{{ $user->name }}</b>
+                        <b><?php echo e($user->name); ?></b>
                     </span>
-                @else
+                <?php else: ?>
                     <span class="hidden md:block self-center text-sm font-light whitespace-nowrap dark:text-white bg-yellow-400 text-black px-2 py-1 rounded-lg">
                         <b>Guest</b>
                     </span>
-                @endif
-                <img class="hidden md:block w-10 h-10 rounded-full ml-4" src="{{ asset('img/user.png') }}" alt="user photo" />
+                <?php endif; ?>
+                <img class="hidden md:block w-10 h-10 rounded-full ml-4" src="<?php echo e(asset('img/user.png')); ?>" alt="user photo" />
                 <!-- Ikon Kebab -->
                 <svg
                     class="w-6 h-6 text-yellow-400 ml-2"
@@ -84,13 +84,14 @@
             >
                 <!-- Nama dan Foto User (Visible on Small Screens) -->
                 <div class="block md:hidden px-4 py-2 flex items-center">
-                    <img class="w-10 h-10 rounded-full mr-2" src="{{ asset('img/user.png') }}" alt="user photo" />
+                    <img class="w-10 h-10 rounded-full mr-2" src="<?php echo e(asset('img/user.png')); ?>" alt="user photo" />
                     <span class="text-gray-900 dark:text-white text-sm font-normal">
-                        {{ $user ? $user->name : 'Guest' }}
+                        <?php echo e($user ? $user->name : 'Guest'); ?>
+
                     </span>
                 </div>
                 <div class="py-1">
-                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Log out</a>
+                    <a href="<?php echo e(route('logout')); ?>" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Log out</a>
                 </div>
             </div>
         </div>
@@ -116,3 +117,4 @@
         }
     });
 </script>
+<?php /**PATH C:\PPL\SiGMA\resources\views/components/header.blade.php ENDPATH**/ ?>
