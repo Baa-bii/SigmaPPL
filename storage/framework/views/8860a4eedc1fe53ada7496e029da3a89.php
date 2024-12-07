@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mata Kuliah</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -58,6 +59,12 @@
             <section class="bg-gray-20 dark:bg-gray-900 p-3 sm:p-5 antialiased flex flex-col mim-h-screen">
                 <div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
                     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-auto min-h-screen">
+                        <?php if(session('success')): ?>
+                            <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+                                <?php echo e(session('success')); ?>
+
+                            </div>
+                        <?php endif; ?>
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                             <div class="flex-1 flex items-center space-x-2">
                                 <h5>
@@ -105,12 +112,7 @@
                                             <div class="relative bg-white p-6 w-full max-w-full rounded-lg shadow-lg">
                                                 <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="add-modal">✖</button>
                                                     <h4 class="text-center text-2xl mb-6">Pengisian Mata Kuliah</h4>
-                                                    <?php if(session('success')): ?>
-                                                        <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-                                                            <?php echo e(session('success')); ?>
-
-                                                        </div>
-                                                    <?php endif; ?>
+                                                    
                                                     <form action="<?php echo e(route('kaprodi.mata_kuliah.store')); ?>" method="POST" class="space-y-4">
                                                         <?php echo csrf_field(); ?>
                                                         <div class="grid grid-cols-2 gap-4">
@@ -334,6 +336,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-2 border"><?php echo e($item->kode_mk); ?></td>
+                                               
                                                 <td class="px-4 py-2 border"><?php echo e($item->nama_mk); ?></td>
                                                 <td class="px-4 py-2 border"><?php echo e($item->sks); ?></td>
                                                 <td class="px-4 py-2 border"><?php echo e($item->semester); ?></td>
@@ -342,7 +345,8 @@
                                                 
                                     
                                                 <!-- Kolom untuk tombol -->
-                                                <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                
+                                                <td class="px-4 py-2 border">
                                                     <div class="flex items-center space-x-4">
                                                         <button type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
@@ -358,12 +362,14 @@
                                                             </svg>
                                                             Lihat
                                                         </button>
-                                                        <button type="button" data-modal-target="delete-modal" data-modal-toggle="delete-modal" class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                            </svg>
-                                                            Hapus
-                                                        </button>
+                                                        <form action="<?php echo e(route('kaprodi.mata_kuliah.destroy', $item->kode_mk)); ?>" method="POST">
+                                                            <?php echo csrf_field(); ?>
+                                                            <?php echo method_field('DELETE'); ?>
+                                                            <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm item-center font-medium px-3 py-2.5 text-center ">
+                                                                Iya, hapus
+                                                            </button>
+                                                            
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -417,40 +423,13 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
-                       
-                        
-                        
+                        </div>   
                     </div>
                 </div>
+                 <!-- Hapus matkul -->
+            
             </section>
-
-
-            <!-- Hapus matkul -->
-            <div id="delete-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative w-full h-auto max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <div class="p-6 text-center">
-                            <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah anda yakin untuk menghapus mata kuliah ini?</h3>
-                            <form action="<?php echo e(route('kaprodi.mata_kuliah.destroy', $item->kode_mk)); ?>" method="POST">
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
-                                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm item-center font-medium px-3 py-2.5 text-center ">
-                                    Iya, hapus
-                                </button>
-                            </form>
-                            
-                            <button data-modal-toggle="delete-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
-
         </main>
         <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
@@ -472,5 +451,8 @@
 <?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
 <?php endif; ?>
     </div>
+    
+
+    
 </body>
 </html><?php /**PATH /var/www/sigmappl/resources/views/content/kaprodi/matakuliah.blade.php ENDPATH**/ ?>

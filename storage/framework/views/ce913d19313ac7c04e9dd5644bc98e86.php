@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tambah Ruang</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
 </head>
 <body>
     <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
@@ -57,7 +58,7 @@
                 <label for="gedung" class="form-label font-sans font-medium">Gedung: </label>
                 <select name="gedung" id="gedung" class="rounded-lg w-full" required>
                     <option value="">Select Gedung</option>
-                    <?php $__currentLoopData = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $gedung): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','OR']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $gedung): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($gedung); ?>" <?php echo e((old('gedung', $ruangKelas->gedung ?? '') == $gedung) ? 'selected' : ''); ?>>
                             <?php echo e($gedung); ?>
 
@@ -87,6 +88,15 @@
                 </button>
         </div>
     </form>
+    <?php if($errors->any()): ?>
+    <div class="alert alert-danger text-red-400">
+        <ul>
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </ul>
+    </div>
+    <?php endif; ?>
     </main>
 </body>
 </html><?php /**PATH /var/www/sigmappl/resources/views/content/akademik/createruang.blade.php ENDPATH**/ ?>

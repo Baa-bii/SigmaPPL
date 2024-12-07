@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ruangan</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -58,7 +59,7 @@
 
             <div>
                 <form method="GET" action="<?php echo e(route('akademik.ruang.index')); ?>">
-                    <label for="filter_gedung" class="form-label font-sans font-medium">Filter by Gedung</label>
+                    <label for="filter_gedung" class="form-label font-sans font-medium ">Filter by Gedung</label>
                     <select name="filter_gedung" id="filter_gedung" class="rounded-lg text-sm" onchange="this.form.submit()">
                         <option value="">All Gedung</option>
                         <option value="A" <?php echo e(request('filter_gedung') == 'A' ? 'selected' : ''); ?>>A</option>
@@ -74,7 +75,7 @@
                         <option value="K" <?php echo e(request('filter_gedung') == 'K' ? 'selected' : ''); ?>>K</option>
                     </select>
             
-                    <label for="filter_prodi" class="form-label font-sans font-medium">Filter by Prodi</label>
+                    <label for="filter_prodi" class="form-label font-sans font-medium ml-4">Filter by Prodi</label>
                     <select name="filter_prodi" id="filter_prodi" class="rounded-lg text-sm" onchange="this.form.submit()">
                         <option value="">All Prodi</option>
                         <?php $__currentLoopData = $programStudi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prodi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -105,6 +106,11 @@
                             Prodi
                         </p>
                         </th>
+                        <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50" data-sort="prodi">
+                            <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">
+                                Status
+                            </p>
+                            </th>
                         <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                         <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">Action</p>
                         </th>
@@ -121,6 +127,9 @@
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <p class="text-sm text-blue-gray-900"><?php echo e($ruang->program_studi->nama_prodi); ?></p>
+                            </td>
+                            <td class="p-4 border-b border-blue-gray-50">
+                                <p class="text-sm text-blue-gray-900"><?php echo e($ruang->status); ?></p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <a href="<?php echo e(route('akademik.ruang.edit', $ruang->id)); ?>">
@@ -146,7 +155,14 @@
                         Tambahkan Ruangan
                     </button>
                 </a>
+                <form action="<?php echo e(route('akademik.ruang.ajukan-all')); ?>" method="POST" class="inline">
+                    <?php echo csrf_field(); ?>
+                    <button type="submit" class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Ajukan
+                    </button>
+                </form>
             </div>
+    
         </main>
         <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>

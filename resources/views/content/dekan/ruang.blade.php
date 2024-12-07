@@ -47,35 +47,23 @@
         <div class="bg-white shadow p-6 mr-4 mt-8">
             <h3 class="text-lg font-semibold mb-4">Persetujuan Usulan Ruang Kuliah</h3>
             <div class="space-y-4">
+                <!-- Dropdown Program Studi -->
+                <form id="form-filter" action="{{ route('dekan.ruang.filter') }}" method="GET" class="space-y-4">
                 <div>
                     <label for="program-studi" class="block font-semibold mb-1">Program Studi</label>
-                    <select id="program-studi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <select id="program-studi" name="prodi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
                         <option value="">Pilih Prodi</option>
-                        <option value="biologi">Biologi</option>
-                        <option value="kimia">Kimia</option>
-                        <option value="fisika">Fisika</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="statistika">Statistika</option>
-                        <option value="informatika">Informatika</option>
-                        <option value="bioteknologi">Bioteknologi</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="semester" class="block font-semibold mb-1">Semester</label>
-                    <select id="semester" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <option value="">Pilih Semester</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                        <option value="3">Semester 3</option>
-                        <option value="4">Semester 4</option>
-                        <option value="5">Semester 5</option>
-                        <option value="6">Semester 6</option>
-                        <option value="7">Semester 7</option>
-                        <option value="8">Semester 8</option>
+                        <option value="BIO123">Biologi</option>
+                        <option value="KIM123">Kimia</option>
+                        <option value="FIS123">Fisika</option>
+                        <option value="MAT123">Matematika</option>
+                        <option value="STA123">Statistika</option>
+                        <option value="INF123">Informatika</option>
+                        <option value="TEK123">Bioteknologi</option>
                     </select>
                 </div>
                 <!-- Button Tampilkan -->
-                <a href="{{ route('dekan.verifikasiruang') }}" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center">
+                <a id="button-show" href="{{ route('dekan.verifikasiruang') }}" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center" type="submit">
                     Tampilkan
                 </a>
             </div>
@@ -83,5 +71,66 @@
     </main>
         <x-footerdosen></x-footerdosen>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form-filter');
+        const programStudi = document.getElementById('program-studi');
+        const errorMessage = document.getElementById('error-message');
+        const tableBody = document.getElementById('data-tabel-ruang');
+        const emptyPlaceholder = document.getElementById('empty-placeholder');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const prodi = programStudi.value;
+
+            // Validasi input
+            if (!prodi) {
+                alert('Mohon pilih Program Studi!');
+                return;
+            }
+
+            // Kirim permintaan GET ke backend
+            fetch(`/dekan/ruang/filter?prodi=${prodi}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+})
+    .then(response => response.json())
+    .then(data => {
+        tableBody.innerHTML = ''; // Bersihkan tabel sebelumnya
+
+        if (!data.ruang || data.ruang.length === 0) {
+            emptyPlaceholder.classList.remove('hidden');
+            return;
+        }
+
+        emptyPlaceholder.classList.add('hidden');
+
+        data.ruang.forEach(item => {
+    const jadwal = item.jadwal?.[0] || {}; // Ambil jadwal pertama atau objek kosong
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${item.nama || 'N/A'}</td>
+        <td>${item.gedung || 'N/A'}</td>
+        <td>${item.kapasitas || 'N/A'}</td>
+        <td>${jadwal.kelas || 'N/A'}</td>
+        <td>${jadwal.waktu?.jam_mulai || 'N/A'} - ${jadwal.waktu?.jam_selesai || 'N/A'}</td>
+    `;
+    tableBody.appendChild(row);
+});
+
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memuat data.');
+    });
+
+        });
+    });
+
+</script>
+
 </body>
 </html>

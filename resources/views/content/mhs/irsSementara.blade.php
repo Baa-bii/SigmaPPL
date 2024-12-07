@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,17 +12,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-</head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<<<<<<< HEAD
+</head> --}}
+{{-- <body class="bg-gray-100 flex flex-col min-h-screen">
 
     <!-- Header -->
     <x-header></x-header>
-    <x-sidebar></x-sidebar>
+    <x-sidebar></x-sidebar> --}}
     
     <!-- Container Utama -->
-    <main class="md:ml-64 h-auto pt-10 flex-grow">
+    {{-- <main class="md:ml-64 h-auto pt-10 flex-grow"> --}}
         <!-- resources/views/irs.blade.php -->
         {{-- @extends('layouts.app') --}}
+
+        {{-- @section('content')
 
         @section('content')
         <div class="max-w-7xl mx-auto py-10">
@@ -74,11 +78,14 @@
                 </div>
             </div>
         </div>
-        @endsection
+<<<<<<< HEAD
+        @endsection --}}
 
        
-    </main>
+    {{-- </main>
     <x-footerdosen></x-footerdosen>
 </body>
+{{--  --}}
+{{-- </html> --}}
 
-</html>
+      
