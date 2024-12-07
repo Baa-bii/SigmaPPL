@@ -43,7 +43,7 @@
                 </h1>
             </div>
             <!-- Konten Dua Kolom -->
-            <div class="flex flex-row justify-between mt-4">
+            <div class="flex flex-row justify-between mt-6">
                 <!-- Kolom Kiri -->
                 <div class="text-left pl-64">
                     <p class="text-l text-black dark:text-white mb-4">
