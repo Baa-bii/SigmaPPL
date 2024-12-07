@@ -20,12 +20,13 @@ class JadwalController extends Controller
         // Ambil data jadwal beserta relasinya
         // $jadwal = Jadwal::with(['waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'])->get();
         $jadwal = Jadwal::whereHas('semesterAktif', function ($query) {
-            $query->where('is_active', true); // Hanya yang is_active = true
+            $query->where('semester', 0)
+                  ->orWhereRaw('semester % 2 = 1'); // Hanya yang is_active = true
         })->get();
     
         // Mengambil data semester aktif (tahun akademik)
-        $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
-        $tahunAkademik = SemesterAktif::all();
+        // $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
+        $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');  
     
         // Mendapatkan semua data lainnya
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
@@ -38,7 +39,7 @@ class JadwalController extends Controller
             $item->jam_selesai = $this->hitungJamSelesai($item->waktu->id, $item->matakuliah->kode_mk);
         }
     
-        return view('content.kaprodi.jadwal', compact('jadwal', 'tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu', 'tahunAkademik'));
+        return view('content.kaprodi.jadwal', compact('jadwal', 'tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu'));
     }
     
     public function hitungJamSelesai($id_waktu, $kodeMK)
@@ -46,11 +47,9 @@ class JadwalController extends Controller
         $waktuMulai = Waktu::find($id_waktu);
         $matakuliah = MataKuliah::where('kode_mk', $kodeMK)->first();
         $sks = $matakuliah->sks;
-
         $jamMulaiArray = explode(':', $waktuMulai->jam_mulai);
         $jamMulaiMinutes = ($jamMulaiArray[0] * 60) + $jamMulaiArray[1];
         $jamSelesaiMinutes = $jamMulaiMinutes + ($sks * 50);  // Anggap SKS = 50 menit per SKS
-
         $jamSelesai = floor($jamSelesaiMinutes / 60) . ':' . str_pad($jamSelesaiMinutes % 60, 2, '0', STR_PAD_LEFT);
         
         return $jamSelesai;
@@ -63,8 +62,7 @@ class JadwalController extends Controller
         $matakuliah = MataKuliah::all(); // Ambil semua mata kuliah
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
         $semesterAktif = SemesterAktif::all();
-        $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
-        $tahunAkademik = SemesterAktif::all();
+        $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');
 
         // Mengirimkan data SKS bersama dengan mata kuliah
         return view('content.kaprodi.jadwal', compact('waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif', 'tahunAjaran', 'tahunAkademik'));

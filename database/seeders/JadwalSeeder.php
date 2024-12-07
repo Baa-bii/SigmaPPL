@@ -1248,7 +1248,7 @@ class JadwalSeeder extends Seeder
             'kelas' => 'A',
             'id_waktu' => $id_waktu_08,  // 08:00
             'id_TA' => $id_TA_Ganjil_2025,
-            'id_ruang' => $id_ruang_E101,
+            'id_ruang' => $id_ruang_A204,
             'kode_mk' => 'PAIK6706',
             'kode_prodi' => 'INF123',
             'created_at' => now(),

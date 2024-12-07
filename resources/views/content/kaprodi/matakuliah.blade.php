@@ -11,7 +11,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-   
 
 </head>
 <body>
@@ -20,9 +19,9 @@
         <x-sidebar></x-sidebar>
         <main class="md:ml-64 h-auto pt-20">
                <!-- Start block -->
-            <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
+            <section class="bg-gray-20 dark:bg-gray-900 p-3 sm:p-5 antialiased flex flex-col mim-h-screen">
                 <div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
-                    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-auto min-h-screen">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                             <div class="flex-1 flex items-center space-x-2">
                                 <h5>
@@ -71,9 +70,9 @@
                                                 <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="add-modal">✖</button>
                                                     <h4 class="text-center text-2xl mb-6">Pengisian Mata Kuliah</h4>
                                                     @if (session('success'))
-                                                    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-                                                        {{ session('success') }}
-                                                    </div>
+                                                        <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+                                                            {{ session('success') }}
+                                                        </div>
                                                     @endif
                                                     <form action="{{ route('kaprodi.mata_kuliah.store') }}" method="POST" class="space-y-4">
                                                         @csrf
@@ -108,17 +107,21 @@
                                                                 <label for="sks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah SKS</label>
                                                                 <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="sks" name="sks" min="1" required>
                                                             </div>
-                                                        <!-- Nama Dosen Pengampu -->
-                                                           
-                                                           <div class="col-span-2">
-                                                            <label for="nip_dosen" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Dosen Pengampu</label>
-                                                            <select class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="nip_dosen" name="nip_dosen[]" multiple>
-                                                                @foreach($dosen as $d)
-                                                                <option value="{{ $d->nip }}">{{ $d->nama_dosen }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
+                                                            
+                                                            <!-- Nama Dosen Pengampu -->                                                           
+                                                            <div class="col-span-2">
+                                                                <label for="nip_dosen" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Dosen Pengampu</label>
+                                                                <div id="nip_dosen" class="space-y-2" style="max-height: 200px; overflow-y: auto;">
+                                                                    @foreach ($dosen as $item)
+                                                                        <div class="flex items-center">
+                                                                            <input type="checkbox" name="nip_dosen[]" value="{{ $item->nip_dosen }}" id="nip_dosen_{{ $item->nip_dosen }}" class="mr-2">
+                                                                            <label for="nip_dosen_{{ $item->nip_dosen }}">{{ $item->nama_dosen }}</label>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        
                                                         </div>
                                                         
                                                         <div class="flex items-center space-x-4 mt-4">
@@ -131,36 +134,37 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
-                                    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" /> --}}
-                                    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-                                    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+                                    
+                                    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+                                    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> --}}
 
-
-                                    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> --}}
-
-                                    <script>
+                                    {{-- <script>
                                        $(document).ready(function() {
                                             // Inisialisasi select2 setelah halaman sepenuhnya dimuat
-                                            $('#nip_dosen').select2({
-                                                placeholder: "Pilih Dosen Pengampu",  // Placeholder ketika tidak ada pilihan
-                                                tags: true,  // Menyertakan fitur untuk menambahkan opsi baru
-                                                tokenSeparators: [',', ' '],  // Pemisahan dengan koma atau spasi
-                                                width: '100%',  // Menjamin lebar elemen select sesuai dengan kontainer
-                                                dropdownAutoWidth: true  // Menjaga dropdown lebih besar jika perlu
-                                            });
                                             
-                                            // Menangani perubahan pilihan
-                                            $('#nip_dosen').on('change', function() {
-                                                var selectedValues = $(this).val(); // Ambil nilai yang dipilih
-                                                console.log('Pilihan yang dipilih:', selectedValues);
+                                            $('#nip_dosen').select2({
+                                                placeholder: "Pilih Dosen Pengampu Mata Kuliah",
+                                                tags: true,
+                                                multiple: true,
+                                                ajax: {
+                                                    url: '/api/dosen', // Endpoint untuk mengambil data dosen
+                                                    dataType: 'json',
+                                                    delay: 250,
+                                                    processResults: function (data) {
+                                                        return {
+                                                            results: data.map(item => ({
+                                                                id: item.nip_dosen,
+                                                                text: item.nama_dosen,
+                                                            }))
+                                                        };
+                                                    },
+                                                    cache: true,
+                                                },
                                             });
-                                        });
-
-
-
-                                    
-                                    </script>
+                                        }); 
+                                    </script> --}}
                                 </div>
  
                                 <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
@@ -288,120 +292,123 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="p-4">
-                                            <div class="flex items-center">
-                                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                <label for="checkbox-all" class="sr-only">checkbox</label>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="p-4">Kode Mata Kuliah</th>
-                                        <th scope="col" class="p-4">Nama Mata Kuliah</th>
-                                        <th scope="col" class="p-4">SKS</th>
-                                        <th scope="col" class="p-4">Semester</th>
-                                        <th scope="col" class="p-4">Jenis</th>
-                                        <th scope="col" class="p-4">Program Studi</th>
-                                        <th scope="col" class="p-4">Opsi</th> <!-- Kolom tambahan untuk opsi tombol -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($mataKuliah as $item)
-                                        <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            <td class="p-4 w-4">
-                                                <div class="flex items-center">
-                                                    <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-2 border">{{ $item->kode_mk }}</td>
-                                            <td class="px-4 py-2 border">{{ $item->nama_mk }}</td>
-                                            <td class="px-4 py-2 border">{{ $item->sks }}</td>
-                                            <td class="px-4 py-2 border">{{ $item->semester }}</td>
-                                            <td class="px-4 py-2 border">{{ $item->jenis_mk }}</td>
-                                            <td class="px-4 py-2 border">{{ $item->programStudi->nama_prodi}}</td>
-                                            
-                                
-                                            <!-- Kolom untuk tombol -->
-                                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <div class="flex items-center space-x-4">
-                                                    <button type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
-                                                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                                        </svg>
-                                                        Edit
-                                                    </button>
-                                                    <button type="button" data-drawer-target="drawer-read-product-advanced" data-drawer-show="drawer-read-product-advanced" aria-controls="drawer-read-product-advanced" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
-                                                            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
-                                                        </svg>
-                                                        Lihat
-                                                    </button>
-                                                    <button type="button" data-modal-target="delete-modal" data-modal-toggle="delete-modal" class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                        </svg>
-                                                        Hapus
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
-                                            <td colspan="7" class="text-center py-4">Tidak ada data mata kuliah</td>
+                                            <th scope="col" class="p-4">
+                                                <div class="flex items-center">
+                                                    <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                    <label for="checkbox-all" class="sr-only">checkbox</label>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="p-4">Kode Mata Kuliah</th>
+                                            <th scope="col" class="p-4">Nama Mata Kuliah</th>
+                                            <th scope="col" class="p-4">SKS</th>
+                                            <th scope="col" class="p-4">Semester</th>
+                                            <th scope="col" class="p-4">Jenis</th>
+                                            <th scope="col" class="p-4">Program Studi</th>
+                                            <th scope="col" class="p-4">Opsi</th> <!-- Kolom tambahan untuk opsi tombol -->
                                         </tr>
-                                    @endforelse
-                                </tbody>
-                                
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($mataKuliah as $item)
+            
+                                            <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                <td class="p-4 w-4">
+                                                    <div class="flex items-center">
+                                                        <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 py-2 border">{{ $item->kode_mk }}</td>
+                                                <td class="px-4 py-2 border">{{ $item->nama_mk }}</td>
+                                                <td class="px-4 py-2 border">{{ $item->sks }}</td>
+                                                <td class="px-4 py-2 border">{{ $item->semester }}</td>
+                                                <td class="px-4 py-2 border">{{ $item->jenis_mk }}</td>
+                                                <td class="px-4 py-2 border">{{ $item->programStudi->nama_prodi}}</td>
+                                                
+                                    
+                                                <!-- Kolom untuk tombol -->
+                                                <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    <div class="flex items-center space-x-4">
+                                                        <button type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
+                                                                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                                                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            Edit
+                                                        </button>
+                                                        <button type="button" data-drawer-target="drawer-read-product-advanced" data-drawer-show="drawer-read-product-advanced" aria-controls="drawer-read-product-advanced" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
+                                                                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
+                                                            </svg>
+                                                            Lihat
+                                                        </button>
+                                                        <button type="button" data-modal-target="delete-modal" data-modal-toggle="delete-modal" class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            Hapus
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center py-4">Tidak ada data mata kuliah</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    Menampilkan
+                                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
+                                    of
+                                    <span class="font-semibold text-gray-900 dark:text-white">50</span>
+                                </span>
+                                <ul class="inline-flex items-stretch -space-x-px">
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            <span class="sr-only">Previous</span>
+                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" aria-current="page" class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            <span class="sr-only">Next</span>
+                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
+                       
                         
-                        <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                Menampilkan
-                                <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                                of
-                                <span class="font-semibold text-gray-900 dark:text-white">50</span>
-                            </span>
-                            <ul class="inline-flex items-stretch -space-x-px">
-                                <li>
-                                    <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Previous</span>
-                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                                </li>
-                                <li>
-                                    <a href="#" aria-current="page" class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Next</span>
-                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        
                     </div>
                 </div>
             </section>
@@ -411,13 +418,19 @@
             <div id="delete-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative w-full h-auto max-w-md max-h-full">
                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        
                         <div class="p-6 text-center">
                             <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah anda yakin untuk menghapus mata kuliah ini?</h3>
-                            <button data-modal-toggle="delete-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">Iya, hapus</button>
+                            <form action="{{ route('kaprodi.mata_kuliah.destroy', $item->kode_mk) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm item-center font-medium px-3 py-2.5 text-center ">
+                                    Iya, hapus
+                                </button>
+                            </form>
+                            {{-- <button data-modal-toggle="delete-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">Iya, hapus</button> --}}
                             <button data-modal-toggle="delete-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button>
                         </div>
                     </div>

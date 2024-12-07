@@ -17,7 +17,6 @@ class MataKuliahController extends Controller
         $programStudi = ProgramStudi::all(); // Pastikan ini ditambahkan
         return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen', 'programStudi')); // Mengirimkan dosen
     }
-
     
     public function create()
     {
@@ -36,11 +35,9 @@ class MataKuliahController extends Controller
             'sks' => 'required|integer',
             'jenis_mk' => 'required',
             'kode_prodi' => $kode_prodi,
-            'nip_dosen' => 'nullable|array', 
-            // 'nip_dosen.*' => 'exists:dosen,nip', 
-            
+            'nip_dosen' => 'required|array', 
+            'nip_dosen.*' => 'exists:dosen,nip_dosen',
         ]);
-        // dd($request->all());
 
         // Simpan mata kuliah terlebih dahulu
         $mataKuliah = MataKuliah::create([
@@ -53,13 +50,23 @@ class MataKuliahController extends Controller
            
         ]);
 
-       
-        // Simpan relasi ke tabel pivot
-        
+        // Simpan relasi ke tabel pivot 
+
         if ($request->has('nip_dosen') && !empty($request->nip_dosen)) {
             $mataKuliah->dosen()->attach($request->nip_dosen);
         }
 
-        return redirect()->route('kaprodi.mata_kuliah.store')->with('success', 'Mata kuliah berhasil disimpan!');
+        return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil disimpan!');
     }
+
+    public function destroy($kode_mk)
+    {
+        $mataKuliah = MataKuliah::findOrFail($kode_mk);
+
+        $mataKuliah->delete();
+
+        return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
+    }
+
+
 };
