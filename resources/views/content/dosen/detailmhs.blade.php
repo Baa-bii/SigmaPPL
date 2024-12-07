@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Perwalian</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -43,7 +44,7 @@
                         alt="photo profile"
                     />
                 </div>
-                <!-- Nama Dosen -->
+                <!-- Nama Mahasiswa -->
                 <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
                     {{ $mahasiswa->nama_mhs ?? 'Nama tidak ditemukan' }}
                 </h1>
@@ -225,11 +226,11 @@
                                             </button>
                                         </a>
                                     @else
-                                        <a href=" # ">
-                                            <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800">
-                                                Setujui IRS
-                                            </button>
-                                        </a>
+                                        <button type="button" 
+                                            class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800"
+                                            onclick="setujuiIRS({{ $semester->id }})">
+                                            Setujui IRS
+                                        </button>
                                     @endif
                                 </div>
                             </div>
@@ -470,6 +471,48 @@
         });
     });
   </script>
+
+<script>
+    function setujuiIRS(semesterId) {
+        if (confirm('Apakah Anda yakin ingin menyetujui IRS?')) {
+            fetch(`/dosen/setujuiirs/${semesterId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Update status dan tombol secara dinamis
+                    const accordion = document.querySelector(`#accordion-flush-body-${semesterId}`);
+                    const statusElement = accordion.querySelector('caption');
+                    const buttonContainer = accordion.querySelector('.flex button');
+
+                    // Ubah status menjadi "Sudah Disetujui"
+                    statusElement.textContent = 'Sudah Disetujui';
+
+                    // Ubah tombol menjadi "Cetak IRS"
+                    buttonContainer.outerHTML = `
+                        <a href="/dosen/cetakirs/${semesterId}" target="_blank">
+                            <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800">
+                                Cetak IRS
+                            </button>
+                        </a>
+                    `;
+                } else {
+                    alert('Gagal menyetujui IRS. Coba lagi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Coba lagi.');
+            });
+        }
+    }
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

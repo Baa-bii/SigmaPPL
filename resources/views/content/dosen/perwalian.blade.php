@@ -14,19 +14,6 @@
 <body>
     
   <div class="antialiased bg-gray-50 dark:bg-gray-900">
-    
-    <!-- Modal -->
-    <div id="confirmationModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96 flex flex-col justify-center items-center">
-            <h3 class="text-xl font-semibold mb-4 text-center" id="modalTitle">Apakah anda yakin?</h3>
-            <p id="modalMessage" class="text-center">Pesan konfirmasi akan ditampilkan di sini.</p>
-            <div class="mt-6 flex justify-center w-full space-x-5">
-                <button id="cancelButton" class="px-3 py-1 bg-gray-500 text-white rounded-lg mr-2">Tidak</button>
-                <button id="confirmButton" class="px-3 py-1 bg-yellow-400 text-white rounded-lg">Ya</button>
-            </div>
-        </div>
-    </div>
-
     <!--Navbar-->    
     <x-header></x-header>
 
@@ -39,7 +26,7 @@
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Perwalian</h1>
 
         <!-- Konten 1 -->
-        <div class="relative rounded-lg bg-white h-48 mb-4 p-4">
+        <div class="relative rounded-lg shadow-md bg-white h-48 mb-4 p-4">
             <!-- Dropdown Pilih Angkatan -->
             <form class="absolute left-8 top-8 w-[320px]">
                 <form method="GET" action="{{ route('dosen.perwalian.index') }}" class="mb-6">
@@ -93,7 +80,18 @@
                     <!-- Action Button -->
                     <div class="relative ml-8 mt-8">
                         <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                            Filter
+                            {{ 
+                                match (request('filter')) {
+                                    'sudah_disetujui' => 'Semua Sudah Disetujui',
+                                    'belum_disetujui' => 'Semua Belum Disetujui',
+                                    'sudah_isi_irs' => 'Semua Sudah Isi IRS',
+                                    'belum_isi_irs' => 'Semua Belum Isi IRS',
+                                    'aktif' => 'Semua Aktif',
+                                    'cuti' => 'Semua Cuti',
+                                    'belum_registrasi' => 'Semua Belum Registrasi',
+                                    default => 'Filter', // Default teks jika tidak ada filter
+                                }
+                            }}
                             <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
@@ -102,13 +100,13 @@
                         <!-- Dropdown menu -->
                         <div id="dropdownAction" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownActionButton">
-                            <li><a href="#" data-filter="sudah_disetujui" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
-                                <li><a href="#" data-filter="belum_disetujui" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_disetujui' ? 'bg-gray-300' : '' }}">Semua Belum Disetujui</a></li>
-                                <li><a href="#" data-filter="sudah_isi_irs" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_isi_irs' ? 'bg-gray-300' : '' }}">Semua Sudah Isi IRS</a></li>
-                                <li><a href="#" data-filter="belum_isi_irs" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_isi_irs' ? 'bg-gray-300' : '' }}">Semua Belum Isi IRS</a></li>
-                                <li><a href="#" data-filter="sudah_registrasi" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_registrasi' ? 'bg-gray-300' : '' }}">Semua Aktif</a></li>
-                                <li><a href="#" data-filter="sudah_registrasi" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_registrasi' ? 'bg-gray-300' : '' }}">Semua Cuti</a></li>
-                                <li><a href="#" data-filter="belum_registrasi" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_registrasi' ? 'bg-gray-300' : '' }}">Semua Belum Registrasi</a></li>
+                            <li><a href="?filter=sudah_disetujui&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
+                                <li><a href="?filter=belum_disetujui&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_disetujui' ? 'bg-gray-300' : '' }}">Semua Belum Disetujui</a></li>
+                                <li><a href="?filter=sudah_isi_irs&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_isi_irs' ? 'bg-gray-300' : '' }}">Semua Sudah Isi IRS</a></li>
+                                <li><a href="?filter=belum_isi_irs&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_isi_irs' ? 'bg-gray-300' : '' }}">Semua Belum Isi IRS</a></li>
+                                <li><a href="?filter=aktif&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'aktif' ? 'bg-gray-300' : '' }}">Semua Aktif</a></li>
+                                <li><a href="?filter=cuti&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'cuti' ? 'bg-gray-300' : '' }}">Semua Cuti</a></li>
+                                <li><a href="?filter=belum_registrasi&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_registrasi' ? 'bg-gray-300' : '' }}">Semua Belum Registrasi</a></li>
                             </ul>
                         </div>
                     </div>
@@ -123,6 +121,8 @@
                             <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                         </select>
                         <input type="hidden" name="angkatan" value="{{ request('angkatan') }}">
+                        <input type="hidden" name="filter" value="{{ request('filter') }}">
+                        <input type="hidden" name="search" value="{{ request('search') }}">
                     </form>
 
                     <!-- Search Bar -->
@@ -136,11 +136,12 @@
                             <input type="text" name="search" value="{{ request()->input('search') }}" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Mahasiswa">
                             <input type="hidden" name="angkatan" value="{{ request('angkatan') }}">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
+                            <input type="hidden" name="filter" value="{{ request('filter') }}">
                         </form>
 
                         <!-- Tombol Reset -->
                         <form action="{{ route('dosen.perwalian.index') }}" method="GET" class="ml-2">
-                            <button type="submit" class="px-4 py-2 text-sm font-medium text-center inline-flex items-center text-gray-500 border border-gray-300 rounded-lg hover:bg-red-700 hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">
+                            <button type="submit" class="px-4 py-2 text-sm font-medium text-center inline-flex items-center text-gray-500 border border-gray-300 rounded-lg hover:bg-yellow-400 hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">
                                 Reset
                             </button>
                         </form>
@@ -172,8 +173,12 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox" class="checkbox-item w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                        <input 
+                                            type="checkbox" 
+                                            class="checkbox-item w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
+                                            value="{{ $mhs->irs_id }}" 
+                                            data-status="{{ $mhs->status }}">
+                                        <label for="checkbox-table-search-{{ $mhs->irs_id }}" class="sr-only">checkbox</label>
                                     </div>
                                 </td>
                                 <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -221,7 +226,7 @@
                             </li>
                         @else
                             <li>
-                                <a href="{{ $mahasiswa->previousPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $mahasiswa->previousPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}&filter={{ $filter }}&search={{ $search }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Previous
                                 </a>
                             </li>
@@ -237,7 +242,7 @@
                                 </li>
                             @else
                                 <li>
-                                    <a href="{{ $mahasiswa->url($i) }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <a href="{{ $mahasiswa->url($i) }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}&filter={{ $filter }}&search={{ $search }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         {{ $i }}
                                     </a>
                                 </li>
@@ -247,7 +252,7 @@
                         <!-- Tombol Next -->
                         @if($mahasiswa->hasMorePages())
                             <li>
-                                <a href="{{ $mahasiswa->nextPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $mahasiswa->nextPageUrl() }}&per_page={{ $perPage }}&angkatan={{ $angkatan }}&filter={{ $filter }}&search={{ $search }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Next
                                 </a>
                             </li>
@@ -272,106 +277,77 @@
   </div>
 
   <script>
-    // Mendapatkan elemen checkbox "select all" dan checkbox individu
+    document.addEventListener('DOMContentLoaded', () => {
     const selectAllCheckbox = document.getElementById('checkbox-all-search');
     const checkboxes = document.querySelectorAll('.checkbox-item');
+    const approveButton = document.getElementById('approveIRS');
+    const rejectButton = document.getElementById('rejectIRS');
+    const permissionButton = document.getElementById('givePermission');
 
-    // Menambahkan event listener pada checkbox "select all"
-    selectAllCheckbox.addEventListener('change', function() {
+    // Fungsi untuk menangani seleksi semua checkbox
+    selectAllCheckbox.addEventListener('change', () => {
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAllCheckbox.checked;
         });
     });
 
-    // Menambahkan event listener pada checkbox individu untuk mengatur status checkbox "select all"
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            // Jika salah satu checkbox tidak dicentang, hapus centang pada "select all"
-            if (!this.checked) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = true; // Indeterminate state ketika tidak semua dicentang
-            } else {
-                // Jika semua checkbox dicentang, centang "select all"
-                if (Array.from(checkboxes).every(checkbox => checkbox.checked)) {
-                    selectAllCheckbox.checked = true;
-                    selectAllCheckbox.indeterminate = false; // Reset indeterminate jika semua dicentang
-                }
-            }
-        });
+    // Fungsi untuk Setujui IRS
+    approveButton.addEventListener('click', () => {
+        handleAction('Belum Disetujui', 'Sudah Disetujui');
     });
-  </script>
 
-  <script>
-    // Mengambil referensi elemen modal dan tombol
-    const confirmationModal = document.getElementById('confirmationModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalMessage = document.getElementById('modalMessage');
-    const cancelButton = document.getElementById('cancelButton');
-    const confirmButton = document.getElementById('confirmButton');
+    // Fungsi untuk Batalkan Persetujuan IRS
+    rejectButton.addEventListener('click', () => {
+        handleAction('Sudah Disetujui', 'Belum Disetujui');
+    });
 
-    let currentAction = null; // Menyimpan aksi yang sedang dijalankan
+    // Fungsi untuk Beri Izin Perubahan IRS
+    permissionButton.addEventListener('click', () => {
+        handleAction('Sudah Disetujui', 'Belum Disetujui');
+    });
 
-    // Fungsi untuk menampilkan modal dengan pesan konfirmasi
-    function showModal(title, message, action) {
-        modalTitle.textContent = title;
-        modalMessage.textContent = message;
-        currentAction = action;
-        confirmationModal.classList.remove('hidden');
-    }
-
-    // Fungsi untuk menyembunyikan modal
-    function hideModal() {
-        confirmationModal.classList.add('hidden');
-    }
-
-    // Event listener untuk tombol "Tidak"
-    cancelButton.addEventListener('click', hideModal);
-
-    // Event listener untuk tombol "Ya"
-    confirmButton.addEventListener('click', function() {
-        if (currentAction) {
-            currentAction(); // Jalankan aksi yang sesuai
+    // Fungsi untuk validasi dan pengiriman data
+    function handleAction(requiredStatus, newStatus) {
+        const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+        if (selectedCheckboxes.length === 0) {
+            alert('Pilih minimal satu mahasiswa.');
+            return;
         }
-        hideModal();
-    });
 
-    // Fungsi untuk aksi "Setujui IRS"
-    document.getElementById('approveIRS').addEventListener('click', function() {
-        showModal(
-            'Setujui IRS', 
-            'Apakah anda yakin ingin menyetujui IRS?', 
-            function() {
-                // Aksi yang dijalankan setelah konfirmasi
-                alert('IRS Disetujui!');
-                // Lakukan aksi nyata, seperti submit form atau AJAX request di sini
-            }
-        );
-    });
+        const invalid = selectedCheckboxes.some(checkbox => checkbox.dataset.status !== requiredStatus);
+        if (invalid) {
+            alert(`Aksi ini hanya berlaku untuk status "${requiredStatus}".`);
+            return;
+        }
 
-    // Fungsi untuk aksi "Batalkan Persetujuan IRS"
-    document.getElementById('rejectIRS').addEventListener('click', function() {
-        showModal(
-            'Batalkan Persetujuan IRS', 
-            'Apakah anda yakin ingin membatalkan persetujuan IRS?', 
-            function() {
-                // Aksi yang dijalankan setelah konfirmasi
-                alert('Persetujuan IRS Dibatalkan!');
-                // Lakukan aksi nyata, seperti submit form atau AJAX request di sini
-            }
-        );
-    });
+        const ids = selectedCheckboxes.map(checkbox => checkbox.value);
+        updateIRSStatus(ids, newStatus);
+    }
 
-    // Fungsi untuk aksi "Beri Izin Perubahan IRS"
-    document.getElementById('givePermission').addEventListener('click', function() {
-        showModal(
-            'Beri Izin Perubahan IRS', 
-            'Apakah anda yakin ingin memberi izin perubahan IRS?', 
-            function() {
-                // Aksi yang dijalankan setelah konfirmasi
-                alert('Perubahan IRS Diberi Izin!');
-                // Lakukan aksi nyata, seperti submit form atau AJAX request di sini
-            }
-        );
+    // Fungsi untuk mengirimkan data ke server
+    function updateIRSStatus(ids, status) {
+        fetch('/dosen/updateirsstatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ ids, status }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Terjadi kesalahan. Coba lagi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan.');
+            });
+        }
     });
   </script>
 
@@ -380,8 +356,15 @@
     document.querySelectorAll('[data-filter]').forEach(function (filterOption) {
         filterOption.addEventListener('click', function () {
             const filterValue = this.getAttribute('data-filter');
-            // Redirect or make an AJAX request to filter data
-            window.location.href = `${window.location.pathname}?filter=${filterValue}`;
+            const perPage = document.getElementById('per_page').value || 10; // Ambil nilai per_page dari dropdown
+            const searchParams = new URLSearchParams(window.location.search);
+            
+            // Update query parameters
+            searchParams.set('filter', filterValue);
+            searchParams.set('per_page', perPage);
+
+            // Redirect dengan query parameters yang diperbarui
+            window.location.href = `${window.location.pathname}?${searchParams.toString()}`;
         });
     });
   </script>
