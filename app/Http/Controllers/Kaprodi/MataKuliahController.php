@@ -62,11 +62,17 @@ class MataKuliahController extends Controller
     public function destroy($kode_mk)
     {
         $mataKuliah = MataKuliah::findOrFail($kode_mk);
-
+        // Debug: Cek jumlah dosen sebelum detach
+        // dd($mataKuliah->dosen); // Cek data relasi dosen
+        // Menghapus relasi di tabel pivot sebelum menghapus mata kuliah
+        $mataKuliah->dosen()->detach();  // Ini akan menghapus relasi di tabel pivot
+        // dd($mataKuliah->dosen) ;
+        // Sekarang hapus mata kuliah
         $mataKuliah->delete();
 
         return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
     }
+
 
 
 };
