@@ -49,9 +49,11 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 Route::group(['middleware'=>'auth:dosen'], function(){
     Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/home/statistics', [PerwalianController::class, 'getStatistics'])->name('dosen.dashboard.statistics');
     Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
     Route::get('/dosen/perwalian/{nim}', [PerwalianController::class, 'show'])->name('dosen.perwalian.show');
-    //Route::get('/cetak-irs/{semester}', [PerwalianController::class, 'cetakIRS'])->name('cetak.irs');
+    Route::post('/dosen/setujuiirs/{id}', [PerwalianController::class, 'setujuiIRS'])->name('dosen.setujuiirs');
+    Route::post('/dosen/updateirsstatus', [PerwalianController::class, 'updateIRSStatus'])->name('dosen.updateirsstatus');
     Route::get('/dosen/cetakirs/{semesterId}', [CetakIrsController::class, 'cetakIRS'])->name('dosen.cetakirs');
 
 });
