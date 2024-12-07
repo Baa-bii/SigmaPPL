@@ -72,7 +72,7 @@ class PerwalianController extends Controller
                     } else {
                         // Hitung total SKS
                         $totalSKS = 0;
-                        foreach ($irs->mataKuliah as $mk) {
+                        foreach ($irs->matakuliah as $mk) {
                             $totalSKS += $mk->sks;
                         }
                         $mhs->sks_diambil = $totalSKS;

@@ -7,6 +7,7 @@ use App\Http\Controllers\Mhs\DashboardMhsController;
 use App\Http\Controllers\Akademik\RuangKelasController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\CetakIrsController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Kaprodi\MataKuliahController;
 use App\Http\Controllers\Kaprodi\JadwalController;
@@ -23,6 +24,10 @@ use App\Models\Dosen;
 // Route::get('/sidebar', function () {
 //     return view('components.sidebar');
 // });
+// Route::get('/sidebar', function () {
+//     return view('components.sidebar');
+// });
+
 Route::get('/footerdosen', function () {
     return view('components.footerdosen');
 });
@@ -47,6 +52,7 @@ Route::group(['middleware'=>'auth:dosen'], function(){
     Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
     Route::get('/dosen/perwalian/{nim}', [PerwalianController::class, 'show'])->name('dosen.perwalian.show');
     //Route::get('/cetak-irs/{semester}', [PerwalianController::class, 'cetakIRS'])->name('cetak.irs');
+    Route::get('/dosen/cetakirs/{semesterId}', [CetakIrsController::class, 'cetakIRS'])->name('dosen.cetakirs');
 
 });
 
@@ -128,6 +134,7 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
+    Route::post('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
