@@ -14,6 +14,7 @@ use App\Http\Controllers\Kaprodi\JadwalController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
+use App\Http\Controllers\Mhs\irsSementaraController;
 use App\Models\RuangKelas;
 use App\Models\Dosen;
 
@@ -66,6 +67,8 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
     Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
+    Route::get('/mhs/irs', [irsSementaraController::class, 'index'])->name('irs.index');
+    Route::delete('/mhs/irs/{id}', [irsSementaraController::class, 'destroy'])->name('irs.destroy');
 
 
 
