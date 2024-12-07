@@ -11,11 +11,21 @@ class Jadwal extends Model
     use HasFactory;
 
     protected $table = 'jadwal';
+<<<<<<< HEAD
     protected $primaryKey = 'id_jadwal'; // Primary key
     public $incrementing = false; // Karena `id_jadwal` bukan auto-increment
     protected $keyType = 'string'; // Tipe data primary key
     protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
 
+=======
+    // Nama primary key
+    protected $primaryKey = 'id_jadwal';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = ['id_jadwal', 'hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi', 'status'];
+   
+>>>>>>> f6fcbb0ec0af4e236d05b51119637021f49d35f9
     // Relasi ke model Waktu
     public function waktu()
     {
