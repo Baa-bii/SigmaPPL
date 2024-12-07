@@ -10,7 +10,8 @@ class MataKuliah extends Model
     use HasFactory;
 
     protected $table = 'matakuliah';
-
+    protected $primaryKey = 'kode_mk';
+    public $incrementing = false; // Jika kode_mk bukan auto-increment
     protected $casts = [
         'kode_mk' => 'string', // Pastikan kode_mk di-cast sebagai string
     ];
@@ -43,11 +44,6 @@ class MataKuliah extends Model
          return $this->belongsToMany(Mahasiswa::class, 'irs', 'kode_mk', 'nim')
                      ->withPivot('status', 'status_mata_kuliah'); // kolom tambahan di tabel pivot
      }
-     
-    public function jadwal()
-    {
-        return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
-    }
 
     // // Relasi many-to-many dengan Mahasiswa
     // public function mahasiswa()

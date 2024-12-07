@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Jadwal extends Model
 {
     use HasFactory;
 
     protected $table = 'jadwal';
-
+    protected $primaryKey = 'id_jadwal'; // Primary key
+    public $incrementing = false; // Karena `id_jadwal` bukan auto-increment
+    protected $keyType = 'string'; // Tipe data primary key
     protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
 
     // Relasi ke model Waktu
@@ -50,4 +53,5 @@ class Jadwal extends Model
     {
         return $this->hasMany(KHS::class, 'id_jadwal');
     }
+
 }
