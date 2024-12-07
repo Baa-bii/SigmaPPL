@@ -4,7 +4,12 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\IRS;
+use App\Models\SemesterAktif;
+use App\Models\Mahasiswa;
+use App\Models\Matakuliah;
+use App\Models\Jadwal;
 
 class IRSSeeder extends Seeder
 {
@@ -325,6 +330,98 @@ class IRSSeeder extends Seeder
             'status' => 'Sudah Disetujui',
             'created_at' => now(),
             'updated_at' => now(),
+
         ]);
+        
+        // Ambil semua mahasiswa
+        $mahasiswaList = Mahasiswa::all();
+
+        foreach ($mahasiswaList as $mahasiswa) {
+            // Ambil semester aktif terkini (is_active = 1) untuk mahasiswa
+            $currentSemesterAktif = SemesterAktif::where('nim', $mahasiswa->nim)
+                ->where('is_active', 1)
+                ->where('status', 'aktif')
+                ->first();
+
+            // Jika tidak ada semester aktif terkini, lewati mahasiswa ini
+            if (!$currentSemesterAktif) {
+                continue;
+            }
+
+            Log::info("Memproses mahasiswa aktif", [
+                'nim' => $mahasiswa->nim,
+                'semester' => $currentSemesterAktif->semester,
+            ]);
+
+            // Proses semester aktif terkini (is_active = 1)
+            $mataKuliahList = Matakuliah::where('semester', $currentSemesterAktif->semester)->get();
+
+            foreach ($mataKuliahList as $mataKuliah) {
+                // Ambil jadwal berdasarkan kode_mk
+                $jadwal = Jadwal::where('kode_mk', $mataKuliah->kode_mk)->first();
+
+                // Periksa apakah data IRS sudah ada
+                $exists = IRS::where('nim', $mahasiswa->nim)
+                    ->where('kode_mk', $mataKuliah->kode_mk)
+                    ->where('id_TA', $currentSemesterAktif->id)
+                    ->exists();
+
+                if (!$exists && $jadwal) {
+                    // Buat data IRS dengan status "Belum Disetujui"
+                    IRS::create([
+                        'nim' => $mahasiswa->nim,
+                        'kode_mk' => $mataKuliah->kode_mk,
+                        'id_jadwal' => $jadwal->id_jadwal,
+                        'id_TA' => $currentSemesterAktif->id,
+                        'status' => 'belum disetujui',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    Log::info("IRS dibuat untuk mahasiswa", [
+                        'nim' => $mahasiswa->nim,
+                        'kode_mk' => $mataKuliah->kode_mk,
+                        'id_TA' => $currentSemesterAktif->id,
+                        'status' => 'belum disetujui',
+                    ]);
+                }
+            }
+
+            // Proses semester aktif sebelumnya (is_active = 0)
+            $semesterAktifList = SemesterAktif::where('nim', $mahasiswa->nim)
+                ->where('is_active', 0)
+                ->where('semester', '<=', $currentSemesterAktif->semester)
+                ->get();
+
+            foreach ($semesterAktifList as $semesterAktif) {
+                $mataKuliahList = Matakuliah::where('semester', $semesterAktif->semester)->get();
+
+                foreach ($mataKuliahList as $mataKuliah) {
+                    $jadwal = Jadwal::where('kode_mk', $mataKuliah->kode_mk)->first();
+
+                    $exists = IRS::where('nim', $mahasiswa->nim)
+                        ->where('kode_mk', $mataKuliah->kode_mk)
+                        ->where('id_TA', $semesterAktif->id)
+                        ->exists();
+
+                    if (!$exists && $jadwal) {
+                        IRS::create([
+                            'nim' => $mahasiswa->nim,
+                            'kode_mk' => $mataKuliah->kode_mk,
+                            'id_jadwal' => $jadwal->id_jadwal,
+                            'id_TA' => $semesterAktif->id,
+                            'status' => 'sudah disetujui',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                        Log::info("IRS dibuat untuk semester yang sudah berlalu", [
+                            'nim' => $mahasiswa->nim,
+                            'kode_mk' => $mataKuliah->kode_mk,
+                            'id_TA' => $semesterAktif->id,
+                            'status' => 'sudah disetujui',
+                        ]);
+                    }
+                }
+            }
+        }    
     }
 }

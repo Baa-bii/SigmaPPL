@@ -56,7 +56,7 @@ class PerwalianController extends Controller
                 ->where('is_active', 1)  // Semester yang sedang aktif
                 ->latest('tahun_akademik') // Ambil semester terakhir
                 ->first();
-
+        
             if ($semesterAktif) {
                 // Tentukan status berdasarkan semester aktif
                 if ($semesterAktif->status == 'Belum Registrasi') {
@@ -66,32 +66,33 @@ class PerwalianController extends Controller
                     $mhs->status = 'Cuti';
                     $mhs->sks_diambil = '-';
                 } elseif ($semesterAktif->status == 'Aktif') {
-                    // Cek IRS untuk semester aktif
-                    $irs = IRS::where('id_TA', $semesterAktif->id)
+                    // Ambil semua IRS untuk semester aktif
+                    $irsList = IRS::where('id_TA', $semesterAktif->id)
                         ->where('nim', $mhs->nim)
-                        ->first(); // Ambil IRS berdasarkan semester aktif dan NIM
-
-                    if (!$irs) {
+                        ->get();
+        
+                    if ($irsList->isEmpty()) {
                         $mhs->status = 'Belum Isi IRS';
                         $mhs->sks_diambil = '-';
                     } else {
-                        // Hitung total SKS
-                        $totalSKS = 0;
-                        foreach ($irs->matakuliah as $mk) {
-                            $totalSKS += $mk->sks;
-                        }
+                        // Hitung total SKS berdasarkan kode_mk
+                        $totalSKS = $irsList->reduce(function ($carry, $irs) {
+                            $mataKuliah = MataKuliah::where('kode_mk', $irs->kode_mk)->first();
+                            return $carry + ($mataKuliah ? $mataKuliah->sks : 0);
+                        }, 0);
+        
                         $mhs->sks_diambil = $totalSKS;
-
+        
                         // Tentukan status berdasarkan IRS
-                        if ($irs->status == 'Sudah Disetujui') {
-                            $mhs->status = 'Sudah Disetujui';
-                        } else {
+                        if ($irsList->pluck('status')->contains('Belum Disetujui')) {
                             $mhs->status = 'Belum Disetujui';
+                        } else {
+                            $mhs->status = 'Sudah Disetujui';
                         }
                     }
                 }
             }
-        }
+        }        
 
         // Filter berdasarkan status setelah data diolah
         $mahasiswa = $mahasiswa->filter(function ($mhs) use ($filter) {
