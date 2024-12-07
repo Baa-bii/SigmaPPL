@@ -15,6 +15,7 @@ use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
 use App\Models\RuangKelas;
+use App\Models\Dosen;
 
 //testing component
 // Route::get('/header', function () {
@@ -86,6 +87,12 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
     Route::resource('kaprodi/mata-kuliah', MataKuliahController::class)->names([
         'index' => 'content.kaprodi.matakuliah.index',
     ]);
+    Route::get('/api/dosen', function () {
+        return Dosen::select('nip_dosen', 'nama_dosen')->get();
+    });
+    Route::delete('/kaprodi/mata_kuliah/{kode_mk}', [MataKuliahController::class, 'destroy'])->name('kaprodi.mata_kuliah.destroy');
+
+
     // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 
 });
@@ -129,7 +136,7 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
-    Route::patch('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
+    Route::post('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
