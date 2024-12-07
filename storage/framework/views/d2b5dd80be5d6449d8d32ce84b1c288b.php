@@ -1,4 +1,4 @@
-@vite(['resources/css/app.css','resources/js/app.js'])
+<?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
 <!-- Sidebar -->
@@ -9,18 +9,18 @@
 >
     <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
         <ul class="space-y-2">
-            @if($user->role === 'dosen')  <!-- Menu Dosen -->
+            <?php if($user->role === 'dosen'): ?>  <!-- Menu Dosen -->
                 <!-- Dashboard Dosen -->
                 <li>
                     <a
-                        href="{{ route('dosen.dashboard.index') }}"
+                        href="<?php echo e(route('dosen.dashboard.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dosen/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('dosen/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dosen/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('dosen/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -41,13 +41,13 @@
                 <!-- Perwalian -->
                 <li>
                     <a
-                        href="{{ route('dosen.perwalian.index') }}"
+                        href="<?php echo e(route('dosen.perwalian.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dosen/perwalian*') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('dosen/perwalian*') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dosen/perwalian*') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('dosen/perwalian*') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -63,18 +63,18 @@
                     </a>
                 </li>
 
-            @elseif($user->role === 'dekan')  <!-- Menu Dekan -->
+            <?php elseif($user->role === 'dekan'): ?>  <!-- Menu Dekan -->
                 <!-- Dashboard Dekan -->
                 <li>
                     <a
-                        href="{{ route('dekan.dashboard.index') }}"
+                        href="<?php echo e(route('dekan.dashboard.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dekan/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('dekan/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dekan/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('dekan/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -95,13 +95,13 @@
                 <!-- Usulan Jadwal Kuliah -->
                 <li>
                     <a
-                        href="{{ route('dekan.jadwal.index') }}"
+                        href="<?php echo e(route('dekan.jadwal.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -120,13 +120,13 @@
                 <!-- Usulan Ruang Kuliah -->
                 <li>
                     <a
-                        href="{{ route('dekan.ruang.index') }}"
+                        href="<?php echo e(route('dekan.ruang.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
@@ -139,18 +139,18 @@
                     </a>
                 </li>
 
-            @elseif($user->role === 'kaprodi')  <!-- Menu Kaprodi -->
+            <?php elseif($user->role === 'kaprodi'): ?>  <!-- Menu Kaprodi -->
                 <!-- Dashboard Kaprodi -->
                 <li>
                     <a
-                        href="{{ route('kaprodi.dashboard.index') }}"
+                        href="<?php echo e(route('kaprodi.dashboard.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('kaprodi/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('kaprodi/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('kaprodi/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('kaprodi/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -171,13 +171,13 @@
                 <!-- Kelola Mata Kuliah -->
                 <li>
                     <a
-                        href="{{ route('kaprodi.mata_kuliah.index') }}"
+                        href="<?php echo e(route('kaprodi.mata_kuliah.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('kaprodi/matakuliah') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('kaprodi/matakuliah') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('kaprodi/matakuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('kaprodi/matakuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -196,13 +196,13 @@
                 <!-- Kelola Jadwal -->
                 <li>
                     <a
-                        href="{{ route('kaprodi.jadwal.index') }}"
+                        href="<?php echo e(route('kaprodi.jadwal.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('kaprodi/jadwal') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('kaprodi/jadwal') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
@@ -215,18 +215,18 @@
                     </a>
                 </li>
 
-            @elseif($user->role === 'akademik')  <!-- Menu Akademik -->
+            <?php elseif($user->role === 'akademik'): ?>  <!-- Menu Akademik -->
                 <!-- Dashboard Akademik -->
                 <li>
                     <a
-                        href="{{ route('akademik.dashboard.index') }}"
+                        href="<?php echo e(route('akademik.dashboard.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('akademik/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('akademik/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('akademik/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('akademik/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -247,13 +247,13 @@
                 <!-- Ruangan -->
                 <li>
                     <a
-                        href="{{ route('akademik.ruang.index') }}"
+                        href="<?php echo e(route('akademik.ruang.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('akademik/ruang') ?  'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('akademik/ruang') ?  'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('akademik/ruang') ?  'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('akademik/ruang') ?  'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -270,18 +270,18 @@
                 </li>
           
 
-            @elseif($user->role === 'mhs')  <!-- Menu MAHASISWA -->
+            <?php elseif($user->role === 'mhs'): ?>  <!-- Menu MAHASISWA -->
                 <!-- Dashboard mhs -->
                 <li>
                     <a
-                        href="{{ route('mhs.dashboard.index') }}"
+                        href="<?php echo e(route('mhs.dashboard.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('mhs/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('mhs/home') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             aria-hidden="true"
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('mhs/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('mhs/home') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 36 36"
                             xmlns="http://www.w3.org/2000/svg"
@@ -302,13 +302,13 @@
                 <!-- Usulan Registrasi -->
                 <li>
                     <a
-                        href="{{ route('mhs.registrasi.index') }}"
+                        href="<?php echo e(route('mhs.registrasi.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('mhs/registrasi') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('mhs/registrasi') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('mhs/registrasi') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('mhs/registrasi') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -327,13 +327,13 @@
                 <!-- Usulan Ruang Kuliah -->
                 <li>
                     <a
-                        href="{{ route('mhs.akademik.index') }}"
+                        href="<?php echo e(route('mhs.akademik.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        {{ Request::is('mhs/akademik') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        <?php echo e(Request::is('mhs/akademik') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            {{ Request::is('mhs/akademik') ? 'text-black' : 'text-gray-500 dark:text-gray-400' }}"
+                            <?php echo e(Request::is('mhs/akademik') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
@@ -346,7 +346,7 @@
                         <span class="ml-3">IRS</span>
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
         </ul>
 
         <!-- Calendar Section -->
@@ -457,3 +457,4 @@
       });
     </script>
 </aside>
+<?php /**PATH C:\Users\user\Downloads\sigmaPPL\resources\views/components/sidebar.blade.php ENDPATH**/ ?>

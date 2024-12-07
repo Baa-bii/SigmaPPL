@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Verifikasi Jadwal Kuliah</title>
-    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,36 +14,74 @@
 </head>
 <body> 
 <div class="antialiased bg-gray-50 dark:bg-gray-900">
-    <x-header></x-header>
-    <x-sidebar></x-sidebar>
+    <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('header'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $attributes = $__attributesOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__attributesOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $component = $__componentOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__componentOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+    <?php if (isset($component)) { $__componentOriginal2880b66d47486b4bfeaf519598a469d6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal2880b66d47486b4bfeaf519598a469d6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $attributes = $__attributesOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $component = $__componentOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__componentOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
     <main class="p-16 md:ml-64 h-auto pt-20 min-h-screen">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Jadwal Kuliah</h1>
         
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div id="success-message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100">
-                {{ session('success') }}
-            </div>
-        @endif
+                <?php echo e(session('success')); ?>
 
-        @if (session('error'))
-            <div id="failed-message" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100">
-                {{ session('error') }}
             </div>
-        @endif
+        <?php endif; ?>
+
+        <?php if(session('error')): ?>
+            <div id="failed-message" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100">
+                <?php echo e(session('error')); ?>
+
+            </div>
+        <?php endif; ?>
 
         <!-- Kontainer Utama -->
         <div class="flex items-center justify-between gap-4 px-4">
             <!-- Simbol Previous dan Search Bar -->
             <div class="flex items-center flex-grow gap-3">
                 <!-- Tombol Previous -->
-                <a href="{{ route('dekan.jadwal.index') }}" class="text-gray-500 hover:text-gray-700">
+                <a href="<?php echo e(route('dekan.jadwal.index')); ?>" class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 </a>
 
                 <!-- Search Bar -->
-                <form action="{{ route('dekan.jadwal.search') }}" method="GET" class="flex-grow flex items-center">
+                <form action="<?php echo e(route('dekan.jadwal.search')); ?>" method="GET" class="flex-grow flex items-center">
                     <label for="search" class="sr-only">Cari Jadwal</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -52,7 +89,7 @@
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
                             </svg>
                         </div>
-                        <input type="text" name="search" value="{{ request()->input('search') }}" id="search" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Mata Kuliah">
+                        <input type="text" name="search" value="<?php echo e(request()->input('search')); ?>" id="search" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Mata Kuliah">
                     </div>
                 </form>
             </div>
@@ -71,9 +108,9 @@
                     <!-- Dropdown menu -->
                     <div id="dropdownFilters" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                         <ul class="py-1 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownFiltersButton">
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'disetujui']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'ditolak']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'ditolak' ? 'bg-gray-300' : '' }}">Semua Sudah Ditolak</a></li>
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'menunggu']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'menunggu' ? 'bg-gray-300' : '' }}">Semua Belum Diisi</a></li>
+                            <li><a href="<?php echo e(route('dekan.jadwal.filter', ['filter' => 'disetujui'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'disetujui' ? 'bg-gray-300' : ''); ?>">Semua Sudah Disetujui</a></li>
+                            <li><a href="<?php echo e(route('dekan.jadwal.filter', ['filter' => 'ditolak'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'ditolak' ? 'bg-gray-300' : ''); ?>">Semua Sudah Ditolak</a></li>
+                            <li><a href="<?php echo e(route('dekan.jadwal.filter', ['filter' => 'menunggu'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'menunggu' ? 'bg-gray-300' : ''); ?>">Semua Belum Diisi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -119,53 +156,54 @@
                     </tr>
                 </thead>
                 <tbody id="data-tabel-jadwal" class="divide-y divide-transparent">
-                @foreach ($jadwal as $item)
+                <?php $__currentLoopData = $jadwal; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr class="bg-white text-black dark:bg-gray-800 status-row" 
-                        data-status="{{ $item->status ?? 'menunggu' }}"
-                        data-search="{{ $item->matakuliah->nama_mk ?? '' }} 
-                                     {{ $item->dosenmatkul->dosen->nama_dosen ?? '' }} 
-                                     {{ $item->matakuliah->semester ?? '' }} 
-                                     {{ $item->ruang->nama ?? 'Tidak Ada Ruangan' }} 
-                                     {{ $item->ruang->gedung ?? '' }} 
-                                     {{ $item->id_TA ?? '' }}">
+                        data-status="<?php echo e($item->status ?? 'menunggu'); ?>"
+                        data-search="<?php echo e($item->matakuliah->nama_mk ?? ''); ?> 
+                                     <?php echo e($item->dosenmatkul->dosen->nama_dosen ?? ''); ?> 
+                                     <?php echo e($item->matakuliah->semester ?? ''); ?> 
+                                     <?php echo e($item->ruang->nama ?? 'Tidak Ada Ruangan'); ?> 
+                                     <?php echo e($item->ruang->gedung ?? ''); ?> 
+                                     <?php echo e($item->id_TA ?? ''); ?>">
                         <th scope="col" class="p-4 w-10 text-center">
-                            <input type="checkbox" class="rowCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" data-id="{{ $item->id_jadwal }}">
+                            <input type="checkbox" class="rowCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" data-id="<?php echo e($item->id_jadwal); ?>">
                         </th>
                         <!-- Nama Mata Kuliah -->
-                        <td class="p-4 text-xs whitespace-nowrap">{{ $item->matakuliah->nama_mk ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap"><?php echo e($item->matakuliah->nama_mk ?? 'N/A'); ?></td>
 
                         <!-- Waktu -->
-                        <td class="p-4 text-xs whitespace-nowrap">{{ $item->waktu->jam_mulai ?? 'N/A' }} - {{ $item->waktu->jam_selesai ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap"><?php echo e($item->waktu->jam_mulai ?? 'N/A'); ?> - <?php echo e($item->waktu->jam_selesai ?? 'N/A'); ?></td>
 
                         <!-- Dosen -->
-                        <td class="p-4 text-xs whitespace-nowrap">{{ $item->dosenmatkul->dosen->nama_dosen ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap"><?php echo e($item->dosenmatkul->dosen->nama_dosen ?? 'N/A'); ?></td>
 
                         <!-- Semester -->
-                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap text-center"><?php echo e($item->matakuliah->semester ?? 'N/A'); ?></td>
 
                         <!-- Ruangan -->
                         <td class="p-4 text-xs whitespace-nowrap text-center">
-                            @if ($item->ruang)
-                                {{ $item->ruang->nama }}
-                            @else
+                            <?php if($item->ruang): ?>
+                                <?php echo e($item->ruang->nama); ?>
+
+                            <?php else: ?>
                                 Tidak Ada Ruangan
-                            @endif
+                            <?php endif; ?>
                         </td>
 
                         <!-- Gedung -->
-                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->ruang->gedung ?? 'Tidak Ada Gedung' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap text-center"><?php echo e($item->ruang->gedung ?? 'Tidak Ada Gedung'); ?></td>
 
                         <!-- Tahun Akademik -->
-                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->id_TA }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap text-center"><?php echo e($item->id_TA); ?></td>
 
                         <!-- Form Setujui/Tolak -->
                         <td class="p-4 flex gap-2 items-center flex-wrap md:flex-nowrap">
                             <!-- Tombol Setujui -->
-                                <form action="{{ route('dekan.verifikasi.update', $item->id_jadwal) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
+                                <form action="<?php echo e(route('dekan.verifikasi.update', $item->id_jadwal)); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PATCH'); ?>
                                     <button type="submit" name="status" value="disetujui" class="setuju-button flex items-center whitespace-nowrap text-xs text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition
-                                    {{ $item->status === 'disetujui' || $item->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white' }}" {{ $item->status === 'disetujui' || $item->status === 'ditolak' ? 'disabled' : '' }}>
+                                    <?php echo e($item->status === 'disetujui' || $item->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white'); ?>" <?php echo e($item->status === 'disetujui' || $item->status === 'ditolak' ? 'disabled' : ''); ?>>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
                                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                             <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -175,11 +213,11 @@
                                 </form>
 
                             <!-- Tombol Tolak -->
-                            <form action="{{ route('dekan.verifikasi.update', $item->id_jadwal) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
+                            <form action="<?php echo e(route('dekan.verifikasi.update', $item->id_jadwal)); ?>" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('PATCH'); ?>
                                 <button type="submit" name="status" value="ditolak" class="tolak-button flex items-center border border-red-500 text-red-500 px-3 py-1 text-xs rounded-lg hover:bg-red-500 hover:text-white transition
-                                {{ $item->status === 'disetujui' || $item->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white' }}" {{ $item->status === 'disetujui' || $item->status === 'ditolak' ? 'disabled' : '' }}>
+                                <?php echo e($item->status === 'disetujui' || $item->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white'); ?>" <?php echo e($item->status === 'disetujui' || $item->status === 'ditolak' ? 'disabled' : ''); ?>>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                     </svg>
@@ -188,7 +226,7 @@
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
         </div>
@@ -198,64 +236,69 @@
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5 mb-5">
                 Showing 
                 <span class="font-semibold text-gray-900 dark:text-white">
-                    {{ $jadwal->firstItem() }}
+                    <?php echo e($jadwal->firstItem()); ?>
+
                 </span> 
                 to
                 <span class="font-semibold text-gray-900 dark:text-white">
-                    {{ $jadwal->lastItem() }}
+                    <?php echo e($jadwal->lastItem()); ?>
+
                 </span>
                 of 
                 <span class="font-semibold text-gray-900 dark:text-white">
-                    {{ $jadwal->total() }}
+                    <?php echo e($jadwal->total()); ?>
+
                 </span>
             </span>
             <ul class="inline-flex items-center -space-x-px text-sm h-8 mr-5 mb-5">
             <!-- Tombol Previous -->
-            @if($jadwal->onFirstPage())
+            <?php if($jadwal->onFirstPage()): ?>
                 <li>
                     <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                         Previous
                     </span>
                 </li>
-            @else
+            <?php else: ?>
                 <li>
-                    <a href="{{ $jadwal->previousPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <a href="<?php echo e($jadwal->previousPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         Previous
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
             <!-- Nomor Halaman -->
-            @for($i = 1; $i <= $jadwal->lastPage(); $i++)
-                @if($i == $jadwal->currentPage())
+            <?php for($i = 1; $i <= $jadwal->lastPage(); $i++): ?>
+                <?php if($i == $jadwal->currentPage()): ?>
                     <li>
                         <span class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
-                            {{ $i }}
+                            <?php echo e($i); ?>
+
                         </span>
                     </li>
-                @else
+                <?php else: ?>
                     <li>
-                        <a href="{{ $jadwal->url($i) }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            {{ $i }}
+                        <a href="<?php echo e($jadwal->url($i)); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <?php echo e($i); ?>
+
                         </a>
                     </li>
-                @endif
-            @endfor
+                <?php endif; ?>
+            <?php endfor; ?>
 
             <!-- Tombol Next -->
-            @if($jadwal->hasMorePages())
+            <?php if($jadwal->hasMorePages()): ?>
                 <li>
-                    <a href="{{ $jadwal->nextPageUrl() }}" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <a href="<?php echo e($jadwal->nextPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         Next
                     </a>
                 </li>
-            @else
+            <?php else: ?>
                 <li>
                     <span class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-not-allowed dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                         Next
                     </span>
                 </li>
-            @endif
+            <?php endif; ?>
         </ul>
     </nav>
                             </div>
@@ -267,7 +310,25 @@
     </section>
     <!-- End block -->
     </main>
-        <x-footerdosen></x-footerdosen>
+        <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('footerdosen'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $attributes = $__attributesOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__attributesOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
     </div>
 
     <script>
@@ -296,11 +357,11 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("{{ route('dekan.jadwal.bulkUpdate') }}", {
+        fetch("<?php echo e(route('dekan.jadwal.bulkUpdate')); ?>", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>"
             },
             body: JSON.stringify({ ids: selectedIds, status: status })
         })
@@ -352,4 +413,4 @@ document.addEventListener("DOMContentLoaded", function () {
     </script>
 
 </body>
-</html>
+</html><?php /**PATH C:\Users\user\Downloads\sigmaPPL\resources\views/content/dekan/verifikasijadwal.blade.php ENDPATH**/ ?>
