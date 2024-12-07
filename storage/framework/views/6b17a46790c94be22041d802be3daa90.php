@@ -54,6 +54,21 @@
 <?php endif; ?>
     <main class="p-16 md:ml-64 h-auto pt-20 min-h-screen">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Ruang Kuliah</h1>
+
+        <?php if(session('success')): ?>
+            <div id="success-message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100">
+                <?php echo e(session('success')); ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if(session('error')): ?>
+            <div id="failed-message" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100">
+                <?php echo e(session('error')); ?>
+
+            </div>
+        <?php endif; ?>
+
         <!-- Kontainer Utama -->
         <div class="flex items-center justify-between gap-4 px-4">
             <!-- Simbol Previous dan Search Bar -->
@@ -66,15 +81,15 @@
                 </a>
 
                 <!-- Search Bar -->
-                <form class="flex-grow flex items-center">
-                    <label for="simple-search" class="sr-only">Cari Ruang</label>
+                <form action="<?php echo e(route('dekan.ruang.search')); ?>" method="GET" class="flex-grow flex items-center">
+                    <label for="search" class="sr-only">Cari Ruang</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
                             </svg>
                         </div>
-                        <input type="text" id="simple-search" placeholder="Cari Ruang" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <input type="text" name="search" value="<?php echo e(request()->input('search')); ?>" id="search" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Ruang Kuliah">
                     </div>
                 </form>
             </div>
@@ -83,35 +98,26 @@
             <div class="flex items-center gap-4">
                 <!-- Dropdown Filter -->
                 <div class="relative inline-block text-left">
-                    <button id="filtersDropdownButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                    <button id="filtersDropdownButton" data-dropdown-toggle="dropdownFilters" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                         Filters
                         <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
 
-                    <!-- Dropdown Menu -->
-                    <div id="filtersDropdown" class="absolute hidden left-0 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                        <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                            <li>
-                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="semua">Semua</a>
-                            </li>
-                            <li>
-                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="disetujui">Semua Disetujui</a>
-                            </li>
-                            <li>
-                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="ditolak">Semua Ditolak</a>
-                            </li>
-                            <li>
-                                <a href="#" class="filter-option block px-4 py-2 hover:bg-gray-100" data-filter="proses">Sedang Proses</a>
-                            </li>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownFilters" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-1 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownFiltersButton">
+                            <li><a href="<?php echo e(route('dekan.ruang.filter', ['filter' => 'disetujui'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'disetujui' ? 'bg-gray-300' : ''); ?>">Semua Sudah Disetujui</a></li>
+                            <li><a href="<?php echo e(route('dekan.ruang.filter', ['filter' => 'ditolak'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'ditolak' ? 'bg-gray-300' : ''); ?>">Semua Sudah Ditolak</a></li>
+                            <li><a href="<?php echo e(route('dekan.ruang.filter', ['filter' => 'menunggu'])); ?>" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white <?php echo e(request('filter') == 'menunggu' ? 'bg-gray-300' : ''); ?>">Semua Belum Diisi</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Dropdown Actions -->
                 <div class="relative inline-block text-left">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                         Actions
                         <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
@@ -119,39 +125,21 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="actionsDropdown" class="absolute hidden left-0 mt-1 w-30 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                        <ul class="py-1 text-sm text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                            <li>
-                                <a href="#" id="approveButton" class="block px-4 py-2 hover:bg-gray-100">Menyetujui</a>
-                            </li>
-                            <li>
-                                <a href="#" id="rejectButton" class="block px-4 py-2 hover:bg-gray-100">Menolak</a>
-                            </li>
+                    <div id="dropdownActions" class="absolute hidden left-0 mt-1 w-30 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                        <ul class="py-1 text-xs text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                            <li><a href="#" id="approveButton" class="block px-4 py-2 hover:bg-gray-100">Menyetujui</a></li>
+                            <li><a href="#" id="rejectButton" class="block px-4 py-2 hover:bg-gray-100">Menolak</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <?php if(session('success')): ?>
-            <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-                <?php echo e(session('success')); ?>
-
-            </div>
-        <?php endif; ?>
-
-        <?php if($errors->any()): ?>
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                <?php echo e($errors->first()); ?>
-
-            </div>
-        <?php endif; ?>
-
         <!-- Tabel Data -->
         <div class="overflow-x-auto mt-2">
             <!-- Tabel Ruang -->
-            <table id="data-tabel-ruang" class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
-                <thead class="text-sm text-black uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+            <table id="table-container" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="p-4 w-10 text-center">
                             <input id="mainCheckbox" type="checkbox" class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded">
@@ -165,36 +153,36 @@
                         <th scope="col" class="p-4 whitespace-nowrap text-center">AKSI</th>
                     </tr>
                 </thead>
-                <tbody id="ruang-table-body" class="divide-y divide-transparent">
+                <tbody id="data-tabel-ruang" class="divide-y divide-transparent">
                 <?php $__currentLoopData = $ruang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="bg-white text-black dark:bg-gray-800 status-row" data-status="<?php echo e($data->status ?? 'menunggu'); ?>"
                     data-search="<?php echo e($data->nama ?? ''); ?> <?php echo e($data->gedung ?? ''); ?> <?php echo e($data->kapasitas ?? ''); ?>">
                     <th scope="col" class="p-4 w-10 text-center">
-                        <input id="mainCheckbox" type="checkbox" class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                        <label for="mainCheckbox" class="sr-only">Select all</label>
+                        <input type="checkbox" class="rowCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" data-id="<?php echo e($data->id); ?>">
                     </th>
                     <!-- Kelas -->
-                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->jadwal->first()?->kelas ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-xs text-center"><?php echo e($data->jadwal->first()?->kelas ?? 'N/A'); ?></td>
 
                     <!-- Gedung -->
-                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->gedung ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-xs text-center"><?php echo e($data->gedung ?? 'N/A'); ?></td>
 
                     <!-- Ruangan -->
-                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->nama ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-xs text-center"><?php echo e($data->nama ?? 'N/A'); ?></td>
 
                     <!-- Kapasitas -->
-                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->kapasitas ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-xs text-center"><?php echo e($data->kapasitas ?? 'N/A'); ?></td>
 
                     <!-- Waktu -->
-                    <td class="p-4 whitespace-nowrap text-sm"><?php echo e($data->jadwal->first()?->waktu?->jam_mulai ?? 'N/A'); ?> - <?php echo e($data->jadwal->first()?->waktu?->jam_selesai ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-xs"><?php echo e($data->jadwal->first()?->waktu?->jam_mulai ?? 'N/A'); ?> - <?php echo e($data->jadwal->first()?->waktu?->jam_selesai ?? 'N/A'); ?></td>
 
                     <!-- Form Setujui/Tolak -->
-                    <td class="p-4 flex gap-2 items-center flex-wrap md:flex-nowrap">
+                    <td class="p-4 flex gap-2 items-center text-center flex-wrap md:flex-nowrap">
                             <!-- Tombol Setujui -->
-                            <form action="<?php echo e(route('dekan.verifikasi.update', $data->id)); ?>" method="POST">
+                            <form action="<?php echo e(route('dekan.verifikasiruang.update', $data->id)); ?>" method="POST">
                                 <?php echo csrf_field(); ?>
                                 <?php echo method_field('PATCH'); ?>
-                                <button type="submit" name="status" value="disetujui" class="setuju-button flex items-center whitespace-nowrap text-sm font-medium text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition">
+                                <button type="submit" name="status" value="disetujui" class="setuju-button flex items-center whitespace-nowrap text-xs font-medium text-center rounded-lg border border-green-500 text-green-500 px-3 py-1 hover:bg-green-500 hover:text-white transition 
+                                <?php echo e($data->status === 'disetujui' || $data->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white'); ?>" <?php echo e($data->status === 'disetujui' || $data->status === 'ditolak' ? 'disabled' : ''); ?>>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                         <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -203,10 +191,11 @@
                                 </button>
                             </form>
                             <!-- Tombol Tolak -->
-                            <form action="<?php echo e(route('dekan.verifikasi.update', $data->id)); ?>" method="POST">
+                            <form action="<?php echo e(route('dekan.verifikasiruang.update', $data->id)); ?>" method="POST">
                                 <?php echo csrf_field(); ?>
                                 <?php echo method_field('PATCH'); ?>
-                                <button type="submit" name="status" value="ditolak" class="tolak-button flex items-center border border-red-500 text-red-500 px-3 py-1 text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
+                                <button type="submit" name="status" value="ditolak" class="tolak-button flex items-center border border-red-500 text-red-500 text-center px-3 py-1 text-xs rounded-lg hover:bg-red-500 hover:text-white transition
+                                <?php echo e($data->status === 'disetujui' || $data->status === 'ditolak' ? 'opacity-50 cursor-not-allowed' : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white'); ?>" <?php echo e($data->status === 'disetujui' || $data->status === 'ditolak' ? 'disabled' : ''); ?>>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                     </svg>
@@ -249,7 +238,7 @@
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="<?php echo e($jadwal->previousPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <a href="<?php echo e($ruang->previousPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             Previous
                         </a>
                     </li>
@@ -266,7 +255,7 @@
                         </li>
                     <?php else: ?>
                         <li>
-                            <a href="<?php echo e($jadwal->url($i)); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <a href="<?php echo e($ruang->url($i)); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 <?php echo e($i); ?>
 
                             </a>
@@ -277,7 +266,7 @@
                 <!-- Tombol Next -->
                 <?php if($ruang->hasMorePages()): ?>
                     <li>
-                        <a href="<?php echo e($jadwal->nextPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <a href="<?php echo e($ruang->nextPageUrl()); ?>" class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             Next
                         </a>
                     </li>
@@ -318,4 +307,88 @@
 <?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
 <?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
 <?php endif; ?>
-    </div><?php /**PATH C:\SIgma\resources\views/content/dekan/verifikasiruang.blade.php ENDPATH**/ ?>
+    </div>
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mainCheckbox = document.getElementById("mainCheckbox");
+    const rowCheckboxes = document.querySelectorAll(".rowCheckbox");
+    const approveButton = document.getElementById("approveButton");
+    const rejectButton = document.getElementById("rejectButton");
+
+    // Toggle semua checkbox
+    mainCheckbox.addEventListener("change", function () {
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+    });
+
+    // Fungsi untuk build update
+    function handleBuildUpdate(status) {
+        const selectedIds = Array.from(rowCheckboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.dataset.id);
+
+        if (selectedIds.length === 0) {
+            alert("Pilih setidaknya satu jadwal untuk melakukan aksi.");
+            return;
+        }
+
+        fetch("<?php echo e(route('dekan.ruang.buildUpdate')); ?>", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>"
+            },
+            body: JSON.stringify({ ids: selectedIds, status: status })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // Refresh halaman
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Terjadi kesalahan saat memproses permintaan.");
+            });
+    }
+
+    // Event untuk tombol approve dan reject
+    approveButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        handleBuildUpdate("disetujui");
+    });
+
+    rejectButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        handleBuildUpdate("ditolak");
+    });
+});
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Menghilangkan pesan sukses
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+        setTimeout(() => {
+            successMessage.style.transition = "opacity 0.5s ease";
+            successMessage.style.opacity = "0";
+            setTimeout(() => successMessage.remove(), 500); // Menghapus elemen setelah animasi
+        }, 5000); // 5 detik
+    }
+
+    // Menghilangkan pesan error
+    const failedMessage = document.getElementById('failed-message');
+    if (failedMessage) {
+        setTimeout(() => {
+            failedMessage.style.transition = "opacity 0.5s ease";
+            failedMessage.style.opacity = "0";
+            setTimeout(() => failedMessage.remove(), 500); // Menghapus elemen setelah animasi
+        }, 5000); // 5 detik
+    }
+});
+
+</script>
+
+</body>
+</html><?php /**PATH C:\SIgma\resources\views/content/dekan/verifikasiruang.blade.php ENDPATH**/ ?>

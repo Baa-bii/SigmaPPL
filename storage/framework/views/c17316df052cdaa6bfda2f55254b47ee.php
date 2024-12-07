@@ -86,7 +86,7 @@
             <h3 class="text-lg font-semibold mb-4">Persetujuan Usulan Jadwal Kuliah</h3>
             <div class="space-y-4">
                 <!-- Dropdown Program Studi -->
-                <form action="<?php echo e(route('dekan.jadwal.filter')); ?>" method="GET" class="space-y-4">
+                <form id="filter-form" action="<?php echo e(route('dekan.jadwal.filter')); ?>" method="GET" class="space-y-4">
                 <div>
                     <label for="program-studi" class="block font-semibold mb-1">Program Studi</label>
                     <select id="program-studi" name="prodi" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -101,23 +101,8 @@
                     </select>
                 </div>
         
-                <!-- Dropdown Semester -->
-                <div>
-                    <label for="semester" class="block font-semibold mb-1">Semester</label>
-                    <select id="semester" name="semester" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <option value="">Pilih Semester</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                        <option value="3">Semester 3</option>
-                        <option value="4">Semester 4</option>
-                        <option value="5">Semester 5</option>
-                        <option value="6">Semester 6</option>
-                        <option value="7">Semester 7</option>
-                        <option value="8">Semester 8</option>
-                    </select>
-                </div>
                 <!-- Button Tampilkan -->
-                <a href="<?php echo e(route('dekan.verifikasijadwal')); ?>" id="show-button" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center" onclick="applyFilter()" type="submit">
+                <a id="show-button" href="<?php echo e(route('dekan.verifikasijadwal')); ?>" class="w-full bg-gray-200 text-black block font-semibold py-2 rounded-md hover:bg-gray-300 text-center" type="submit">
                     Tampilkan
                 </a>
                 </form>
@@ -145,83 +130,61 @@
 <?php endif; ?>
     </div>
         
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const showButton = document.getElementById('show-button');
-    const programStudi = document.getElementById('program-studi');
-    const semester = document.getElementById('semester');
-    const errorMessage = document.getElementById('error-message');
-    const tableBody = document.getElementById('data-tabel-jadwal');
-    const emptyPlaceholder = document.getElementById('empty-placeholder');
-    const loadingIndicator = document.getElementById('loading-indicator');
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('filter-form');
+        const programStudi = document.getElementById('program-studi');
+        const errorMessage = document.getElementById('error-message');
+        const tableBody = document.getElementById('data-tabel-jadwal');
+        const emptyPlaceholder = document.getElementById('empty-placeholder');
+        const loadingIndicator = document.getElementById('loading-indicator');
 
-    showButton.addEventListener('click', function () {
-        const prodi = programStudi.value;
-        const sem = semester.value;
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        // Validasi input
-        if (!prodi || !sem) {
-            errorMessage.textContent = 'Mohon pilih Program Studi dan Semester!';
-            errorMessage.classList.remove('hidden');
-            return;
-        }
+            const prodi = programStudi.value;
 
-        errorMessage.classList.add('hidden'); // Sembunyikan pesan error
-        loadingIndicator.classList.remove('hidden'); // Tampilkan loading
+            // Validasi input
+            if (!prodi) {
+                alert('Mohon pilih Program Studi!');
+                return;
+            }
 
-        // Kirim permintaan AJAX
-        fetch(`/dekan/jadwal/filter?prodi=${prodi}&semester=${sem}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-            .then(response => response.json())
-            .then(data => {
-                loadingIndicator.classList.add('hidden'); // Sembunyikan loading
-                tableBody.innerHTML = ''; // Bersihkan tabel sebelumnya
-
-                if (!data.jadwal || data.jadwal.length === 0) {
-                    emptyPlaceholder.classList.remove('hidden');
-                    return;
-                }
-
-                emptyPlaceholder.classList.add('hidden');
-
-                data.jadwal.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.matakuliah?.nama_mk || 'Tidak Ada Data'}</td>
-                        <td>${item.waktu?.jam_mulai || 'N/A'} - ${item.waktu?.jam_selesai || 'N/A'}</td>
-                        <td>${item.matakuliah?.dosenmatkul?.dosen?. nama_dosen || 'N/A'}</td>
-                        <td>${item.matakuliah?.semester || 'N/A'}</td>
-                        <td>${item.ruang?.nama || 'Tidak Ada Ruangan'}</td>
-                        <td>${item.ruang?.gedung || 'N/A'}</td>
-                        <td>${item.id_TA || 'N/A'}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
+            // Kirim permintaan GET ke backend
+            fetch(`/dekan/jadwal/filter?prodi=${prodi}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
             })
-            .catch(error => {
-                console.error('Error:', error);
-                errorMessage.textContent = 'Terjadi kesalahan saat memuat data.';
-                errorMessage.classList.remove('hidden');
-                loadingIndicator.classList.add('hidden');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    tableBody.innerHTML = ''; // Bersihkan tabel sebelumnya
+
+                    if (!data.jadwal || data.jadwal.length === 0) {
+                        emptyPlaceholder.classList.remove('hidden');
+                        return;
+                    }
+
+                    emptyPlaceholder.classList.add('hidden');
+
+                    data.jadwal.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.matakuliah?.nama_mk || 'Tidak Ada Data'}</td>
+                            <td>${item.waktu?.jam_mulai || 'N/A'} - ${item.waktu?.jam_selesai || 'N/A'}</td>
+                            <td>${item.matakuliah?.dosenmatkul?.dosen?. nama_dosen || 'N/A'}</td>
+                            <td>${item.ruang?.nama || 'Tidak Ada Ruangan'}</td>
+                            <td>${item.ruang?.gedung || 'N/A'}</td>
+                            <td>${item.id_TA || 'N/A'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memuat data.');
+                });
+        });
     });
-});
-
-function applyFilter() {
-        const prodi = document.getElementById('program-studi').value;
-        const semester = document.getElementById('semester').value;
-
-        if (!prodi || !semester) {
-            alert('Silakan pilih Program Studi dan Semester!');
-            return;
-        }
-
-        // Redirect ke filter route
-        const url = `/dekan/jadwal/filter?prodi=${prodi}&semester=${semester}`;
-        window.location.href = url;
-    }
 
 </script>
 

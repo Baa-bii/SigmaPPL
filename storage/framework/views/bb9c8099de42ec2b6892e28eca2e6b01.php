@@ -157,12 +157,12 @@
                     <td class="p-4 whitespace-nowrap">
                         <span 
                             class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full
-                            <?php echo e($item->status === 'disetujui' ? 'bg-green-200 text-green-600' : ''); ?>
+                            <?php echo e($data->status === 'disetujui' ? 'bg-green-200 text-green-600' : ''); ?>
 
-                            <?php echo e($item->status === 'ditolak' ? 'bg-red-200 text-red-600' : ''); ?>
+                            <?php echo e($data->status === 'ditolak' ? 'bg-red-200 text-red-600' : ''); ?>
 
-                            <?php echo e($item->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : ''); ?> ">
-                            <?php echo e($item->status); ?>
+                            <?php echo e($data->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : ''); ?> ">
+                            <?php echo e($data->status); ?>
 
                         </span>
                     </td>
