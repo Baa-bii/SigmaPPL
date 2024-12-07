@@ -14,11 +14,7 @@ use App\Http\Controllers\Kaprodi\JadwalController;
 use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
-<<<<<<< HEAD
-use App\Http\Controllers\IRSController;
-=======
 use App\Http\Controllers\Mhs\irsSementaraController;
->>>>>>> c9409dbfab93c6114ccf25f45c46e3176a257bb8
 use App\Models\RuangKelas;
 use App\Models\Dosen;
 
@@ -67,13 +63,6 @@ Route::middleware('auth:mhs')->group(function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-<<<<<<< HEAD
-    Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
-    Route::get('/jadwal', [IRSController::class, 'showJadwal'])->name('mhs.akademik.index'); // Konsolidasi ke sini
-    Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK']);
-    Route::post('/update-mk', [BuatIRSController::class, 'updateMK']);
-});
-=======
     // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
     Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
@@ -90,7 +79,6 @@ Route::middleware('auth:mhs')->group(function () {
     Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
     Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
 
->>>>>>> c9409dbfab93c6114ccf25f45c46e3176a257bb8
 
     // Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
     // Route::get('/mhs/akademik', [IRSController::class, 'showAkademik'])->name('mhs.akademik.showAkademik');
@@ -98,7 +86,7 @@ Route::middleware('auth:mhs')->group(function () {
     // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
     // Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
     // Route::post('mhs/irs/update-mata-kuliah', [IRSController::class, 'updateMataKuliah']);
-
+});
 Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
     // Dashboard
     Route::get('/home', [DashboardKaprodiController::class, 'index'])->name('dashboard.index');
