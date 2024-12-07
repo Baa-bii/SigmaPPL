@@ -26,8 +26,13 @@ class PerwalianController extends Controller
         // Mengambil parameter dari request
         $angkatan = $request->input('angkatan');
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // default 10 jika tidak ada input 'per_page'
-    
+        $perPage = (int) $request->input('per_page', 10); // Default 10 jika tidak ada input
+        $filter = $request->input('filter', '');
+
+        if ($perPage <= 0) {
+            $perPage = 10; // Set default jika nilai tidak valid
+        }
+
         // Ambil mahasiswa berdasarkan nip_dosen dosen yang login, dengan pagination
         $mahasiswa = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
             ->when($angkatan, function ($query, $angkatan) {
@@ -36,7 +41,7 @@ class PerwalianController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('nama_mhs', 'like', '%' . $search . '%');
             })
-            ->paginate($perPage);
+            ->get();
     
         // Hitung IP Lalu untuk setiap mahasiswa
         foreach ($mahasiswa as $mhs) {
@@ -72,7 +77,7 @@ class PerwalianController extends Controller
                     } else {
                         // Hitung total SKS
                         $totalSKS = 0;
-                        foreach ($irs->mataKuliah as $mk) {
+                        foreach ($irs->matakuliah as $mk) {
                             $totalSKS += $mk->sks;
                         }
                         $mhs->sks_diambil = $totalSKS;
@@ -87,17 +92,144 @@ class PerwalianController extends Controller
                 }
             }
         }
+
+        // Filter berdasarkan status setelah data diolah
+        $mahasiswa = $mahasiswa->filter(function ($mhs) use ($filter) {
+            switch ($filter) {
+                case 'belum_registrasi':
+                    return $mhs->status === 'Belum Registrasi';
+                case 'cuti':
+                    return $mhs->status === 'Cuti';
+                case 'aktif':
+                    return in_array($mhs->status, ['Belum Isi IRS', 'Belum Disetujui', 'Sudah Disetujui']);
+                case 'belum_isi_irs':
+                    return $mhs->status === 'Belum Isi IRS';
+                case 'sudah_isi_irs':
+                    return in_array($mhs->status, ['Belum Disetujui', 'Sudah Disetujui']);
+                case 'belum_disetujui':
+                    return $mhs->status === 'Belum Disetujui';
+                case 'sudah_disetujui':
+                    return $mhs->status === 'Sudah Disetujui';
+                default:
+                    return true; // Tidak ada filter, tampilkan semua
+            }
+        })->filter(function ($mhs) use ($angkatan) {
+            return !$angkatan || $mhs->angkatan == $angkatan;
+        });
+
+        // Handle jika tidak ada data hasil filter dan pencarian
+        if ($mahasiswa->isEmpty()) {
+            $paginatedData = collect([]);
+        } else {
+            // Pagination manual
+            $currentPage = max(1, $request->input('page', 1));
+            $paginatedData = $mahasiswa->forPage($currentPage, $perPage);
+        }
+
+        $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator(
+            $paginatedData,
+            $mahasiswa->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => array_merge($request->query(), ['per_page' => $perPage])]
+        );
     
         // Ambil angkatan unik
         $angkatanList = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
             ->select('angkatan')
             ->distinct()
             ->pluck('angkatan');
-    
+
         // Kirim data mahasiswa, angkatanList, dan angkatan ke view
-        return view('content.dosen.perwalian', compact('mahasiswa', 'angkatanList', 'angkatan', 'perPage', 'search'));
+        return view('content.dosen.perwalian', compact('mahasiswa', 'angkatanList', 'angkatan', 'perPage', 'search', 'filter'));
     }
-        
+    
+    public function updateIRSStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:irs,id',
+            'status' => 'required|string|in:Sudah Disetujui,Belum Disetujui',
+        ]);
+
+        try {
+            // Perbarui status IRS berdasarkan ID yang dipilih
+            IRS::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status IRS berhasil diperbarui.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui status IRS.',
+            ], 500);
+        }
+    }
+
+    public function getStatistics()
+    {
+        $user = Auth::user();
+        $dosen = $user->dosen;
+
+        if (!$dosen) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dosen tidak ditemukan.',
+            ], 404);
+        }
+
+        $mahasiswa = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)->get();
+
+        $statusCounts = [
+            'Belum Registrasi' => 0,
+            'Cuti' => 0,
+            'Aktif' => 0,
+            'Belum Isi IRS' => 0,
+            'Sudah Isi IRS' => 0,
+            'Belum Disetujui' => 0,
+            'Sudah Disetujui' => 0,
+        ];
+
+        foreach ($mahasiswa as $mhs) {
+            $semesterAktif = SemesterAktif::where('nim', $mhs->nim)
+                ->where('is_active', 1)
+                ->latest('tahun_akademik')
+                ->first();
+
+            if ($semesterAktif) {
+                if ($semesterAktif->status == 'Belum Registrasi') {
+                    $statusCounts['Belum Registrasi']++;
+                } elseif ($semesterAktif->status == 'Cuti') {
+                    $statusCounts['Cuti']++;
+                } elseif ($semesterAktif->status == 'Aktif') {
+                    // Tambahkan hitungan untuk Aktif
+                    $irs = IRS::where('id_TA', $semesterAktif->id)->where('nim', $mhs->nim)->first();
+
+                    if (!$irs) {
+                        $statusCounts['Belum Isi IRS']++;
+                    } else {
+                        $statusCounts['Sudah Isi IRS']++;
+                        if ($irs->status == 'Sudah Disetujui') {
+                            $statusCounts['Sudah Disetujui']++;
+                        } else {
+                            $statusCounts['Belum Disetujui']++;
+                        }
+                    }
+
+                    // "Aktif" mencakup "Belum Isi IRS", "Belum Disetujui", dan "Sudah Disetujui"
+                    $statusCounts['Aktif']++;
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $statusCounts,
+        ]);
+    }
+
     // Function untuk menghitung IP Lalu
     private function hitungIPLalu($nim)
     {
@@ -358,20 +490,22 @@ class PerwalianController extends Controller
         return [$semesterAktifData, $hasIRS];
     }
 
-    // public function cetakIRS($semesterId)
-    // {
-    //     $irsData = IRS::with(['matakuliah', 'jadwal', 'jadwal.waktu'])
-    //         ->where('id_TA', $semesterId)
-    //         ->get();
+    public function setujuiIRS($id)
+    {
+        try {
+            $irs = IRS::findOrFail($id);
+            $irs->status = 'Sudah Disetujui';
+            $irs->save();
 
-    //     $semester = SemesterAktif::findOrFail($semesterId);
-
-    //     // Generate PDF menggunakan view
-    //     $pdf = PDF::loadView('pdf.irs', [
-    //         'irsData' => $irsData,
-    //         'semester' => $semester,
-    //     ]);
-
-    //     return $pdf->stream("IRS_Semester_{$semester->semester}.pdf");
-    // }
+            return response()->json([
+                'success' => true,
+                'message' => 'IRS berhasil disetujui.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyetujui IRS.',
+            ], 500);
+        }
+    }
 }

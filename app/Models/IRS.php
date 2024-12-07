@@ -30,7 +30,7 @@ class IRS extends Model
     
     public function matakuliah()
     {
-        return $this->belongsTo(Matakuliah::class, 'kode_mk', 'kode_mk');
+        return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
     }
 
     /**
@@ -42,14 +42,14 @@ class IRS extends Model
     }
 
     // // relasi ke tabel jadwal
-    // public function jadwal()
-    // {
-    //     return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
-    // }
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'kode_mk', 'kode_mk'); 
-    } 
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+    }
+    // public function jadwal()
+    // {
+    //     return $this->belongsTo(Jadwal::class, 'kode_mk', 'kode_mk'); 
+    // } 
 
 
     // Model Irs

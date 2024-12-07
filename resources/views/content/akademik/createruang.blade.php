@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tambah Ruang</title>
+    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
 </head>
 <body>
     <x-header></x-header>

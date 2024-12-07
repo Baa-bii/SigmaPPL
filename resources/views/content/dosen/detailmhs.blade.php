@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Perwalian</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Detail Mahasiswa</title>
+    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -43,7 +45,7 @@
                         alt="photo profile"
                     />
                 </div>
-                <!-- Nama Dosen -->
+                <!-- Nama Mahasiswa -->
                 <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
                     {{ $mahasiswa->nama_mhs ?? 'Nama tidak ditemukan' }}
                 </h1>
@@ -101,6 +103,8 @@
                             @php
                                 // Periksa apakah semester ini sudah memiliki IRS
                                 $hasIRSForSemester = App\Models\IRS::where('id_TA', $semester->id)->exists();
+                                // Ambil status IRS (misal: Disetujui, Belum Disetujui, dll)
+                                $statusIRS = $hasIRSForSemester ? App\Models\IRS::where('id_TA', $semester->id)->first()->status : null;
                             @endphp
 
                             @if (!$hasIRSForSemester)
@@ -214,16 +218,21 @@
                                         </tbody>
                                     </table>
                                 </div>  
-                                <div class="flex justify-start mt-4 mb-8 pl-4">
-                                    <a href=" # ">
-                                        <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">  
-                                            <svg class="w-3 h-3 text-gray-900 dark:text-gray-400 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-                                                <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
-                                                <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
-                                            </svg>    
-                                            Cetak IRS
+                                <!-- Tombol Setujui IRS atau Cetak IRS berdasarkan status -->
+                                <div class="flex justify-start mt-4 pl-4">
+                                    @if ($statusIRS === 'Sudah Disetujui')
+                                        <a href=" {{ route('dosen.cetakirs', $semester->id) }}" target="_blank">
+                                            <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800">
+                                                Cetak IRS
+                                            </button>
+                                        </a>
+                                    @else
+                                        <button type="button" 
+                                            class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800"
+                                            onclick="setujuiIRS({{ $semester->id }})">
+                                            Setujui IRS
                                         </button>
-                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -463,6 +472,48 @@
         });
     });
   </script>
+
+<script>
+    function setujuiIRS(semesterId) {
+        if (confirm('Apakah Anda yakin ingin menyetujui IRS?')) {
+            fetch(`/dosen/setujuiirs/${semesterId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Update status dan tombol secara dinamis
+                    const accordion = document.querySelector(`#accordion-flush-body-${semesterId}`);
+                    const statusElement = accordion.querySelector('caption');
+                    const buttonContainer = accordion.querySelector('.flex button');
+
+                    // Ubah status menjadi "Sudah Disetujui"
+                    statusElement.textContent = 'Sudah Disetujui';
+
+                    // Ubah tombol menjadi "Cetak IRS"
+                    buttonContainer.outerHTML = `
+                        <a href="/dosen/cetakirs/${semesterId}" target="_blank">
+                            <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800">
+                                Cetak IRS
+                            </button>
+                        </a>
+                    `;
+                } else {
+                    alert('Gagal menyetujui IRS. Coba lagi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Coba lagi.');
+            });
+        }
+    }
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

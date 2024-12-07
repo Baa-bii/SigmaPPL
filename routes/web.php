@@ -7,6 +7,7 @@ use App\Http\Controllers\Mhs\DashboardMhsController;
 use App\Http\Controllers\Akademik\RuangKelasController;
 use App\Http\Controllers\Dekan\DashboardDekanController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\CetakIrsController;
 use App\Http\Controllers\Kaprodi\DashboardKaprodiController;
 use App\Http\Controllers\Kaprodi\MataKuliahController;
 use App\Http\Controllers\Kaprodi\JadwalController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Akademik\DashboardAkademikController;
 use App\Http\Controllers\Mhs\RegistrasiController;
 use App\Http\Controllers\Mhs\BuatIRSController;
 use App\Models\RuangKelas;
+use App\Models\Dosen;
 
 //testing component
 // Route::get('/header', function () {
@@ -22,6 +24,10 @@ use App\Models\RuangKelas;
 // Route::get('/sidebar', function () {
 //     return view('components.sidebar');
 // });
+// Route::get('/sidebar', function () {
+//     return view('components.sidebar');
+// });
+
 Route::get('/footerdosen', function () {
     return view('components.footerdosen');
 });
@@ -43,9 +49,12 @@ Route::post('/login', [AuthController::class, 'verify'])->name('auth.verify');
 
 Route::group(['middleware'=>'auth:dosen'], function(){
     Route::get('/dosen/home', [DashboardDosenController::class, 'index'])->name('dosen.dashboard.index');
+    Route::get('/dosen/home/statistics', [PerwalianController::class, 'getStatistics'])->name('dosen.dashboard.statistics');
     Route::get('/dosen/perwalian', [PerwalianController::class, 'index'])->name('dosen.perwalian.index');
     Route::get('/dosen/perwalian/{nim}', [PerwalianController::class, 'show'])->name('dosen.perwalian.show');
-    //Route::get('/cetak-irs/{semester}', [PerwalianController::class, 'cetakIRS'])->name('cetak.irs');
+    Route::post('/dosen/setujuiirs/{id}', [PerwalianController::class, 'setujuiIRS'])->name('dosen.setujuiirs');
+    Route::post('/dosen/updateirsstatus', [PerwalianController::class, 'updateIRSStatus'])->name('dosen.updateirsstatus');
+    Route::get('/dosen/cetakirs/{semesterId}', [CetakIrsController::class, 'cetakIRS'])->name('dosen.cetakirs');
 
 });
 
@@ -86,6 +95,12 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
     Route::resource('kaprodi/mata-kuliah', MataKuliahController::class)->names([
         'index' => 'content.kaprodi.matakuliah.index',
     ]);
+    Route::get('/api/dosen', function () {
+        return Dosen::select('nip_dosen', 'nama_dosen')->get();
+    });
+    Route::delete('/kaprodi/mata_kuliah/{kode_mk}', [MataKuliahController::class, 'destroy'])->name('kaprodi.mata_kuliah.destroy');
+
+
     // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 
 });
@@ -129,6 +144,7 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
+    Route::post('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -201,13 +201,55 @@ class DosenMatkulSeeder extends Seeder
             'updated_at' => now(),
         ]);
         DosenMatkul::create([
-            'nip_dosen' =>'1980122720150410',
-            'kode_mk' => 'UUW00006',
+            'nip_dosen' =>'1988061420221020',
+            'kode_mk' => 'UUW00007',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1972112119980210',
+            'kode_mk' => 'UUW00005',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DosenMatkul::create([
             'nip_dosen' =>'1979072020031210',
+            'kode_mk' => 'UUW00003',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1979021220081210',
+            'kode_mk' => 'UUW00003',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1965110719920310',
+            'kode_mk' => 'UUW00011',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1978051620031210',
+            'kode_mk' => 'UUW00011',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1980091420060410',
+            'kode_mk' => 'UUW00004',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1981042020050120',
+            'kode_mk' => 'UUW00004',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1980122720150410',
             'kode_mk' => 'UUW00006',
             'created_at' => now(),
             'updated_at' => now(),

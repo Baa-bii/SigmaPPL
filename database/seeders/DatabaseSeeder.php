@@ -8,9 +8,6 @@ use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $faker = Faker::create('id_ID');
@@ -52,33 +49,43 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('kaprodi123'),
         ]);
 
-        User::create([
-            'name' => 'Rizelle Marie Regal',
+        // Data Rizelle
+        User::firstOrCreate([
             'email' => 'rizelle@students.com',
+        ], [
+            'name' => 'Rizelle Marie Regal',
             'role' => 'mhs',
             'password' => bcrypt('rizelle123'),
         ]);
 
         // Seeder User Mahasiswa
         $angkatan = ['2024', '2022', '2023', '2021'];
+        $nameCount = []; // Untuk menghindari duplikasi email
+
         foreach ($angkatan as $tahun) {
             for ($i = 1; $i <= 10; $i++) {
-                $name = $faker->name;
-                $nim = $tahun . str_pad($i, 3, '0', STR_PAD_LEFT);
-                $email = strtolower(str_replace(' ', '', $name)) . $nim . '@students.com';
+                $name = $faker->firstName . ' ' . $faker->lastName;
+                $emailBase = strtolower(str_replace(' ', '', $name)) . '@students.com';
+
+                // Cek jika ada nama yang sama, tambahkan angka di belakang email
+                if (isset($nameCount[$emailBase])) {
+                    $nameCount[$emailBase]++;
+                    $email = strtolower(str_replace(' ', '', $name)) . $nameCount[$emailBase] . '@students.com';
+                } else {
+                    $nameCount[$emailBase] = 1;
+                    $email = $emailBase;
+                }
 
                 // Buat User Mahasiswa
-                User::create([
-                    'name' => $name,
+                User::firstOrCreate([
                     'email' => $email,
+                ], [
+                    'name' => $name,
                     'role' => 'mhs',
                     'password' => bcrypt("{$name}123"),
                 ]);
             }
         }
-
-        // Panggil Seeder Dosen
-        
 
         // Panggil Seeder Lainnya
         $this->call([
@@ -91,9 +98,8 @@ class DatabaseSeeder extends Seeder
             WaktuSeeder::class,
             JadwalSeeder::class,
             IRSSeeder::class,
-            khsSeeder::class,
+            KhsSeeder::class,
             DosenMatkulSeeder::class,
-        
         ]);
     }
 }

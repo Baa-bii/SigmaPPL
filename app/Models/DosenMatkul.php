@@ -13,12 +13,12 @@ class DosenMatkul extends Model
 
     protected $fillable = ['nip_dosen','kode_mk'];
 
-    public function MataKuliah()
+    public function mataKuliah()
     {
-        return $this->hasMany(MataKuliah::class, 'kode_mk');
+        return $this->belongsTo(MataKuliah::class, 'kode_mk');
     }
-    public function Dosen()
+    public function dosen()
     {
-        return $this->hasMany(Dosen::class, 'nip_dosen');
+        return $this->belongsTo(Dosen::class, 'nip_dosen');
     }
 }
