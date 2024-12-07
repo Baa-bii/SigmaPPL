@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         $nameCount = []; // Untuk menghindari duplikasi email
 
         foreach ($angkatan as $tahun) {
-            for ($i = 1; $i <= 10; $i++) {
+            for ($i = 1; $i <= 3; $i++) {
                 $name = $faker->firstName . ' ' . $faker->lastName;
                 $emailBase = strtolower(str_replace(' ', '', $name)) . '@students.com';
 
