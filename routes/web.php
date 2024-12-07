@@ -54,9 +54,17 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-    // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
-    Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
-    Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
+    Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('update-mk');
+    Route::post('/simpan-mk', [BuatIRSController::class, 'simpanMK'])->name('simpan-mk');
+    Route::get('/get-jadwal/{kodeMk}', [BuatIRSController::class, 'getJadwal'])->name('get-jadwal');
+    Route::post('/isi-irs', [BuatIRSController::class, 'isiIrs'])->name('isi-irs'); 
+    // Route::post('/update-irs', [BuatIRSController::class, 'isiIrs'])->name('isi.irs');
+    Route::get('/mhs-irs-temp', [BuatIRSController::class, 'irsTemp'])->name('mhs.akademik.irsTemp');
+    Route::get('/sks/{nim}', [DashboardMhsController::class, 'hitungSks']);
+    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
+    Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+
+
 
 
 
