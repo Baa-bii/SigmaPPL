@@ -10,9 +10,13 @@ class Jadwal extends Model
     use HasFactory;
 
     protected $table = 'jadwal';
+    // Nama primary key
+    protected $primaryKey = 'id_jadwal';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = ['id_jadwal', 'hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi', 'status'];
-
+   
     // Relasi ke model Waktu
     public function waktu()
     {
@@ -42,14 +46,14 @@ class Jadwal extends Model
         return $this->belongsTo(SemesterAktif::class, 'id_TA');
     }
 
-    // public function irs()
-    // {
-    //     return $this->hasMany(IRS::class, 'id_jadwal','id_jadwal');
-    // }
     public function irs()
     {
-        return $this->hasMany(IRS::class, 'kode_mk', 'kode_mk');
+        return $this->hasMany(IRS::class, 'id_jadwal','id_jadwal');
     }
+    // public function irs()
+    // {
+    //     return $this->hasMany(IRS::class, 'kode_mk', 'kode_mk');
+    // }
     public function khs()
     {
         return $this->hasMany(KHS::class, 'id_jadwal');

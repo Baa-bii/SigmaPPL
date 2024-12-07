@@ -1,3 +1,4 @@
+
 {{-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
+<<<<<<< HEAD
 </head> --}}
 {{-- <body class="bg-gray-100 flex flex-col min-h-screen">
 
@@ -24,6 +26,8 @@
         {{-- @extends('layouts.app') --}}
 
         {{-- @section('content')
+
+        @section('content')
         <div class="max-w-7xl mx-auto py-10">
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                 <div class="p-6">
@@ -74,6 +78,7 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
         @endsection --}}
 
        
@@ -82,3 +87,5 @@
 </body>
 {{--  --}}
 {{-- </html> --}}
+
+      

@@ -12,11 +12,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    
 
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Header Sigma -->
-    <x-header></x-header>
+    <x-header class="z-10"></x-header>
     <x-sidebar></x-sidebar>
     <!-- Container Utama -->
     <main class="md:ml-64 h-auto relative flex-grow">
@@ -52,19 +55,7 @@
                 </ul>
             </div>
 
-            <!-- Buat IRS -->
-            <!-- @if($status === 'Aktif')
-                
-
-
-            @else
-                <div class="w-full bg-white p-6 text-center border border-gray-300">
-                    <h2 class="text-red-500 text-xl font-semibold">Tidak Dapat Membuat IRS</h2>
-                    <p class="text-gray-500 mt-2">Status akademik Anda saat ini tidak memungkinkan untuk membuat IRS.</p>
-                </div>
-            @endif -->
             @include('content.mhs.buatIrs')
-            <!-- Tab Contents Lainnya -->
             @include('content.mhs.irs')
             <!-- @include('content.mhs.khs') -->
 
@@ -73,57 +64,7 @@
     </main>
 
 
-    
-
-    <!-- <script>
-        function showTabContent(event, targetId) {
-            event.preventDefault();
-            
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            
-            // Remove active class from all nav items
-            document.querySelectorAll('.text-blue-600').forEach(item => {
-                item.classList.remove('text-blue-600', 'border-blue-600');
-                item.classList.add('text-gray-500', 'border-transparent');
-            });
-
-            // Show the targeted tab content
-            document.getElementById(targetId).classList.remove('hidden');
-
-            // Set the clicked nav item as active
-            event.currentTarget.classList.add('text-blue-600', 'border-blue-600');
-            event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
-        }
-
-    </script> -->
-    <!-- <script>
-        const status = @json($status); // Ambil status dari backend
-
-        function showTabContent(event, targetId) {
-            event.preventDefault();
-
-            if (targetId === 'buat-irs' && status !== 'Aktif') {
-                alert('Anda tidak dapat membuat IRS karena status Anda belum Aktif.');
-                return;
-            }
-            // Remove active class from all nav items
-            document.querySelectorAll('.text-blue-600').forEach(item => {
-                item.classList.remove('text-blue-600', 'border-blue-600');
-                item.classList.add('text-gray-500', 'border-transparent');
-            });
-            // Set the clicked nav item as active
-            event.currentTarget.classList.add('text-blue-600', 'border-blue-600');
-            event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
-
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-
-            // Show the targeted tab content
-            document.getElementById(targetId).classList.remove('hidden');
-        }
-    </script> -->
-    <script>
+<script>
     function showTabContent(event, targetId) {
         event.preventDefault();
 

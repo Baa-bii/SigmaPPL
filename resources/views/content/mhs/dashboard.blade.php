@@ -82,12 +82,12 @@
                             <div class="flex items-center justify-center h-full gap-8">
                                 <div class="text-center">
                                     <p class="text-sm">IPK</p>
-                                    <p class="text-xl font-bold mt-1">4.0</p>
+                                    <p class="text-xl font-bold mt-1">{{ $ipk }}</p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center">
                                     <p class="text-sm">SKS</p>
-                                    <p class="text-xl font-bold mt-1">84</p>
+                                    <p class="text-xl font-bold mt-1">{{ $totalSKS }}</p>
                                 </div>
                             </div>
                         </div>

@@ -99,32 +99,6 @@ class BuatIRSController extends Controller
 
         return view('content.mhs.akademik', compact('mhs','tahunAkademik', 'status', 'semester', 'mataKuliah', 'ipk', 'ips', 'maxSKS', 'conflictingJadwal', 'jadwal', 'selectedJadwal', 'selectedMataKuliah', 'timeslots', 'days'));
     }
-    public function getTotalSks(Request $request)
-    {
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
-
-        if (!$mhs) {
-            return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 404);
-        }
-
-        $semesterAktif = SemesterAktif::where('is_active', true)->first();
-
-        if (!$semesterAktif) {
-            return response()->json(['error' => 'Semester aktif tidak ditemukan.'], 404);
-        }
-
-        // Hitung total SKS yang sudah diambil dari IRS
-        $totalSks = IRS::where('nim', $mhs->nim)
-            ->where('id_TA', $semesterAktif->id)
-            ->whereHas('matakuliah', function($query) {
-                $query->select('sks');
-            })
-            ->sum('matakuliah.sks');
-
-        return response()->json(['total_sks' => $totalSks], 200);
-    }
-
     
 
     public function getJadwal($kodeMk)
@@ -243,97 +217,168 @@ class BuatIRSController extends Controller
         return $conflictingJadwal;
     }
 
+    // public function isiIrs(Request $request)
+    // {
+    //     $request->validate([
+    //         'jadwal_id' => 'required|exists:jadwal,id_jadwal',
+    //     ]);
+
+    //     $jadwalId = $request->input('jadwal_id');
+        
+    //     $user = auth()->user();
+    //     $mhs = $user->mahasiswa;
+    //     if (!$mhs) {
+    //         return response()->json(['status' => 'error', 'message' => 'Data mahasiswa tidak ditemukan.'], 404);
+    //     }
+    //     $nim = $mhs->nim;
+
+    //     $semesterAktif = SemesterAktif::where('is_active', true)->first();
+    //     if (!$semesterAktif) {
+    //         return response()->json(['status' => 'error', 'message' => 'Semester aktif tidak ditemukan.'], 404);
+    //     }
+    //     $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+    //     $maxSKS = $this->hitungMaxBebanSKS($ips);
+        
+    //     // Ambil jadwal beserta relasi waktu
+    //     // $jadwal = Jadwal::with('waktu')->find($jadwalId);
+    //     // if (!$jadwal) {
+    //     //     return response()->json(['status' => 'error', 'message' => 'Jadwal tidak ditemukan.'], 404);
+    //     // }
+    //     // if (is_null($jadwal->waktu->jam_mulai)) {
+    //     //     Log::error("Jadwal ID $jadwalId memiliki jam_mulai null.");
+    //     //     return response()->json(['status' => 'error', 'message' => 'Jam mulai jadwal tidak valid.'], 400);
+    //     // }
+
+    //     $kodeMk = $jadwal->kode_mk;
+    //     $hari = strtoupper($jadwal->hari);
+    //     $jamMulai = $jadwal->waktu->jam_mulai;
+    //     IRS::create([
+    //         'nim' => $nim,
+    //         'kode_mk' => $kodeMk,
+    //         'id_TA' => $semesterAktif->id,
+    //         'id_jadwal' => $jadwalId,
+    //         'status' => 'Belum Disetujui',  // Status awal IRS
+    //         'status_mata_kuliah' => 'BARU'  // Status mata kuliah
+    //     ]);
+        
+    //     // Cek apakah jadwal tersebut sudah dipilih oleh mahasiswa
+    //     $existingIrs = IRS::where('nim', $nim)
+    //         ->where('id_TA', $semesterAktif->id)
+    //         ->where('kode_mk', $kodeMk)
+    //         ->whereNotNull('id_jadwal')
+    //         ->where('id_jadwal', $jadwalId)
+    //         ->first();
+
+    //     if ($existingIrs) {
+    //         return response()->json(['status' => 'error', 'message' => 'Jadwal sudah dipilih sebelumnya.'], 400);
+    //     }
+
+    //      // Cek apakah mahasiswa sudah memilih jadwal lain pada waktu yang sama
+    //      $conflict = IRS::where('nim', $nim)
+    //      ->where('id_TA', $semesterAktif->id)
+    //      ->whereHas('jadwal', function($query) use ($jadwal) {
+    //          $query->where('hari', $jadwal->hari)
+    //                ->where('jam_mulai', $jadwal->waktu->jam_mulai);
+    //      })
+    //      ->exists();
+    
+
+    //     if ($conflict) {
+    //         return response()->json(['status' => 'error', 'message' => 'Ada konflik jadwal dengan mata kuliah lain yang sudah dipilih.'], 400);
+    //     }
+
+    //     // Cek apakah slot tersisa
+    //     $jumlahMahasiswaTerdaftar = IRS::where('kode_mk', $kodeMk)
+    //         ->where('id_TA', $semesterAktif->id)
+    //         ->whereNotNull('id_jadwal')
+    //         ->where('id_jadwal', '!=', '')
+    //         ->count();
+
+    //     if ($jumlahMahasiswaTerdaftar >= $jadwal->ruang->kapasitas) {
+    //         return response()->json(['status' => 'error', 'message' => 'Kapasitas ruang sudah penuh.'], 400);
+    //     }
+    //     // Cek total SKS yang sudah diambil
+    //     $currentSks = IRS::where('nim', $nim)
+    //     ->where('id_TA', $semesterAktif->id)
+    //     ->whereHas('matakuliah', function($query) {
+    //         $query->select('sks');
+    //     })
+    //     ->sum('matakuliah.sks');
+        
+    //     if (($currentSks + $jadwal->matakuliah->sks) > $maxSKS) {
+    //         return response()->json(['status' => 'error', 'message' => 'Beban SKS melebihi batas maksimum yang diizinkan.'], 400);
+    //     }
+
+    //     // Simpan ke IRS
+    //     IRS::create([
+    //         'nim' => $nim,
+    //         'kode_mk' => $kodeMk,
+    //         'id_TA' => $semesterAktif->id,
+    //         'id_jadwal' => $jadwalId,
+    //         'status' => 'Belum Disetujui',
+    //         'status_mata_kuliah' => 'BARU'
+    //     ]);
+
+    //     return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dipilih dan diupdate di IRS.'], 200);
+    // }
     public function isiIrs(Request $request)
-    {
-        // Validasi bahwa jadwal_id yang diterima ada di database
-        $request->validate([
-            'jadwal_id' => 'required|exists:jadwal,id_jadwal',  // Memastikan jadwal_id ada di tabel jadwal
-        ]);
+{
+    // Validasi bahwa jadwal_id yang diterima ada di database
+    $request->validate([
+        'jadwal_id' => 'required|exists:jadwal,id_jadwal',  // Memastikan jadwal_id ada di tabel jadwal
+    ]);
 
-        // Mendapatkan jadwal_id yang dipilih
-        $jadwalId = $request->input('jadwal_id');
-        
-        // Mendapatkan data mahasiswa yang sedang login
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;  // Mengambil data mahasiswa berdasarkan user yang login
+    // Mendapatkan jadwal_id yang dipilih
+    $jadwalId = $request->input('jadwal_id');
+    
+    // Mendapatkan data mahasiswa yang sedang login
+    $user = auth()->user();
+    $mhs = $user->mahasiswa;  // Mengambil data mahasiswa berdasarkan user yang login
 
-        // Mengecek apakah mahasiswa ada di dalam sistem
-        if (!$mhs) {
-            return response()->json(['status' => 'error', 'message' => 'Data mahasiswa tidak ditemukan.'], 404);
-        }
-
-        // Mendapatkan NIM mahasiswa yang login
-        $nim = $mhs->nim;
-        
-
-        // Mendapatkan semester aktif
-        $semesterAktif = SemesterAktif::where('is_active', true)->first();
-        if (!$semesterAktif) {
-            return response()->json(['status' => 'error', 'message' => 'Semester aktif tidak ditemukan.'], 404);
-        }
-
-        // Mencari jadwal berdasarkan jadwal_id yang dipilih
-        $jadwal = Jadwal::with('matakuliah')->find($jadwalId);
-        if (!$jadwal) {
-            return response()->json(['status' => 'error', 'message' => 'Jadwal tidak ditemukan.'], 404);
-        }
-
-        // Mengecek apakah mahasiswa sudah memilih jadwal yang sama
-        $existingIrs = IRS::where('nim', $nim)
-            ->where('id_TA', $semesterAktif->id)
-            ->where('kode_mk', $jadwal->kode_mk)
-            ->whereNotNull('id_jadwal')
-            ->where('id_jadwal', $jadwalId)
-            ->first();
-
-        if ($existingIrs) {
-            return response()->json(['status' => 'error', 'message' => 'Jadwal sudah dipilih sebelumnya.'], 400);
-        }
-        // Mendapatkan semua jadwal yang sudah dipilih oleh mahasiswa
-        // $selectedJadwal = IRS::where('nim', $nim)
-        // ->where('id_TA', $semesterAktif->id)
-        // ->whereNotNull('id_jadwal')
-        // ->with('jadwal.matakuliah') // Pastikan relasi sudah didefinisikan
-        // ->get();
-
-        // // Deteksi konflik jadwal
-        // $jadwalMulai = Carbon::createFromFormat('H:i:s', $jadwal->jam_mulai);
-        // $jadwalSelesai = $jadwalMulai->copy()->addMinutes($jadwal->matakuliah->sks * 50);
-
-        // foreach ($selectedJadwal as $irs) {
-        //     $existingJadwal = $irs->jadwal;
-
-        //     // Pastikan existingJadwal ada
-        //     if (!$existingJadwal) {
-        //         continue;
-        //     }
-
-        //     // Cek apakah hari sama
-        //     if (strtoupper($existingJadwal->hari) !== strtoupper($jadwal->hari)) {
-        //         continue;
-        //     }
-
-        //     // Hitung waktu mulai dan selesai jadwal yang sudah dipilih
-        //     $existingMulai = Carbon::createFromFormat('H:i:s', $existingJadwal->jam_mulai);
-        //     $existingSelesai = $existingMulai->copy()->addMinutes($existingJadwal->matakuliah->sks * 50);
-
-        //     // Cek tumpang tindih waktu
-        //     if ($jadwalMulai < $existingSelesai && $existingMulai < $jadwalSelesai) {
-        //         return response()->json(['status' => 'error', 'message' => 'Jadwal bentrok dengan jadwal yang sudah ada.'], 400);
-        //     }
-        // }
-        // $conflictingJadwal = $this->deteksiKonflikJadwal($jadwal);
-        IRS::create([
-            'nim' => $nim,
-            'kode_mk' => $jadwal->kode_mk,
-            'id_TA' => $semesterAktif->id,
-            'id_jadwal' => $jadwalId,
-            'status' => 'Belum Disetujui',  // Status awal IRS
-            'status_mata_kuliah' => 'BARU'  // Status mata kuliah
-        ]);
-
-        return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dipilih dan dimasukkan ke IRS.'], 200);
+    // Mengecek apakah mahasiswa ada di dalam sistem
+    if (!$mhs) {
+        return response()->json(['status' => 'error', 'message' => 'Data mahasiswa tidak ditemukan.'], 404);
     }
+
+    // Mendapatkan NIM mahasiswa yang login
+    $nim = $mhs->nim;
+
+    // Mendapatkan semester aktif
+    $semesterAktif = SemesterAktif::where('is_active', true)->first();
+    if (!$semesterAktif) {
+        return response()->json(['status' => 'error', 'message' => 'Semester aktif tidak ditemukan.'], 404);
+    }
+
+    // Mencari jadwal berdasarkan jadwal_id yang dipilih
+    $jadwal = Jadwal::with('matakuliah')->find($jadwalId);
+    if (!$jadwal) {
+        return response()->json(['status' => 'error', 'message' => 'Jadwal tidak ditemukan.'], 404);
+    }
+
+    // Mengecek apakah mahasiswa sudah memilih jadwal yang sama
+    $existingIrs = IRS::where('nim', $nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->where('kode_mk', $jadwal->kode_mk)
+        ->whereNotNull('id_jadwal')
+        ->where('id_jadwal', $jadwalId)
+        ->first();
+
+    if ($existingIrs) {
+        return response()->json(['status' => 'error', 'message' => 'Jadwal sudah dipilih sebelumnya.'], 400);
+    }
+
+    // Insert data ke dalam IRS jika tidak ada konflik
+    IRS::create([
+        'nim' => $nim,
+        'kode_mk' => $jadwal->kode_mk,
+        'id_TA' => $semesterAktif->id,
+        'id_jadwal' => $jadwalId,
+        'status' => 'Belum Disetujui',  // Status awal IRS
+        'status_mata_kuliah' => 'BARU'  // Status mata kuliah
+    ]);
+
+    return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dipilih dan dimasukkan ke IRS.'], 200);
+}
 
     public function simpanMk(Request $request)
     {
@@ -405,49 +450,6 @@ class BuatIRSController extends Controller
 
         return $totalSKS > 0 ? number_format($totalBobot / $totalSKS, 2) : 0; // IP Semester Lalu
     }
-    public function hapusJadwal(Request $request)
-    {
-        // Validasi bahwa jadwal_id yang diterima ada di database
-        $request->validate([
-            'jadwal_id' => 'required|exists:jadwal,id_jadwal',
-        ]);
-
-        // Mendapatkan jadwal_id yang dipilih
-        $jadwalId = $request->input('jadwal_id');
-        
-        // Mendapatkan data mahasiswa yang sedang login
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
-
-        // Cek apakah mahasiswa ada
-        if (!$mhs) {
-            return response()->json(['status' => 'error', 'message' => 'Data mahasiswa tidak ditemukan.'], 404);
-        }
-
-        $nim = $mhs->nim;
-        $semesterAktif = SemesterAktif::where('is_active', true)->first();
-
-        // Cek apakah semester aktif ada
-        if (!$semesterAktif) {
-            return response()->json(['status' => 'error', 'message' => 'Semester aktif tidak ditemukan.'], 404);
-        }
-        // Mencari entri IRS yang berkaitan dengan jadwal_id yang ingin dibatalkan
-        $existingIrs = IRS::where('nim', $nim)
-        ->where('id_TA', $semesterAktif->id)
-        ->where('id_jadwal', $jadwalId)
-        ->first();
-
-        // Mengecek apakah jadwal tersebut sudah dipilih sebelumnya
-        if (!$existingIrs) {
-        return response()->json(['status' => 'error', 'message' => 'Jadwal ini belum dipilih atau sudah dibatalkan.'], 404);
-        }
-
-        // Menghapus IRS yang berkaitan dengan jadwal yang dipilih
-        $existingIrs->delete();
-
-        return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dibatalkan.'], 200);
-    }
-
 
     // Fungsi untuk menghitung IPK
     private function hitungIpk($nim)

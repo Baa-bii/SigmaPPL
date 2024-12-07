@@ -1,23 +1,23 @@
 <div class="z-10 tab-content flex flex-col lg:flex-row gap-6" id="buat-irs">
-@if(isset($status) && $status === 'Aktif')
+<?php if(isset($status) && $status === 'Aktif'): ?>
     <!-- Sidebar Informasi Mahasiswa -->
     <div class="bg-white p-6 w-full lg:w-1/3 border border-gray-300">
         
         <!-- Bagian Nama dan NIM -->
         <div class="border border-gray-300 p-4 mb-6">
             <div class="mb-4">
-                <h3 class="font-semibold mb-2 text-xs">Nama: <span class="font-normal">{{ $mhs->nama_mhs }}</span></h3>
-                <h3 class="font-semibold mb-2 text-xs">NIM: <span class="font-normal">{{ $mhs->nim }}</span></h3>
-                <h3 class="font-semibold mb-2 text-xs">Semester: <span class="font-normal">{{ $semester ?? 'Tidak Diketahui' }}</span></h3>
+                <h3 class="font-semibold mb-2 text-xs">Nama: <span class="font-normal"><?php echo e($mhs->nama_mhs); ?></span></h3>
+                <h3 class="font-semibold mb-2 text-xs">NIM: <span class="font-normal"><?php echo e($mhs->nim); ?></span></h3>
+                <h3 class="font-semibold mb-2 text-xs">Semester: <span class="font-normal"><?php echo e($semester ?? 'Tidak Diketahui'); ?></span></h3>
             </div>
             <!-- Garis pemisah -->
             <hr class="border-t-2 border-gray-300 mb-4">
             <!-- Bagian Informasi Akademik -->
             <div>
-                <p class="text-gray-600 mb-1 text-xs">Th. Ajaran: <span class="font-normal">{{ $tahunAkademik ?? 'Tidak Diketahui' }}</span></p>
-                <p class="text-gray-600 mb-1 text-xs">IPK (kumulatif): <span class="font-normal">{{ $ipk }}</span></p>
-                <p class="text-gray-600 mb-1 text-xs">IPS (semester lalu): <span class="font-normal">{{ $ips }}</span></p>
-                <p class="text-gray-600 mb-1 text-xs">Max. Beban SKS: <span class="font-normal">{{ $maxSKS }}</span></p>
+                <p class="text-gray-600 mb-1 text-xs">Th. Ajaran: <span class="font-normal"><?php echo e($tahunAkademik ?? 'Tidak Diketahui'); ?></span></p>
+                <p class="text-gray-600 mb-1 text-xs">IPK (kumulatif): <span class="font-normal"><?php echo e($ipk); ?></span></p>
+                <p class="text-gray-600 mb-1 text-xs">IPS (semester lalu): <span class="font-normal"><?php echo e($ips); ?></span></p>
+                <p class="text-gray-600 mb-1 text-xs">Max. Beban SKS: <span class="font-normal"><?php echo e($maxSKS); ?></span></p>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                 <div class="w-full h-5 bg-gray-200 rounded dark:bg-gray-700 mr-2">
                     <div class="h-5 bg-yellow-300 rounded" style="width: 70%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $maxSKS }} SKS</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400"><?php echo e($maxSKS); ?> SKS</span>
             </div>
             
             <!-- Dropdown menu -->
@@ -43,20 +43,20 @@
                     <input type="text" id="input-group-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mata Kuliah">
                 </div>
                 <ul id="dropdownSearchList" class="h-auto px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200 mb-4" aria-labelledby="dropdownSearchButton">
-                    @foreach ($mataKuliah as $mk)
+                    <?php $__currentLoopData = $mataKuliah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li>
                             <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <input type="checkbox" name="mata_kuliah[]" id="checkbox-{{ $mk->kode_mk }}" 
-                                value="{{ $mk->kode_mk }}" 
+                            <input type="checkbox" name="mata_kuliah[]" id="checkbox-<?php echo e($mk->kode_mk); ?>" 
+                                value="<?php echo e($mk->kode_mk); ?>" 
                                 class="course-checkbox cursor-pointer"
-                                @if (in_array($mk->kode_mk, $selectedMataKuliah)) checked @endif
-                                @if ($mk->semester == $semester) checked @endif />
-                            <label for="checkbox-{{ $mk->kode_mk }}" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300 cursor-pointer">
-                                {{ $mk->nama_mk }} - {{ $mk->sks }} SKS (Semester {{ $mk->semester }}) - {{ strtoupper($mk->jenis_mk) }} - ({{ $mk->kode_mk }})
+                                <?php if(in_array($mk->kode_mk, $selectedMataKuliah)): ?> checked <?php endif; ?>
+                                <?php if($mk->semester == $semester): ?> checked <?php endif; ?> />
+                            <label for="checkbox-<?php echo e($mk->kode_mk); ?>" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300 cursor-pointer">
+                                <?php echo e($mk->nama_mk); ?> - <?php echo e($mk->sks); ?> SKS (Semester <?php echo e($mk->semester); ?>) - <?php echo e(strtoupper($mk->jenis_mk)); ?> - (<?php echo e($mk->kode_mk); ?>)
                             </label>
                             </div>
                         </li>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
             </div>
 
@@ -70,25 +70,25 @@
                 <thead class="bg-white shadow-sm">
                     <tr>
                         <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
-                        @foreach(['SENIN' => 'MONDAY', 'SELASA' => 'TUESDAY', 'RABU' => 'WEDNESDAY', 'KAMIS' => 'THURSDAY', 'JUMAT' => 'FRIDAY'] as $indonesia => $english)
-                            <th class="border border-gray-300 p-2">{{ $indonesia }}<br><span class="italic text-sm font-medium">{{ $english }}</span></th>
-                        @endforeach
+                        <?php $__currentLoopData = ['SENIN' => 'MONDAY', 'SELASA' => 'TUESDAY', 'RABU' => 'WEDNESDAY', 'KAMIS' => 'THURSDAY', 'JUMAT' => 'FRIDAY']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indonesia => $english): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <th class="border border-gray-300 p-2"><?php echo e($indonesia); ?><br><span class="italic text-sm font-medium"><?php echo e($english); ?></span></th>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tr>
                 </thead>
 
                 <tbody id="jadwalBody">
-                    @php
+                    <?php
                         $timeslots = ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
                         $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
-                    @endphp
+                    ?>
 
-                    @foreach ($timeslots as $slot)
+                    <?php $__currentLoopData = $timeslots; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slot): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td class="border border-gray-300 p-2 text-center">{{ $slot }}</td>
-                        @foreach ($days as $day)
+                        <td class="border border-gray-300 p-2 text-center"><?php echo e($slot); ?></td>
+                        <?php $__currentLoopData = $days; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $day): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <td class="border border-gray-300 p-2">
                                 <!-- Jadwal akan ditambahkan secara dinamis melalui JavaScript -->
-                                @php
+                                <?php
                                     $currentJadwal = $jadwal->filter(function ($j) use ($day, $slot) {
                                         if (!isset($j->jam_mulai) || !isset($j->hari)) {
                                             return false;
@@ -103,56 +103,58 @@
                                         }
                                         return strtoupper($j->hari) === $day && $jamMulaiFormatted === $slot;
                                     });
-                                @endphp
+                                ?>
 
-                                @if ($currentJadwal->isNotEmpty())
-                                    @foreach ($currentJadwal as $item)
+                                <?php if($currentJadwal->isNotEmpty()): ?>
+                                    <?php $__currentLoopData = $currentJadwal; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                        
-                                    <div class="w-40 h-auto p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2 jadwal-item {{ $jadwalClass }}
-                                        @if(in_array($item->id_jadwal, $selectedJadwal))
+                                    <div class="w-40 h-auto p-2 bg-white border-l-4 border-blue-500 rounded-lg shadow-lg mb-2 jadwal-item <?php echo e($jadwalClass); ?>
+
+                                        <?php if(in_array($item->id_jadwal, $selectedJadwal)): ?>
                                             border-green-500 bg-green-400 
                                         
-                                        @endif"
-                                        data-jadwal-id="{{ $item->id_jadwal }}"
-                                        data-kode-mk="{{ $item->kode_mk }}"
-                                        data-nama-mk="{{ $item->matakuliah->nama_mk }}"
-                                        data-hari="{{ strtoupper($item->hari) }}"
-                                        data-jam-mulai="{{ \Carbon\Carbon::createFromFormat('H:i:s', $item->jam_mulai)->format('H:i') }}"
-                                        data-jam-selesai="{{ \Carbon\Carbon::createFromFormat('H:i:s', $item->jam_selesai)->format('H:i') }}">
+                                        <?php endif; ?>"
+                                        data-jadwal-id="<?php echo e($item->id_jadwal); ?>"
+                                        data-kode-mk="<?php echo e($item->kode_mk); ?>"
+                                        data-nama-mk="<?php echo e($item->matakuliah->nama_mk); ?>"
+                                        data-hari="<?php echo e(strtoupper($item->hari)); ?>"
+                                        data-jam-mulai="<?php echo e(\Carbon\Carbon::createFromFormat('H:i:s', $item->jam_mulai)->format('H:i')); ?>"
+                                        data-jam-selesai="<?php echo e(\Carbon\Carbon::createFromFormat('H:i:s', $item->jam_selesai)->format('H:i')); ?>">
                                             <div>
-                                                <h5 class="mb-2 text-xs font-bold text-gray-900">{{ $item->matakuliah->nama_mk }}</h5>
-                                                <p class="text-xs text-red-500 font-semibold">{{ strtoupper($item->matakuliah->jenis_mk) }} ({{ $item->kode_mk }})</p>
-                                                <p class="text-xs text-gray-700">(SMT {{ $item->matakuliah->semester }}) ({{ $item->matakuliah->sks }} SKS)</p>
-                                                <p class="text-xs text-gray-700">Kelas: {{ $item->kelas }}</p>
-                                                <p class="text-xs text-gray-700">Ruangan: {{ $item->ruangan }}</p>
+                                                <h5 class="mb-2 text-xs font-bold text-gray-900"><?php echo e($item->matakuliah->nama_mk); ?></h5>
+                                                <p class="text-xs text-red-500 font-semibold"><?php echo e(strtoupper($item->matakuliah->jenis_mk)); ?> (<?php echo e($item->kode_mk); ?>)</p>
+                                                <p class="text-xs text-gray-700">(SMT <?php echo e($item->matakuliah->semester); ?>) (<?php echo e($item->matakuliah->sks); ?> SKS)</p>
+                                                <p class="text-xs text-gray-700">Kelas: <?php echo e($item->kelas); ?></p>
+                                                <p class="text-xs text-gray-700">Ruangan: <?php echo e($item->ruangan); ?></p>
                                                 <div class="flex justify-between">
                                                     <div class="flex items-center mt-2 text-xs text-gray-600">
                                                         <i class="fas fa-clock mr-1"></i>
-                                                        {{ $item->jam_mulai }}-{{ $item->jam_selesai }}
+                                                        <?php echo e($item->jam_mulai); ?>-<?php echo e($item->jam_selesai); ?>
+
                                                     </div>
-                                                    <div class="flex items-center mt-2 text-xs text-gray-500">{{ $item->slot_tersisa }}/{{ $item->ruang->kapasitas }}</div>
+                                                    <div class="flex items-center mt-2 text-xs text-gray-500"><?php echo e($item->slot_tersisa); ?>/<?php echo e($item->ruang->kapasitas); ?></div>
                                                 </div>
-                                                <!-- <button class="text-xs mt-2 bg-blue-500 text-white px-2 py-1 rounded" onclick="selectJadwal('{{ $item->id_jadwal }}', '{{ $item->kode_mk }}')">Pilih Jadwal</button> -->
+                                                <!-- <button class="text-xs mt-2 bg-blue-500 text-white px-2 py-1 rounded" onclick="selectJadwal('<?php echo e($item->id_jadwal); ?>', '<?php echo e($item->kode_mk); ?>')">Pilih Jadwal</button> -->
                                                 <!-- <button class="pilih-jadwal text-xs mt-2 bg-blue-500 text-white px-2 py-1 rounded" 
-                                                    data-jadwal-id="{{ $item->id_jadwal }}" 
-                                                    data-kode-mk="{{ $item->kode_mk }}">
+                                                    data-jadwal-id="<?php echo e($item->id_jadwal); ?>" 
+                                                    data-kode-mk="<?php echo e($item->kode_mk); ?>">
                                                     Pilih Jadwal
                                                 </button> -->
                                                 
                                                 <button class="pilih-jadwal text-xs mt-2 bg-blue-500 text-white px-2 py-1 rounded pilih-jadwal"
-                                                        data-jadwal-id="{{ $item->id_jadwal }}"
-                                                        data-kode-mk="{{ $item->kode_mk }}">
+                                                        data-jadwal-id="<?php echo e($item->id_jadwal); ?>"
+                                                        data-kode-mk="<?php echo e($item->kode_mk); ?>">
                                                     Pilih Jadwal
                                                 </button>
                                                
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
                             </td>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
         </div>
@@ -161,12 +163,12 @@
         </a>
     </div>
 </div>
-@else
+<?php else: ?>
     <div class="w-full bg-white p-6 text-center border border-gray-300">
         <h2 class="text-red-500 text-xl font-semibold">Tidak Dapat Membuat IRS</h2>
         <p class="text-gray-500 mt-2">Anda bukan mahasiswa aktif. Segera lakukan registrasi untuk membuat IRS</p>
     </div>
-@endif
+<?php endif; ?>
 </div>
 
 <!-- Modal Konfirmasi (Optional, jika masih diperlukan) -->
@@ -188,8 +190,8 @@
                     Apakah Anda yakin ingin menambahkan <strong id="modal-mk-name"></strong> ke rencana studi Anda?
                 </h3>
                 <div class="flex justify-center gap-3">
-                    <form id="add-jadwal-form" method="POST" action="{{ route('isi-irs') }}">
-                        @csrf
+                    <form id="add-jadwal-form" method="POST" action="<?php echo e(route('isi-irs')); ?>">
+                        <?php echo csrf_field(); ?>
                         <input type="hidden" name="jadwal_id" id="jadwal_id">
                         
                         <button type="submit" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
@@ -219,13 +221,13 @@
             }
         });
 
-        var timeslots = @json($timeslots);
-        var days = @json($days);
-        var selectedMataKuliah = @json($selectedMataKuliah);
-        var conflictingJadwal = @json($conflictingJadwal);
-        var selectedJadwal = @json($selectedJadwal);
+        var timeslots = <?php echo json_encode($timeslots, 15, 512) ?>;
+        var days = <?php echo json_encode($days, 15, 512) ?>;
+        var selectedMataKuliah = <?php echo json_encode($selectedMataKuliah, 15, 512) ?>;
+        var conflictingJadwal = <?php echo json_encode($conflictingJadwal, 15, 512) ?>;
+        var selectedJadwal = <?php echo json_encode($selectedJadwal, 15, 512) ?>;
         var totalSks = 0;
-        var maxSks = {{ $maxSKS }};
+        var maxSks = <?php echo e($maxSKS); ?>;
         // Hitung total SKS dari checkbox yang sudah dicentang
         fetchTotalSks();
 
@@ -698,7 +700,7 @@
             var checkbox = $(this);
             var kodeMk = checkbox.val();
             var isChecked = checkbox.is(':checked');
-            var nim = '{{ $mhs->nim }}'; // Pastikan NIM tersedia di sini
+            var nim = '<?php echo e($mhs->nim); ?>'; // Pastikan NIM tersedia di sini
 
             // Ambil jadwal mata kuliah melalui AJAX
             if (isChecked) {
@@ -782,7 +784,7 @@
             var checkbox = $(this);
             var kodeMk = checkbox.val();
             var isChecked = checkbox.is(':checked');
-            var nim = '{{ $mhs->nim }}'; // Pastikan NIM tersedia di sini
+            var nim = '<?php echo e($mhs->nim); ?>'; // Pastikan NIM tersedia di sini
 
             if (isChecked) {
                 // Ambil jadwal mata kuliah melalui AJAX
@@ -1089,22 +1091,23 @@
     }
 
     // SweetAlert2 untuk flash messages
-    @if(session('status'))
+    <?php if(session('status')): ?>
         Swal.fire({
             icon: 'success',
             title: 'Berhasil',
-            text: '{{ session('status') }}',
+            text: '<?php echo e(session('status')); ?>',
             confirmButtonText: 'OK'
         });
-    @endif
+    <?php endif; ?>
 
-    @if(session('error'))
+    <?php if(session('error')): ?>
         Swal.fire({
             icon: 'error',
             title: 'Gagal',
-            text: '{{ session('error') }}',
+            text: '<?php echo e(session('error')); ?>',
             confirmButtonText: 'OK'
         });
-    @endif
+    <?php endif; ?>
 </script>
 
+<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\resources\views/content/mhs/buatIrs.blade.php ENDPATH**/ ?>
