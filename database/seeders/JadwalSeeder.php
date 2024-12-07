@@ -51,6 +51,24 @@ class JadwalSeeder extends Seeder
             ->where('tahun_akademik', '2024/2025 Ganjil')
             ->where('semester', 5)
             ->first()->id; // Ambil id semester aktif
+        
+        // Ambil id_TA dari semester_aktif yang relevan
+        $id_TA_Genap_2024 = DB::table('semester_aktif')
+        ->where('tahun_akademik', '2024/2025 Genap')
+        ->where('semester', 6)
+        ->first()->id; // Ambil id semester aktif
+
+         // Ambil id_TA dari semester_aktif yang relevan
+         $id_TA_Ganjil_2025 = DB::table('semester_aktif')
+         ->where('tahun_akademik', '2025/2026 Ganjil')
+         ->where('semester', 7)
+         ->first()->id; // Ambil id semester aktif
+
+          // Ambil id_TA dari semester_aktif yang relevan
+        $id_TA_Genap_2025 = DB::table('semester_aktif')
+        ->where('tahun_akademik', '2025/2026 Genap')
+        ->where('semester', 8)
+        ->first()->id; // Ambil id semester aktif
 
         // Ambil id_waktu berdasarkan jam_mulai 
         $id_waktu_0650 = DB::table('waktu')
@@ -1114,5 +1132,305 @@ class JadwalSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWPKL',
+            'hari' => 'Senin',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_1540,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_K202,
+            'kode_mk' => 'PAIK6604', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWMANPROA',
+            'hari' => 'Senin',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_0650,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_B201,
+            'kode_mk' => 'PAIK6605', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWMANPROB',
+            'hari' => 'Senin',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_09,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_K101,
+            'kode_mk' => 'PAIK6605', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWMANPROC',
+            'hari' => 'Selasa',
+            'kelas' => 'C',
+            'id_waktu' => $id_waktu_13,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_A303,
+            'kode_mk' => 'PAIK6605', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWMANPROD',
+            'hari' => 'Selasa',
+            'kelas' => 'D',
+            'id_waktu' => $id_waktu_1540,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_A204,
+            'kode_mk' => 'PAIK6605', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWUPLA',
+            'hari' => 'Kamis',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_13,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_A303,
+            'kode_mk' => 'PAIK6602', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWUPLB',
+            'hari' => 'Kamis',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_1540,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_E102,
+            'kode_mk' => 'PAIK6602', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWUPLC',
+            'hari' => 'Jumat',
+            'kelas' => 'C',
+            'id_waktu' => $id_waktu_10,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_E102,
+            'kode_mk' => 'PAIK6602', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Jadwal::create([
+            'id_jadwal' =>'JDWUPLD',
+            'hari' => 'Jumat',
+            'kelas' => 'D',
+            'id_waktu' => $id_waktu_14,
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_E103,
+            'kode_mk' => 'PAIK6602', 
+            'kode_prodi' => 'INF123', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Mata kuliah PAIK6706 (Visi Komputer)
+        Jadwal::create([
+            'id_jadwal' => 'JDWVISKOMA',
+            'hari' => 'Senin',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_08,  // 08:00
+            'id_TA' => $id_TA_Ganjil_2025,
+            'id_ruang' => $id_ruang_A204,
+            'kode_mk' => 'PAIK6706',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWVISKOMB',
+            'hari' => 'Senin',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_10,  // 10:00
+            'id_TA' => $id_TA_Ganjil_2025,
+            'id_ruang' => $id_ruang_E102,
+            'kode_mk' => 'PAIK6706',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6708 (Penambangan Data)
+        Jadwal::create([
+            'id_jadwal' => 'JDWDATAMNA',
+            'hari' => 'Selasa',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_08,  // 08:00
+            'id_TA' => $id_TA_Ganjil_2025,
+            'id_ruang' => $id_ruang_A303,
+            'kode_mk' => 'PAIK6708',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWDATAMNB',
+            'hari' => 'Selasa',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_09,  // 09:00
+            'id_TA' => $id_TA_Ganjil_2025,
+            'id_ruang' => $id_ruang_E103,
+            'kode_mk' => 'PAIK6708',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6801 (Topik Khusus RPL & STI)
+        Jadwal::create([
+            'id_jadwal' => 'JDWPTKRPLSTIA',
+            'hari' => 'Rabu',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_07,  // 07:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_K101,
+            'kode_mk' => 'PAIK6801',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWTKRPLSTIB',
+            'hari' => 'Rabu',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_940,  // 09:40
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_K102,
+            'kode_mk' => 'PAIK6801',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6802 (Topik Khusus SC & KG)
+        Jadwal::create([
+            'id_jadwal' => 'JDWTKSCKGA',
+            'hari' => 'Kamis',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_08,  // 08:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_A304,
+            'kode_mk' => 'PAIK6802',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWTKSCKGB',
+            'hari' => 'Kamis',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_09,  // 09:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_K102,
+            'kode_mk' => 'PAIK6802',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6817 (Robotika)
+        Jadwal::create([
+            'id_jadwal' => 'JDWROBOTIKAA',
+            'hari' => 'Jumat',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_07,  // 07:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_A204,
+            'kode_mk' => 'PAIK6817',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWROBOTIKAB',
+            'hari' => 'Jumat',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_09,  // 09:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_B201,
+            'kode_mk' => 'PAIK6817',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6809 (Kriptografi)
+        Jadwal::create([
+            'id_jadwal' => 'JDWKRIPA',
+            'hari' => 'Senin',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_13,  // 13:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_K101,
+            'kode_mk' => 'PAIK6809',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Jadwal::create([
+            'id_jadwal' => 'JDWKRIPB',
+            'hari' => 'Senin',
+            'kelas' => 'B',
+            'id_waktu' => $id_waktu_14,  // 14:00
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_K102,
+            'kode_mk' => 'PAIK6809',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Mata kuliah PAIK6821 (Tugas Akhir)
+        Jadwal::create([
+            'id_jadwal' => 'JDWTAA',
+            'hari' => 'Selasa',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_1540,  // 15:40
+            'id_TA' => $id_TA_Genap_2025,
+            'id_ruang' => $id_ruang_B201,
+            'kode_mk' => 'PAIK6821',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+
+        // Mata kuliah UUW00009 (KKN)
+        Jadwal::create([
+            'id_jadwal' => 'JDWKKNA',
+            'hari' => 'Kamis',
+            'kelas' => 'A',
+            'id_waktu' => $id_waktu_0650,  // 06:50
+            'id_TA' => $id_TA_Genap_2024,
+            'id_ruang' => $id_ruang_E102,
+            'kode_mk' => 'UUW00009',
+            'kode_prodi' => 'INF123',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
     }
 }

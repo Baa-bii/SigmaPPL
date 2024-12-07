@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('ruang', function (Blueprint $table) {
             if (!Schema::hasColumn('ruang', 'status')) {
-                $table->string('status')->default('menunggu')->after('kode_prodi');
+                $table->enum('status',['menunggu', 'diajukan', 'disetujui', 'ditolak'])->default('menunggu')->after('kode_prodi');
             }
         });
     }

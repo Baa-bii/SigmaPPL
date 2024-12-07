@@ -10,65 +10,103 @@ use App\Models\RuangKelas;
 use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
 use App\Models\SemesterAktif;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class JadwalController extends Controller
 {
     public function index()
     {
         // Ambil data jadwal beserta relasinya
-
-        $jadwal = Jadwal::with(['waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'])->get();
-        $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first(); // Tambahkan ini
+        // $jadwal = Jadwal::with(['waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'])->get();
+        $jadwal = Jadwal::whereHas('semesterAktif', function ($query) {
+            $query->where('semester', 0)
+                  ->orWhereRaw('semester % 2 = 1'); // Hanya yang is_active = true
+        })->get();
+    
+        // Mengambil data semester aktif (tahun akademik)
+        // $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
+        $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');  
+    
+        // Mendapatkan semua data lainnya
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
         $matakuliah = MataKuliah::all();
         $ruang = RuangKelas::all();
         $waktu = Waktu::all();
-         // Debugging untuk memastikan data jadwal tersedia
-        // dd($jadwal);
-        // Kirim data jadwal ke view
-        return view('content.kaprodi.jadwal', compact('jadwal','tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu'));
+    
+        // Menghitung jam_selesai untuk setiap jadwal
+        foreach ($jadwal as $item) {
+            $item->jam_selesai = $this->hitungJamSelesai($item->waktu->id, $item->matakuliah->kode_mk);
+        }
+    
+        return view('content.kaprodi.jadwal', compact('jadwal', 'tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu'));
     }
-
+    
+    public function hitungJamSelesai($id_waktu, $kodeMK)
+    {
+        $waktuMulai = Waktu::find($id_waktu);
+        $matakuliah = MataKuliah::where('kode_mk', $kodeMK)->first();
+        $sks = $matakuliah->sks;
+        $jamMulaiArray = explode(':', $waktuMulai->jam_mulai);
+        $jamMulaiMinutes = ($jamMulaiArray[0] * 60) + $jamMulaiArray[1];
+        $jamSelesaiMinutes = $jamMulaiMinutes + ($sks * 50);  // Anggap SKS = 50 menit per SKS
+        $jamSelesai = floor($jamSelesaiMinutes / 60) . ':' . str_pad($jamSelesaiMinutes % 60, 2, '0', STR_PAD_LEFT);
+        
+        return $jamSelesai;
+    }
 
     public function create()
     {
         $waktu = Waktu::all();
         $ruang = RuangKelas::all();
-        $matakuliah = MataKuliah::all();
+        $matakuliah = MataKuliah::all(); // Ambil semua mata kuliah
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
         $semesterAktif = SemesterAktif::all();
-        $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
-        return view('content.kaprodi.jadwal', compact('waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif', 'tahunAjaran'));
+        $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');
+
+        // Mengirimkan data SKS bersama dengan mata kuliah
+        return view('content.kaprodi.jadwal', compact('waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif', 'tahunAjaran', 'tahunAkademik'));
     }
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'kode_mk' => 'required|exists:matakuliah,kode_mk',
-            'id_TA' => 'required|exists:semester_aktif,id',
-            'kode_prodi' => 'required|exists:program_studi,kode_prodi',
+            'kode_mk' => 'required|string',
+            'jumlah_kelas' => 'required|integer',
+            'kelas.*.id_jadwal' => 'required|string', // Validasi untuk ID jadwal yang unik
             'kelas.*.hari' => 'required|string',
-            'kelas.*.id_ruang' => 'required|exists:ruang,id',
-            'kelas.*.jam_mulai' => 'required',
-            'kelas.*.jam_selesai' => 'required',
+            'kelas.*.kelas' => 'required|string',
+            'kelas.*.id_ruang' => 'required|integer',
+            'kelas.*.id_waktu' => 'required|integer',
         ]);
-        $request->validate([
-            'kelas.*.hari' => 'required|string',
-            'kelas.*.id_ruang' => 'required|exists:ruang,id',
-            'kelas.*.jam_mulai' => 'required',
-            'kelas.*.jam_selesai' => 'required',
-        ]);
+        
+        // dd($request->all());
+        Log::info('Data yang diterima: ', $request->all());
 
-        foreach ($request->input('kelas') as $kelas) {
-            Jadwal::create([
-                'kode_mk' => $request->kode_mk,
-                'id_TA' => $request->id_TA,
-                'kode_prodi' => $request->kode_prodi,
-                'hari' => $kelas['hari'],
-                'id_ruang' => $kelas['id_ruang'],
-                'jam_mulai' => $kelas['jam_mulai'],
-                'jam_selesai' => $kelas['jam_selesai'],
-            ]);
+
+        // Menyimpan data jadwal
+        $id_TA = SemesterAktif::where('is_active', true)->value('id');
+        $kode_prodi = ProgramStudi::where('kode_prodi', 'INF123')->value('kode_prodi');
+
+        try {
+            foreach ($request->input('kelas') as $kelas) {
+                Jadwal::create([
+                    'id_jadwal' => $kelas['id_jadwal'],
+                    'kode_mk' => $request->input('kode_mk'),
+                    'id_TA' => $id_TA,
+                    'kode_prodi' => $kode_prodi,
+                    'hari' => $kelas['hari'],
+                    'id_ruang' => $kelas['id_ruang'],
+                    'id_waktu' => $kelas['id_waktu'],
+                    'kelas' => $kelas['kelas'],
+                ]);
+            }
+            
+            Log::info('Data berhasil disimpan ke database');
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan data', ['message' => $e->getMessage()]);
+            return back()->withErrors('Gagal menyimpan data: ' . $e->getMessage());
         }
 
         return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');

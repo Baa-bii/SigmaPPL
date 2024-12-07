@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('id_waktu')->references('id')->on('waktu')->onDelete('cascade');
             $table->unsignedBigInteger('id_TA')->nullable();
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
-            
             $table->unsignedBigInteger('id_ruang');
             $table->foreign('id_ruang')->references('id')->on('ruang')->onDelete('cascade');
             $table->string('kode_mk');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Akademik;
 use App\Models\RuangKelas;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class RuangKelasController extends Controller
@@ -57,6 +59,15 @@ class RuangKelasController extends Controller
             'kode_prodi' => 'required|exists:program_studi,kode_prodi',
         ]);
 
+        // Check for uniqueness
+        $exists = RuangKelas::where('nama', $validatedData['nama'])
+                ->where('gedung', $validatedData['gedung'])
+                ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['nama' => 'Ruangan ini sudah dialokasikan dengan prodi lain.']);
+        }
+
         RuangKelas::create($validatedData);
 
         return redirect()->route('akademik.ruang.index')->with('success', 'Ruang successfully created!');
@@ -67,10 +78,19 @@ class RuangKelasController extends Controller
         // Validate the request data
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'gedung' => 'required|string|max:1',
+            'gedung' => 'required|string|max:2',
             'kapasitas' => 'required|integer|min:1',
             'kode_prodi' => 'required|string|exists:program_studi,kode_prodi',
         ]);
+
+        $exists = RuangKelas::where('nama', $validated['nama'])
+                ->where('gedung', $validated['gedung'])
+                ->where('id', '!=', $id)
+                ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['nama' => 'Ruangan ini sudah dialokasikan dengan prodi lain.']);
+        }
 
         // Find the RuangKelas by ID
         $ruangKelas = RuangKelas::findOrFail($id);
@@ -91,5 +111,25 @@ class RuangKelasController extends Controller
 
         return redirect()->route('akademik.ruang.index')->with('success', 'Ruang deleted successfully.');
     }
+    
+    public function ajukanAll(Request $request)
+    {
+        try {
+            // Validasi input
+            $validated = $request->validate([
+                'status' => 'required|in:diajukan',
+            ]);
+
+            // Perbarui semua status dalam tabel RuangKelas
+            RuangKelas::query()
+            ->where('status', 'menunggu')
+            ->update(['status' => $validated['status']]);
+
+            return redirect()->back()->with('success', 'Semua status berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
     
 }
