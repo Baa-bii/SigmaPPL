@@ -62,10 +62,6 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
-<<<<<<< HEAD
-    Route::post('/update-status', [RegistrasiController::class, 'updateStatus']);
-    Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-=======
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
     // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
@@ -73,7 +69,6 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     // Route::get('/mhs/irs', [irsSementaraController::class, 'index'])->name('irs.index');
     // Route::delete('/mhs/irs/{id}', [irsSementaraController::class, 'destroy'])->name('irs.destroy');
 
->>>>>>> 48b41c2bfb54f5f5d6f06ede249d5989aa2b315f
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('update-mk');
     Route::post('/simpan-mk', [BuatIRSController::class, 'simpanMK'])->name('simpan-mk');
     Route::get('/get-jadwal/{kodeMk}', [BuatIRSController::class, 'getJadwal'])->name('get-jadwal');
@@ -84,18 +79,6 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
     Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
 
-<<<<<<< HEAD
-
-
-
-
-    // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
-    // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
-    // Route::post('mhs/irs/get-selected-courses', [BuatIRSController::class, 'getSelectedCourses']);
-    // Route::post('mhs/irs/update-mata-kuliah', [IRSController::class, 'updateMataKuliah']);
-});
-=======
->>>>>>> 48b41c2bfb54f5f5d6f06ede249d5989aa2b315f
 
     // Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
     // Route::get('/mhs/akademik', [IRSController::class, 'showAkademik'])->name('mhs.akademik.showAkademik');
