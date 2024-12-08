@@ -124,4 +124,4 @@
 </script>
 
 
-</html><?php /**PATH /var/www/sigmappl/resources/views/content/akademik/dashboard.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\SIgma\resources\views/content/akademik/dashboard.blade.php ENDPATH**/ ?>

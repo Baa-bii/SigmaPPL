@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ruangan</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -156,7 +157,9 @@
                 </a>
                 <form action="<?php echo e(route('akademik.ruang.ajukan-all')); ?>" method="POST" class="inline">
                     <?php echo csrf_field(); ?>
-                    <button type="submit" class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <?php echo method_field('PATCH'); ?>
+                    <button type="submit" name="status" value="menunggu" 
+                            class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Ajukan
                     </button>
                 </form>

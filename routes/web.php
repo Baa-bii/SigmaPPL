@@ -152,7 +152,7 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
-    Route::post('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
+    Route::patch('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
