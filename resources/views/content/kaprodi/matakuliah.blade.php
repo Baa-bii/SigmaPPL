@@ -139,34 +139,6 @@
                                         
                                     </div>
                                     
-                                    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-                                    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> --}}
-
-                                    {{-- <script>
-                                       $(document).ready(function() {
-                                            // Inisialisasi select2 setelah halaman sepenuhnya dimuat
-                                            
-                                            $('#nip_dosen').select2({
-                                                placeholder: "Pilih Dosen Pengampu Mata Kuliah",
-                                                tags: true,
-                                                multiple: true,
-                                                ajax: {
-                                                    url: '/api/dosen', // Endpoint untuk mengambil data dosen
-                                                    dataType: 'json',
-                                                    delay: 250,
-                                                    processResults: function (data) {
-                                                        return {
-                                                            results: data.map(item => ({
-                                                                id: item.nip_dosen,
-                                                                text: item.nama_dosen,
-                                                            }))
-                                                        };
-                                                    },
-                                                    cache: true,
-                                                },
-                                            });
-                                        }); 
-                                    </script> --}}
                                 </div>
  
                                 <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
@@ -350,14 +322,39 @@
                                                             </svg>
                                                             Lihat
                                                         </button>
-                                                        <form action="{{ route('kaprodi.mata_kuliah.destroy', $item->kode_mk) }}" method="POST">
+                                                        <form id="delete-form-{{$item->kode_mk}}" action="{{ route('kaprodi.mata_kuliah.destroy', $item->kode_mk) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm item-center font-medium px-3 py-2.5 text-center ">
-                                                                Iya, hapus
+                                                            <button type="button" onclick="openDialog('custom-confirm-{{$item->kode_mk}}')"  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm inline item-center font-medium px-3 py-2.5 text-center ">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                                </svg>
+                                                                Hapus
                                                             </button>
                                                             {{-- <button data-modal-toggle="delete-modal-{{$item->kode_mk}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button> --}}
                                                         </form>
+                                                        <div id="custom-confirm-{{$item->kode_mk}}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                                            <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+                                                                <p class="mb-4">Apakah Anda yakin ingin menghapus mata kuliah <strong>{{ $item->nama_mk }}</strong>?</p>
+                                                                <div class="flex justify-end gap-4">
+                                                                    <button onclick="closeDialog('custom-confirm-{{$item->kode_mk}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded">Batal</button>
+                                                                    <button onclick="submitForm('delete-form-{{$item->kode_mk}}')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            function openDialog(dialogId) {
+                                                                document.getElementById(dialogId).classList.remove('hidden');
+                                                            }
+
+                                                            function closeDialog(dialogId) {
+                                                                document.getElementById(dialogId).classList.add('hidden');
+                                                            }
+
+                                                            function submitForm(formId) {
+                                                                document.getElementById(formId).submit();
+                                                            }
+                                                        </script>
                                                     </div>
                                                 </td>
                                             </tr>

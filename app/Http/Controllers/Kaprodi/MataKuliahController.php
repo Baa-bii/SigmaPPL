@@ -56,32 +56,23 @@ class MataKuliahController extends Controller
             $mataKuliah->dosen()->attach($request->nip_dosen);
         }
 
-        return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil disimpan!');
+        return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil ditambahkan!');
     }
 
-    // public function destroy($kode_mk)
-    // {
-    //     $mataKuliah = MataKuliah::findOrFail($kode_mk);
-    //     $mataKuliah->dosen()->detach();  // Ini akan menghapus relasi di tabel pivot
-    //     $mataKuliah->delete();
-
-    //     return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
-    // }
-
     public function destroy($kode_mk)
-{
-    Log::info('Kode MK yang diterima untuk dihapus:', ['kode_mk' => $kode_mk]);
-    
-    $mataKuliah = MataKuliah::where('kode_mk', $kode_mk)->firstOrFail();
-    Log::info('Mata kuliah yang ditemukan:', $mataKuliah->toArray());
+    {
+        // Log::info('Kode MK yang diterima untuk dihapus:', ['kode_mk' => $kode_mk]);
+        
+        $mataKuliah = MataKuliah::where('kode_mk', $kode_mk)->firstOrFail();
+        // Log::info('Mata kuliah yang ditemukan:', $mataKuliah->toArray());
 
-    $mataKuliah->dosen()->detach();
-    $mataKuliah->delete();
+        $mataKuliah->dosen()->detach();
+        $mataKuliah->delete();
 
-    Log::info('Mata kuliah berhasil dihapus:', ['kode_mk' => $kode_mk]);
+        // Log::info('Mata kuliah berhasil dihapus:', ['kode_mk' => $kode_mk]);
 
-    return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
-}
+        return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
+    }
 
 
 
