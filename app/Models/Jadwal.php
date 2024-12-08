@@ -14,7 +14,7 @@ class Jadwal extends Model
     protected $primaryKey = 'id_jadwal'; // Primary key
     public $incrementing = false; // Karena `id_jadwal` bukan auto-increment
     protected $keyType = 'string'; // Tipe data primary key
-    protected $fillable = ['hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
+    protected $fillable = ['id_jadwal','hari', 'kelas', 'id_waktu', 'id_TA', 'id_ruang', 'kode_mk', 'kode_prodi'];
 
     // Relasi ke model Waktu
     public function waktu()

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\kaprodi;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
 use App\Http\Controllers\Controller;
@@ -73,6 +74,59 @@ class MataKuliahController extends Controller
 
         return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil dihapus!');
     }
+    public function update(Request $request, $kode_mk)
+{
+    $request->validate([
+        'kode_mk' => 'required|string',
+        'nama_mk' => 'required|string',
+        'semester' => 'required|string',
+        'sks' => 'required|integer',
+        'jenis_mk' => 'required',
+        'nip_dosen' => 'required|array',
+        'nip_dosen.*' => 'exists:dosen,nip_dosen',
+    ]);
+
+    // Cek apakah kode_mk baru ada di matakuliah
+    $newKodeMkExists = MataKuliah::where('kode_mk', $request->kode_mk)->exists();
+
+    if (!$newKodeMkExists) {
+        return redirect()->back()->with('error', 'Kode MK baru tidak ditemukan di tabel matakuliah.');
+    }
+
+    $mataKuliah = MataKuliah::where('kode_mk', $kode_mk)->firstOrFail();
+
+    // Update kode_mk di tabel dosenmatkul
+    DB::table('dosenmatkul')->where('kode_mk', $mataKuliah->kode_mk)
+                            ->update(['kode_mk' => $request->kode_mk]);
+
+    // Update tabel matakuliah
+    $mataKuliah->update([
+        'kode_mk' => $request->kode_mk,
+        'nama_mk' => $request->nama_mk,
+        'semester' => $request->semester,
+        'sks' => $request->sks,
+        'jenis_mk' => $request->jenis_mk,
+    ]);
+
+    // Update relasi dosen
+    if ($request->has('nip_dosen') && !empty($request->nip_dosen)) {
+        $mataKuliah->dosen()->sync($request->nip_dosen);
+    }
+
+    return redirect()->route('kaprodi.mata_kuliah.index')->with('success', 'Mata kuliah berhasil diperbarui!');
+}
+public function showMataKuliah($kode_mk)
+{
+    // Mengambil mata kuliah berdasarkan kode_mk
+    $mataKuliah = MataKuliah::with(['dosenmatkul.dosen'])->where('kode_mk', $kode_mk)->first();
+
+    // Menyiapkan data untuk ditampilkan di view
+    return view('mata_kuliah.show', compact('mataKuliah'));
+}
+
+
+
+
 
 
 

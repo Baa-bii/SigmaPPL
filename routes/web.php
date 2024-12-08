@@ -106,6 +106,9 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
     Route::delete('/kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'destroy'])->name('kaprodi.jadwal.destroy');
     Route::post('kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
     Route::post('/jadwal/ajukan', [JadwalController::class, 'ajukan'])->name('jadwal.ajukan');
+    Route::put('/mata-kuliah/{kode_mk}', [MataKuliahController::class, 'update'])->name('kaprodi.mata_kuliah.update');
+    Route::put('/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
+
 
     // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 
