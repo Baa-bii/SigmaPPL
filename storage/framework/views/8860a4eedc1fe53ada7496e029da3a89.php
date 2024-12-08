@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mata Kuliah</title>
-    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
@@ -17,22 +17,58 @@
 </head>
 <body>
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
-        <x-header></x-header>
-        <x-sidebar></x-sidebar>
+        <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('header'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $attributes = $__attributesOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__attributesOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $component = $__componentOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__componentOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+        <?php if (isset($component)) { $__componentOriginal2880b66d47486b4bfeaf519598a469d6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal2880b66d47486b4bfeaf519598a469d6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $attributes = $__attributesOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $component = $__componentOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__componentOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
         <main class="md:ml-64 h-auto pt-20">
                <!-- Start block -->
             <section class="bg-gray-20 dark:bg-gray-900 p-3 sm:p-5 antialiased flex flex-col mim-h-screen">
                 <div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
                     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-auto min-h-screen">
-                        @if ($message = Session::get('success'))
+                        <?php if($message = Session::get('success')): ?>
                             <script>
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil!',
-                                    text: '{{ $message }}',
+                                    text: '<?php echo e($message); ?>',
                                 });
                             </script>
-                        @endif
+                        <?php endif; ?>
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                             <div class="flex-1 flex items-center space-x-2">
                                 <h5>
@@ -97,8 +133,8 @@
                                                 <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="add-modal">✖</button>
                                                     <h4 class="text-center text-2xl mb-6">Pengisian Mata Kuliah</h4>
                                                     
-                                                    <form action="{{ route('kaprodi.mata_kuliah.store') }}" method="POST" class="space-y-4">
-                                                        @csrf
+                                                    <form action="<?php echo e(route('kaprodi.mata_kuliah.store')); ?>" method="POST" class="space-y-4">
+                                                        <?php echo csrf_field(); ?>
                                                         <div class="grid grid-cols-2 gap-4">
                                                             <!-- Kode Mata Kuliah -->
                                                             <div>
@@ -124,11 +160,11 @@
                                                             <div>
                                                                 <label for="semester" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Semester</label>
                                                                 <select name="semester" id="semester" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" >
-                                                                    @for($i = 1; $i <= 8; $i++)
-                                                                        <option value="{{ $i }}">{{ $i }}</option>
-                                                                    @endfor
+                                                                    <?php for($i = 1; $i <= 8; $i++): ?>
+                                                                        <option value="<?php echo e($i); ?>"><?php echo e($i); ?></option>
+                                                                    <?php endfor; ?>
                                                                 </select>
-                                                                {{-- <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="semester" name="semester" min="1" max="8" required> --}}
+                                                                
                                                             </div>
                                                             <!-- Jumlah SKS -->
                                                             <div>
@@ -140,12 +176,12 @@
                                                             <div class="col-span-2">
                                                                 <label for="nip_dosen" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Dosen Pengampu</label>
                                                                 <div id="nip_dosen" class="space-y-2" style="max-height: 200px; overflow-y: auto;">
-                                                                    @foreach ($dosen as $item)
+                                                                    <?php $__currentLoopData = $dosen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                         <div class="flex items-center">
-                                                                            <input type="checkbox" name="nip_dosen[]" value="{{ $item->nip_dosen }}" id="nip_dosen_{{ $item->nip_dosen }}" class="mr-2">
-                                                                            <label for="nip_dosen_{{ $item->nip_dosen }}">{{ $item->nama_dosen }}</label>
+                                                                            <input type="checkbox" name="nip_dosen[]" value="<?php echo e($item->nip_dosen); ?>" id="nip_dosen_<?php echo e($item->nip_dosen); ?>" class="mr-2">
+                                                                            <label for="nip_dosen_<?php echo e($item->nip_dosen); ?>"><?php echo e($item->nama_dosen); ?></label>
                                                                         </div>
-                                                                    @endforeach
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </div>
                                                             </div>
                                                         
@@ -188,80 +224,80 @@
                                     
                                     <tbody id="table-body">
                                         
-                                        @forelse ($mataKuliah as $item)
+                                        <?php $__empty_1 = true; $__currentLoopData = $mataKuliah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             
                                             <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                                 
-                                                <td class="p-4 w-4">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->kode_mk }}</td>
+                                                <td class="p-4 w-4"><?php echo e($loop->iteration); ?></td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->kode_mk); ?></td>
                                                
-                                                <td class="px-4 py-2 border">{{ $item->nama_mk }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->sks }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->semester }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->jenis_mk }}</td>
-                                                <td class="px-4 py-2 border">{{ $item->programStudi->nama_prodi}}</td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->nama_mk); ?></td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->sks); ?></td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->semester); ?></td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->jenis_mk); ?></td>
+                                                <td class="px-4 py-2 border"><?php echo e($item->programStudi->nama_prodi); ?></td>
                                                 
                                     
                                                 <!-- Kolom untuk tombol -->
-                                                {{-- <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"> --}}
+                                                
                                                 <td class="px-4 py-2 border">
                                                     <div class="flex items-center space-x-4">
-                                                        <button type="button" data-modal-target="edit-modal-{{ $item->kode_mk }}" data-modal-toggle="edit-modal-{{ $item->kode_mk }}" aria-controls="edit-modal-{{ $item->kode_mk }}" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
+                                                        <button type="button" data-modal-target="edit-modal-<?php echo e($item->kode_mk); ?>" data-modal-toggle="edit-modal-<?php echo e($item->kode_mk); ?>" aria-controls="edit-modal-<?php echo e($item->kode_mk); ?>" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
                                                                 <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                                                 <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
                                                             </svg>
                                                             Edit
                                                         </button>
-                                                        {{-- untuk edit --}}
-                                                        <div id="edit-modal-{{ $item->kode_mk }}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                        
+                                                        <div id="edit-modal-<?php echo e($item->kode_mk); ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                                             <div class="relative w-full h-auto max-w-screen-xl mx-auto">
                                                                 <div class="relative bg-white p-6 w-full max-w-full rounded-lg shadow-lg">
-                                                                    <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="edit-modal-{{ $item->kode_mk }}">✖</button>
+                                                                    <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="edit-modal-<?php echo e($item->kode_mk); ?>">✖</button>
                                                                     <h4 class="text-center text-2xl mb-6">Edit Mata Kuliah</h4>
-                                                                    <form action="{{ route('kaprodi.mata_kuliah.update', $item->kode_mk) }}" method="POST" class="space-y-4">
-                                                                        @csrf
-                                                                        @method('PUT') <!-- Menandakan update -->
+                                                                    <form action="<?php echo e(route('kaprodi.mata_kuliah.update', $item->kode_mk)); ?>" method="POST" class="space-y-4">
+                                                                        <?php echo csrf_field(); ?>
+                                                                        <?php echo method_field('PUT'); ?> <!-- Menandakan update -->
                                                                         <div class="grid grid-cols-2 gap-4">
                                                                             <!-- Kode Mata Kuliah -->
                                                                             <div>
                                                                                 <label for="kode_mk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Mata Kuliah</label>
-                                                                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="kode_mk" name="kode_mk" value="{{ $item->kode_mk }}" required>
+                                                                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="kode_mk" name="kode_mk" value="<?php echo e($item->kode_mk); ?>" required>
                                                                             </div>
                                                                             <!-- Jenis Mata Kuliah -->
                                                                             <div>
                                                                                 <label for="jenis_mk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Mata Kuliah</label>
                                                                                 <select class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="jenis_mk" name="jenis_mk" required>
-                                                                                    <option value="wajib" {{ $item->jenis_mk == 'wajib' ? 'selected' : '' }}>Wajib</option>
-                                                                                    <option value="pilihan" {{ $item->jenis_mk == 'pilihan' ? 'selected' : '' }}>Pilihan</option>
+                                                                                    <option value="wajib" <?php echo e($item->jenis_mk == 'wajib' ? 'selected' : ''); ?>>Wajib</option>
+                                                                                    <option value="pilihan" <?php echo e($item->jenis_mk == 'pilihan' ? 'selected' : ''); ?>>Pilihan</option>
                                                                                 </select>
                                                                             </div>
                                                                             <!-- Nama Mata Kuliah -->
                                                                             <div>
                                                                                 <label for="nama_mk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Mata Kuliah</label>
-                                                                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="nama_mk" name="nama_mk" value="{{ $item->nama_mk }}" required>
+                                                                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="nama_mk" name="nama_mk" value="<?php echo e($item->nama_mk); ?>" required>
                                                                             </div>
                                                                             <!-- Semester -->
                                                                             <div>
                                                                                 <label for="semester" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Semester</label>
-                                                                                <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="semester" name="semester" value="{{ $item->semester }}" min="1" max="8" required>
+                                                                                <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="semester" name="semester" value="<?php echo e($item->semester); ?>" min="1" max="8" required>
                                                                             </div>
                                                                             <!-- Jumlah SKS -->
                                                                             <div>
                                                                                 <label for="sks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah SKS</label>
-                                                                                <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="sks" name="sks" value="{{ $item->sks }}" min="1" required>
+                                                                                <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" id="sks" name="sks" value="<?php echo e($item->sks); ?>" min="1" required>
                                                                             </div>
                                                                             
                                                                             <!-- Nama Dosen Pengampu -->                                                           
                                                                             <div class="col-span-2">
                                                                                 <label for="nip_dosen" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Dosen Pengampu</label>
                                                                                 <div id="nip_dosen" class="space-y-2" style="max-height: 200px; overflow-y: auto;">
-                                                                                    @foreach ($dosen as $dosenItem)
+                                                                                    <?php $__currentLoopData = $dosen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dosenItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                         <div class="flex items-center">
-                                                                                            <input type="checkbox" name="nip_dosen[]" value="{{ $dosenItem->nip_dosen }}" id="nip_dosen_{{ $dosenItem->nip_dosen }}" class="mr-2" {{ in_array($dosenItem->nip_dosen, $item->dosen->pluck('nip_dosen')->toArray()) ? 'checked' : '' }}>
-                                                                                            <label for="nip_dosen_{{ $dosenItem->nip_dosen }}">{{ $dosenItem->nama_dosen }}</label>
+                                                                                            <input type="checkbox" name="nip_dosen[]" value="<?php echo e($dosenItem->nip_dosen); ?>" id="nip_dosen_<?php echo e($dosenItem->nip_dosen); ?>" class="mr-2" <?php echo e(in_array($dosenItem->nip_dosen, $item->dosen->pluck('nip_dosen')->toArray()) ? 'checked' : ''); ?>>
+                                                                                            <label for="nip_dosen_<?php echo e($dosenItem->nip_dosen); ?>"><?php echo e($dosenItem->nama_dosen); ?></label>
                                                                                         </div>
-                                                                                    @endforeach
+                                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -276,8 +312,8 @@
                                                             </div>
                                                         </div>
                                                         <button type="button" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
-                                                                data-id="{{ $item->kode_mk }}" 
-                                                                data-nama="{{ $item->nama_mk }}">
+                                                                data-id="<?php echo e($item->kode_mk); ?>" 
+                                                                data-nama="<?php echo e($item->nama_mk); ?>">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
                                                                 <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
@@ -319,23 +355,23 @@
                                                         </script>
                                                         
 
-                                                        <form id="delete-form-{{$item->kode_mk}}" action="{{ route('kaprodi.mata_kuliah.destroy', $item->kode_mk) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" onclick="openDialog('custom-confirm-{{$item->kode_mk}}')"  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm inline item-center font-medium px-3 py-2.5 text-center ">
+                                                        <form id="delete-form-<?php echo e($item->kode_mk); ?>" action="<?php echo e(route('kaprodi.mata_kuliah.destroy', $item->kode_mk)); ?>" method="POST">
+                                                            <?php echo csrf_field(); ?>
+                                                            <?php echo method_field('DELETE'); ?>
+                                                            <button type="button" onclick="openDialog('custom-confirm-<?php echo e($item->kode_mk); ?>')"  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm inline item-center font-medium px-3 py-2.5 text-center ">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                                                 </svg>
                                                                 Hapus
                                                             </button>
-                                                            {{-- <button data-modal-toggle="delete-modal-{{$item->kode_mk}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button> --}}
+                                                            
                                                         </form>
-                                                        <div id="custom-confirm-{{$item->kode_mk}}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                                        <div id="custom-confirm-<?php echo e($item->kode_mk); ?>" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                                             <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
-                                                                <p class="mb-4">Apakah Anda yakin ingin menghapus mata kuliah <strong>{{ $item->nama_mk }}</strong>?</p>
+                                                                <p class="mb-4">Apakah Anda yakin ingin menghapus mata kuliah <strong><?php echo e($item->nama_mk); ?></strong>?</p>
                                                                 <div class="flex justify-end gap-4">
-                                                                    <button onclick="closeDialog('custom-confirm-{{$item->kode_mk}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded">Batal</button>
-                                                                    <button onclick="submitForm('delete-form-{{$item->kode_mk}}')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+                                                                    <button onclick="closeDialog('custom-confirm-<?php echo e($item->kode_mk); ?>')" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded">Batal</button>
+                                                                    <button onclick="submitForm('delete-form-<?php echo e($item->kode_mk); ?>')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -355,11 +391,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                             <tr>
                                                 <td colspan="7" class="text-center py-4">Tidak ada data mata kuliah</td>
                                             </tr>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </tbody>
                                     
                                 </table>
@@ -375,10 +411,28 @@
             </section>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
         </main>
-        <x-footerdosen></x-footerdosen>
+        <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('footerdosen'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $attributes = $__attributesOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__attributesOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
     </div>
 
 
     
 </body>
-</html>
+</html><?php /**PATH /var/www/sigmappl/resources/views/content/kaprodi/matakuliah.blade.php ENDPATH**/ ?>

@@ -9,6 +9,8 @@
     <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         #timetable.hidden {
             display: none;
@@ -73,12 +75,34 @@
 
         <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                <?php if(session('success')): ?>
-                    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-                        <?php echo e(session('success')); ?>
-
-                    </div>
+                <?php if($message = Session::get('success')): ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: '<?php echo e($message); ?>',
+                        });
+                    </script>
                 <?php endif; ?>
+            
+                <?php if($errors->any()): ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: `
+                                <strong>Terjadi Kesalahan:</strong>
+                                <ul style="text-align: left;">
+                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><?php echo e($error); ?></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </ul>
+                            `,
+                        });
+                    </script>
+                <?php endif; ?>
+            
+            
                 <div class="mb-6 pl-4">
                     <h2 class="text-2xl font-bold">Daftar Jadwal</h2>
                     <p>Tahun Ajaran Aktif: <?php echo e($tahunAjaran); ?></p>
@@ -213,7 +237,7 @@
                     <button 
                         data-modal-toggle="ajukan-modal" 
                         type="button" 
-                        class="text- bg-green-200 border-green-600 hover:bg-green-600 hover:text-gray-600 border focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2 text-center">
+                        class="text- bg-green-200 border-green-600 hover:bg-green-600 hover:text-white border focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2 text-center">
                         Ajukan Jadwal
                     </button>
 
@@ -223,6 +247,7 @@
                         <table class="table-auto w-full border-collapse border border-green-500">
                             <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700">>
                                 <tr class="bg-green-500">
+                                    <th scope="col" class="p-4">No</th>
                                     <th class="px-4 py-2 border">ID Jadwal</th>
                                     <th class="px-4 py-2 border">Hari</th>
                                     <th class="px-4 py-2 border">Mata Kuliah</th>
@@ -239,6 +264,7 @@
                             <tbody>
                                 <?php $__empty_1 = true; $__currentLoopData = $jadwal; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr class="text-center">
+                                        <td class="p-4 w-4"><?php echo e($loop->iteration); ?></td>
                                         <td class="px-4 py-2 border"><?php echo e($item->id_jadwal); ?></td>
                                         <td class="px-4 py-2 border"><?php echo e($item->hari); ?></td>
                                         <td class="px-4 py-2 border">
@@ -268,21 +294,132 @@
                                         <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <div class="flex items-center space-x-4">
                                                 
-                                                <button type="button'"
-                                                    class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
+                                                <button type="button" data-modal-target="edit-modal-<?php echo e($item->id_jadwal); ?>" data-modal-toggle="edit-modal-<?php echo e($item->id_jadwal); ?>" aria-controls="edit-modal-<?php echo e($item->id_jadwal); ?>" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
                                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                                         <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
                                                     </svg>
                                                     Edit
                                                 </button>
-                                                <button type="button" data-drawer-target="drawer-read-product-advanced" data-drawer-show="drawer-read-product-advanced" aria-controls="drawer-read-product-advanced" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
-                                                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
-                                                    </svg>
-                                                    Lihat
-                                                </button>
+
+                                                
+                                                <div id="edit-modal-<?php echo e($item->id_jadwal); ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full h-auto max-w-md max-h-full">
+                                                        <div class="relative bg-white p-6 w-full max-w-lg rounded-lg shadow">
+                                                            <button type="button" class="absolute top-3 right-2.5 text-gray-400" data-modal-toggle="edit-modal-<?php echo e($item->id_jadwal); ?>">✖</button>
+                                                            <form id="edit_modal" method="POST" action="<?php echo e(route('kaprodi.jadwal.update', $item->id_jadwal)); ?>">
+                                                                <?php echo csrf_field(); ?>
+                                                                <?php echo method_field('PUT'); ?>
+                                                                <h4 class="text-center text-2xl mb-6">Edit Jadwal</h4>
+                                                                
+                                                                <!-- Dropdown Mata Kuliah -->
+                                                                <div class="mb-4 pl-4">
+                                                                    <label for="kode_mk" class="block text-sm font-medium">Mata Kuliah</label>
+                                                                    <select name="kode_mk" id="kode_mk" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" required>
+                                                                        <?php $__currentLoopData = $matakuliah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <option value="<?php echo e($mk->kode_mk); ?>" data-sks="<?php echo e($mk->sks); ?>" <?php echo e($mk->kode_mk == $item->kode_mk ? 'selected' : ''); ?>>
+                                                                                <?php echo e($mk->nama_mk); ?>
+
+                                                                            </option>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    </select>
+                                                                </div>
+                                                
+                                                                <!-- Input Jumlah Kelas -->
+                                                                <div class="mb-4 pl-4">
+                                                                    <label for="jumlah_kelas" class="block text-sm font-medium">Jumlah Kelas</label>
+                                                                    <input type="number" id="jumlah_kelas" name="jumlah_kelas" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" min="1" max="10" value="<?php echo e($item->jumlah_kelas); ?>" required>
+                                                                </div>
+                                                
+                                                                <!-- Tempat untuk Jadwal Kelas -->
+                                                                <div id="jadwal-kelas-container" class="mb-4 pl-4">
+                                                                    
+                                                                </div>
+                                                
+                                                                <div class="flex items-center space-x-4 mt-4">
+                                                                    <button type="submit" class="text-white bg-green-600 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                                                        Simpan dan Tambahkan
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                            <script>
+                                                                document.getElementById('jumlah_kelas').addEventListener('input', function () {
+                                                                    const container = document.getElementById('jadwal-kelas-container');
+                                                                    const jumlahKelas = parseInt(this.value) || 0;
+                                                                    
+                                                                    console.log('Jumlah Kelas:', jumlahKelas); // Log jumlah kelas
+                                                                    // Hapus elemen sebelumnya
+                                                                    container.innerHTML = '';
+                                                            
+                                                                    // Menggunakan data kelas dari PHP ke JavaScript
+                                                                    const kelasData = <?php echo json_encode($item->kelas, 15, 512) ?>;
+
+                                                                    console.log(kelasData);
+                                                            
+                                                                    for (let i = 1; i <= jumlahKelas; i++) {
+                                                                        const kelas = kelasData[i - 1] || {};  // Mengambil data kelas atau objek kosong jika tidak ada
+                                                            
+                                                                        const jadwalHtml = `
+                                                                            <div class="mb-4">
+                                                                                <h5 class="text-lg font-bold">Jadwal Kelas ${i}</h5>
+                                                                                <!-- Kelas -->
+                                                                                <div class="mb-4 pl-2">
+                                                                                    <label for="kelas[${i}][kelas]" class="block text-sm font-medium">Kelas</label>
+                                                                                    <input type="text" id="kelas" name="kelas[${i}][kelas]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" value="${kelas.kelas || ''}" required>
+                                                                                </div>
+
+                                                                                <!-- ID Jadwal-->
+                                                                                <div class="mb-4 pl-2">
+                                                                                    <label for="kelas[${i}][id_jadwal]" class="block text-sm font-medium">ID Jadwal</label>
+                                                                                    <input type="text" id="id_jadwal" name="kelas[${i}][id_jadwal]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" value="${kelas.id_jadwal || ''}" required>
+                                                                                </div>
+
+                                                                                <!-- Hari -->
+                                                                                <label for="kelas[${i}][hari]" class="block text-sm font-medium">Hari</label>
+                                                                                <select name="kelas[${i}][hari]" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                    <option value="Senin">Senin</option>
+                                                                                    <option value="Selasa">Selasa</option>
+                                                                                    <option value="Rabu">Rabu</option>
+                                                                                    <option value="Kamis">Kamis</option>
+                                                                                    <option value="Jumat">Jumat</option>
+                                                                                </select>
+
+                                                                                <!-- Ruangan -->
+                                                                                <label for="kelas[${i}][id_ruang]" class="block text-sm font-medium mt-2">Ruangan</label>
+                                                                                <select name="kelas[${i}][id_ruang]" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                    <?php $__currentLoopData = $ruang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                        <option value="<?php echo e($ru->id); ?>"><?php echo e($ru->gedung); ?><?php echo e($ru->nama); ?></option>
+                                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                                </select>
+
+                                                                                <!-- Jam Mulai -->
+                                                                                <label for="kelas[${i}][id_waktu]" class="block text-sm font-medium mt-2">Jam Mulai</label>
+                                                                                <select name="kelas[${i}][id_waktu]" id="jam_mulai_${i}" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5 jam-mulai" data-index="${i}" required>
+                                                                                    <?php $__currentLoopData = $waktu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                        <option value="<?php echo e($wt->id); ?>" data-jam="<?php echo e($wt->jam_mulai); ?>"><?php echo e($wt->jam_mulai); ?></option>
+                                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        `;
+                                                                        container.insertAdjacentHTML('beforeend', jadwalHtml);
+                                                                        // Event listener untuk dropdown
+                                                                        document.getElementById('jadwal-kelas-container').addEventListener('change', function (event) {
+                                                                                    const target = event.target;
+                        
+                                                                                    // Jika dropdown jam_mulai berubah
+                                                                                    if (target.matches('.jam-mulai')) {
+                                                                                        hitungJamSelesai(target);
+                                                                                    }
+                                                                                }); 
+                                                                    }
+                                                                });
+                                                            </script>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                
                                                 <form id="delete-form-<?php echo e($item->id_jadwal); ?>" action="<?php echo e(route('kaprodi.jadwal.destroy', $item->id_jadwal)); ?>" method="POST">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
@@ -334,6 +471,7 @@
                     <table class="table-auto w-full border-collapse border border-green-500">
                         <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
+                                
                                 <th class="px-4 py-2 border">Waktu</th>
                                 <th class="px-4 py-2 border">Senin</th>
                                 <th class="px-4 py-2 border">Selasa</th>
