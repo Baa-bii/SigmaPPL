@@ -33,7 +33,8 @@ class JadwalController extends Controller
         // Mendapatkan semua data lainnya
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
         $matakuliah = MataKuliah::all();
-        $ruang = RuangKelas::all();
+        // $ruang = RuangKelas::all();
+        $ruang = RuangKelas::where('status', 'disetujui')->get();
         $waktu = Waktu::all();
     
         // Menghitung jam_selesai untuk setiap jadwal
