@@ -268,6 +268,7 @@ class BuatIRSController extends Controller
             // Ambil semua jadwal untuk mata kuliah tersebut di semester aktif
             $jadwal = Jadwal::with(['waktu', 'ruang', 'matakuliah'])
                 ->where('kode_mk', $kodeMk)
+                ->where('status', 'disetujui')
                 ->whereNotNull('id_ruang')
                 ->get();
 

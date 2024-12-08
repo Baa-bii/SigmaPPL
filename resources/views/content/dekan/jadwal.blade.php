@@ -12,8 +12,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body>
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+<body class = 'flex flex-col min-h-screen'>
+    <div class="antialiased bg-gray-50 dark:bg-gray-900 ">
         <x-header></x-header>
         <x-sidebar></x-sidebar>
         <main>

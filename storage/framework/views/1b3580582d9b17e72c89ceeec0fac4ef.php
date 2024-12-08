@@ -174,7 +174,7 @@
                    
 
                     <!-- Form Setujui/Tolak -->
-                    <td class="p-4 flex gap-2 items-center text-center flex-wrap md:flex-nowrap">
+                    <td class="p-4 flex justify-center items-center gap-2 flex-wrap md:flex-nowrap text-center">
                             <!-- Tombol Setujui -->
                             <form action="<?php echo e(route('dekan.verifikasiruang.update', $data->id)); ?>" method="POST">
                                 <?php echo csrf_field(); ?>
