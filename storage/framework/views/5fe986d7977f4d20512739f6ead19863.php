@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css','resources/js/app.js'])
-    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -17,10 +17,46 @@
 <div class="antialiased bg-gray-50 dark:bg-gray-900">
 
     <!--Navbar-->    
-    <x-header></x-header>
+    <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('header'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $attributes = $__attributesOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__attributesOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $component = $__componentOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__componentOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
 
     <!-- Sidebar -->
-    <x-sidebar></x-sidebar>
+    <?php if (isset($component)) { $__componentOriginal2880b66d47486b4bfeaf519598a469d6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal2880b66d47486b4bfeaf519598a469d6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $attributes = $__attributesOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $component = $__componentOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__componentOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
 
     <!-- Main Content -->
 
@@ -35,14 +71,15 @@
             <div class="w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 mt-4 md:absolute md:top-8 md:left-10 lg:top-4 lg:left-12">
                 <img 
                     class="w-full h-full object-cover" 
-                    src="{{ asset('img/USERFIX.jpg') }}" 
+                    src="<?php echo e(asset('img/USERFIX.jpg')); ?>" 
                     alt="photo profile"
                 />
             </div>
             <!-- Nama Dosen -->
             <div class="text-center md:text-left lg:text-left mt-4 md:mt-16 lg:mt-14 md:ml-56 lg:ml-64 flex-1">
                 <h1 class="text-l md:text-l lg:text-xl font-semibold text-yellow-400 dark:text-white">
-                    {{ $dosen->nama_dosen ?? 'Nama tidak ditemukan' }}
+                    <?php echo e($dosen->nama_dosen ?? 'Nama tidak ditemukan'); ?>
+
                 </h1>
             </div>
         </div>
@@ -52,17 +89,20 @@
             <!-- Kolom Kiri -->
             <div class="text-center md:text-left mb-4 md:mb-4 lg:mr-10 flex-1">
                 <p class="text-base text-black dark:text-white mb-4 md:mb-4">
-                    <strong>NIP :</strong> {{ $dosen->nip_dosen ?? 'NIP tidak ditemukan' }}
+                    <strong>NIP :</strong> <?php echo e($dosen->nip_dosen ?? 'NIP tidak ditemukan'); ?>
+
                 </p>
                 <p class="text-base text-black dark:text-white">
-                    <strong>Email :</strong> {{ $user->email ?? 'Email tidak ditemukan' }}
+                    <strong>Email :</strong> <?php echo e($user->email ?? 'Email tidak ditemukan'); ?>
+
                 </p>
             </div>
 
             <!-- Kolom Kanan -->
             <div class="text-center md:text-left flex-1">
                 <p class="text-base text-black dark:text-white">
-                    <strong>Total Mahasiswa Perwalian :</strong> {{ $totalMahasiswa }}
+                    <strong>Total Mahasiswa Perwalian :</strong> <?php echo e($totalMahasiswa); ?>
+
                 </p>
             </div>
         </div>
@@ -70,7 +110,7 @@
 
       
       <!-- Konten 2 -->
-      @if($statusCounts)
+      <?php if($statusCounts): ?>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-8">
             <!-- First column -->
             <div class="rounded-lg dark:border-gray-600 h-auto">     
@@ -104,7 +144,7 @@
                 </div>
             </div>
         </div>
-      @endif
+      <?php endif; ?>
 
       <!-- Konten 3-->
       <div class="rounded-lg dark:border-gray-600 h-auto mb-8">     
@@ -214,13 +254,31 @@
 
     </main>
 
-    <x-footerdosen></x-footerdosen>
+    <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('footerdosen'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $attributes = $__attributesOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__attributesOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
 
   </div>
 
     
   <script>
-    const statusCounts = @json($statusCounts);
+    const statusCounts = <?php echo json_encode($statusCounts, 15, 512) ?>;
 
     const getChartOptions = (labels, data) => {
         const isEmpty = data.reduce((sum, val) => sum + val, 0) === 0;
@@ -321,4 +379,4 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
 </body>
-</html>
+</html><?php /**PATH C:\PPL\SiGMA\resources\views/content/dosen/dashboard.blade.php ENDPATH**/ ?>

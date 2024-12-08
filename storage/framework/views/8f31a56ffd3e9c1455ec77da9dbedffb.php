@@ -454,4 +454,4 @@
       });
     </script>
 </aside>
-<?php /**PATH C:\Users\user\Downloads\sigmaPPL\resources\views/components/sidebar.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\SIgma\resources\views/components/sidebar.blade.php ENDPATH**/ ?>
