@@ -54,7 +54,7 @@
 <?php endif; ?>
         <main>
         <!-- Main Content -->
-        <main class="p-16 md:ml-64 h-auto pt-20">
+        <main class="p-16 md:ml-64 h-auto pt-20 flex flex-col min-h-screen">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Ruang Kuliah</h1>
             <!-- Konten 1 -->
             <div class="container mx-auto my-3">

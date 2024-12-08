@@ -12,8 +12,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body class="flex flex-col min-h-screen">
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+<body  class="antialiased bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen">
+    <div class="antialiased bg-gray-50 dark:bg-gray-900 flex-grow">
         <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -61,7 +61,8 @@
                 <div class="py-6" id="pie-chart-1"></div>
             </div>
         </main>
-        <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+    </div>
+    <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('footerdosen'); ?>
@@ -80,8 +81,6 @@
 <?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
 <?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
 <?php endif; ?>
-    </div>
-    
 </body>
 <script>
     // Ambil data dari Blade template
