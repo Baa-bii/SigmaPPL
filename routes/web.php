@@ -62,22 +62,25 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
+    Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->name('mhs.registrasi.updateStatus');
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
+   
     // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
     Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
-    // Route::get('/mhs/irs', [irsSementaraController::class, 'index'])->name('irs.index');
-    // Route::delete('/mhs/irs/{id}', [irsSementaraController::class, 'destroy'])->name('irs.destroy');
-
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('update-mk');
     Route::post('/simpan-mk', [BuatIRSController::class, 'simpanMK'])->name('simpan-mk');
     Route::get('/get-jadwal/{kodeMk}', [BuatIRSController::class, 'getJadwal'])->name('get-jadwal');
     Route::post('/isi-irs', [BuatIRSController::class, 'isiIrs'])->name('isi-irs'); 
     // Route::post('/update-irs', [BuatIRSController::class, 'isiIrs'])->name('isi.irs');
     Route::get('/mhs-irs-temp', [BuatIRSController::class, 'irsTemp'])->name('mhs.akademik.irsTemp');
+    // Route::post('/irs/delete/{id}', [BuatIrsController::class, 'hapusJadwal'])->name('irs.delete');
+    // Route::post('/irs/delete/temp', [BuastIrsController::class, 'hapusJadwal'])->name('irs.delete');
     Route::get('/sks/{nim}', [DashboardMhsController::class, 'hitungSks']);
-    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
+    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->name('getTotalSks');
     Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+    Route::post('/irs/cancel', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+
 
 
     // Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
@@ -103,7 +106,9 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
         return Dosen::select('nip_dosen', 'nama_dosen')->get();
     });
     Route::delete('/kaprodi/mata_kuliah/{kode_mk}', [MataKuliahController::class, 'destroy'])->name('kaprodi.mata_kuliah.destroy');
-
+    Route::delete('/kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'destroy'])->name('kaprodi.jadwal.destroy');
+    Route::post('kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
+    Route::post('/jadwal/ajukan', [JadwalController::class, 'ajukan'])->name('jadwal.ajukan');
 
     // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 

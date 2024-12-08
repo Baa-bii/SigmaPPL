@@ -23,7 +23,8 @@ class JadwalController extends Controller
             $query->where('semester', 0)
                   ->orWhereRaw('semester % 2 = 1'); // Hanya yang is_active = true
         })->get();
-    
+        $statusJadwal = Jadwal::where('id_jadwal', 'JDWPBPB')->value('status'); 
+
         // Mengambil data semester aktif (tahun akademik)
         // $tahunAjaran = SemesterAktif::orderBy('tahun_akademik', 'desc')->first();
         $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');  
@@ -39,7 +40,7 @@ class JadwalController extends Controller
             $item->jam_selesai = $this->hitungJamSelesai($item->waktu->id, $item->matakuliah->kode_mk);
         }
     
-        return view('content.kaprodi.jadwal', compact('jadwal', 'tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu'));
+        return view('content.kaprodi.jadwal', compact('jadwal', 'tahunAjaran', 'programStudi', 'matakuliah', 'ruang', 'waktu', 'statusJadwal'));
     }
     
     public function hitungJamSelesai($id_waktu, $kodeMK)
@@ -65,7 +66,7 @@ class JadwalController extends Controller
         $tahunAjaran = SemesterAktif::where('is_active',true)->value('tahun_akademik');
 
         // Mengirimkan data SKS bersama dengan mata kuliah
-        return view('content.kaprodi.jadwal', compact('waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif', 'tahunAjaran', 'tahunAkademik'));
+        return view('content.kaprodi.jadwal', compact('waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif', 'tahunAjaran'));
     }
 
     public function store(Request $request)
@@ -111,22 +112,20 @@ class JadwalController extends Controller
 
         return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');
     }
-
-
-
-    public function edit($id)
+    public function edit($id_jadwal)
     {
-        $jadwal = Jadwal::findOrFail($id);
+        // Ambil koleksi jadwal yang ingin diedit berdasarkan ID
+        $jadwal = Jadwal::where('id_jadwal', $id_jadwal)->get(); // Mengambil jadwal yang relevan dalam bentuk koleksi
         $waktu = Waktu::all();
         $ruang = RuangKelas::all();
         $matakuliah = MataKuliah::all();
         $programStudi = ProgramStudi::all();
         $semesterAktif = SemesterAktif::all();
 
-        return view('content.kaprodi.jadwal.edit', compact('jadwal', 'waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'));
+        return view('content.kaprodi.jadwal', compact('jadwal', 'waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_jadwal)
     {
         $validated = $request->validate([
             'hari' => 'required|string',
@@ -138,17 +137,28 @@ class JadwalController extends Controller
             'kode_prodi' => 'required|exists:program_studi,kode_prodi',
         ]);
 
-        $jadwal = Jadwal::findOrFail($id);
+        $jadwal = Jadwal::findOrFail($id_jadwal);
         $jadwal->update($validated);
 
-        return redirect()->route('content.kaprodi.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy($id_jadwal)
     {
-        $jadwal = Jadwal::findOrFail($id);
+        $jadwal= Jadwal::where('id_jadwal', $id_jadwal)->firstOrFail();
+        // $jadwal = Jadwal::findOrFail($id_jadwal);
         $jadwal->delete();
 
-        return redirect()->route('content.kaprodi.jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
     }
+
+    public function ajukan()
+    {
+        // Update semua jadwal menjadi diajukan
+        \App\Models\Jadwal::where('status', 'menunggu')->update(['status' => 'diajukan']);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('kaprodi.jadwal.index')->with('success', 'Semua jadwal berhasil diajukan.');
+    }
+
 }

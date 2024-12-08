@@ -1,4 +1,4 @@
-<!-- 
+<?php
 
 namespace App\Http\Controllers\Mhs;
 
@@ -6,18 +6,18 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\IRS; 
+use Illuminate\Support\Facades\DB;
 
-class RegistrasiController extends Controller
+class irsSementaraController extends Controller
 {
     public function index() {
         $irsData = DB::table('irs')
-            ->join('semesteraktif', 'irs.id_TA', '=', 'semesteraktif.id')
-            ->join('jadwal', 'irs.id_jadwal', '=', 'jadwal.id')
+            ->join('semester_aktif', 'irs.id_TA', '=', 'semester_aktif.id')
+            ->join('jadwal', 'irs.id_jadwal', '=', 'jadwal.id_jadwal')
             ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')
-            ->select('irs.id', 'matakuliah.kode_mk', 'matakuliah.nama as mata_kuliah', 'semesteraktif.semester', 'jadwal.kelas', 'jadwal.ruang', 'matakuliah.sks')
+            ->select('irs.id', 'matakuliah.kode_mk', 'matakuliah.nama_mk as mata_kuliah', 'semester_aktif.semester', 'jadwal.kelas', 'jadwal.ruang', 'matakuliah.sks')
             ->get();
         return view('irs', compact('irsData'));
     }
     
-} -->
+}
