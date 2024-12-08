@@ -19,89 +19,211 @@ use App\Models\KHS;
 class BuatIRSController extends Controller
 {
     
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     $mhs = $user->mahasiswa;
+    //     $timeslots = ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+    //     $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
+    //     if (!$mhs) {
+    //         return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+    //     }
+        
+    //     $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+    //     $status = $semesterAktif?->status ?? 'Belum Registrasi';
+    //     $semester = $semesterAktif?->semester ?? null;
+    //     $nim = $mhs->nim;
+    //     $tahunAkademik = $semesterAktif?->tahun_akademik;
+    //     $tahunAkademikArr = explode(' ', $tahunAkademik); // Misalnya, ["2024/2025", "Ganjil"]
+    //     $semesterGanjil = ($tahunAkademikArr[1] === 'Ganjil');
+        
+    //     $totalSKS = IRS::where('nim', $mhs->nim)
+    //     ->where('id_TA', $semesterAktif->id)
+    //     ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
+    //     ->sum('matakuliah.sks');
+        
+    //     $selectedJadwal = IRS::where('nim', $mhs->nim)
+    //         ->where('id_TA', $semesterAktif->id)
+    //         ->whereNotNull('id_jadwal')
+    //         ->pluck('id_jadwal')
+    //         ->toArray();
+
+    //     // Ambil semua jadwal untuk ditampilkan
+    //     $jadwal = Jadwal::with(['matakuliah', 'ruang'])
+    //         ->get();
+
+    //     $selectedMataKuliah = Jadwal::whereIn('id_jadwal', $selectedJadwal)
+    //         ->pluck('kode_mk')
+    //         ->unique()
+    //         ->toArray();
+    //         $mataKuliah = MataKuliah::selectRaw("
+    //         kode_mk, 
+    //         nama_mk, 
+    //         sks, 
+    //         jenis_mk, 
+    //         CASE 
+    //             WHEN semester = '0' AND ? THEN '7'
+    //             WHEN semester = '0' AND NOT ? THEN '8'
+    //             ELSE semester
+    //         END AS semester", [$semesterGanjil, $semesterGanjil])
+    //     ->where(function ($query) use ($semesterGanjil) {
+    //         if ($semesterGanjil) {
+    //             // Semester Ganjil
+    //             $query->whereIn('semester', ['1', '3', '5', '7', '0']);
+    //         } else {
+    //             // Semester Genap
+    //             $query->whereIn('semester', ['2', '4', '6', '8', '0']);
+    //         }
+    //     })
+    //     ->orWhereIn('kode_mk', $selectedMataKuliah)
+    //     ->orderBy('semester', 'asc')
+    //     ->get();
+
+    //     // Menghitung IP Semester Lalu
+    //     $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+
+    //     // Menghitung IPK berdasarkan semua semester yang sudah diambil
+    //     $ipk = $this->hitungIpk($nim);
+
+    //     $maxSKS = $this->hitungMaxBebanSKS($ips);
+
+    //     // Deteksi konflik jadwal
+    //     $conflictingJadwal = $this->deteksiKonflikJadwal($selectedJadwal);
+
+    //     return view('content.mhs.akademik', compact('mhs','tahunAkademik', 'status', 'semester', 'mataKuliah', 'ipk', 'ips', 'maxSKS', 'totalSKS', 'conflictingJadwal', 'jadwal', 'selectedJadwal', 'selectedMataKuliah', 'timeslots', 'days'));
+    // }
     public function index()
-    {
-        $user = auth()->user();
-        $mhs = $user->mahasiswa;
-        $timeslots = ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
-        $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
-        if (!$mhs) {
-            return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
-        }
-        
-        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
-        $status = $semesterAktif?->status ?? 'Belum Registrasi';
-        $semester = $semesterAktif?->semester ?? null;
-        $nim = $mhs->nim;
-        $tahunAkademik = $semesterAktif?->tahun_akademik;
-        $tahunAkademikArr = explode(' ', $tahunAkademik); // Misalnya, ["2024/2025", "Ganjil"]
-        $semesterGanjil = ($tahunAkademikArr[1] === 'Ganjil');
-        
-        $selectedJadwal = IRS::where('nim', $mhs->nim)
-            ->where('id_TA', $semesterAktif->id)
-            ->whereNotNull('id_jadwal')
-            ->pluck('id_jadwal')
-            ->toArray();
+{
+    // Ambil data mahasiswa dari user yang sedang login
+    $user = auth()->user();
+    $mhs = $user->mahasiswa;
 
-        // Ambil semua jadwal untuk ditampilkan
-        $jadwal = Jadwal::with(['matakuliah', 'ruang'])
-            ->get();
+    // Pastikan mahasiswa ditemukan
+    if (!$mhs) {
+        return redirect()->route('mhs.dashboard.index')->with('error', 'Data mahasiswa tidak ditemukan.');
+    }
 
-        $selectedMataKuliah = Jadwal::whereIn('id_jadwal', $selectedJadwal)
-            ->pluck('kode_mk')
-            ->unique()
-            ->toArray();
-        $mataKuliah = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')
+    $nim = $mhs->nim;
+
+    // Ambil semester aktif
+    $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+    $status = $semesterAktif?->status ?? 'Belum Registrasi';
+    $semester = $semesterAktif?->semester ?? null;
+    $tahunAkademik = $semesterAktif?->tahun_akademik;
+    $tahunAkademikArr = explode(' ', $tahunAkademik);
+    $semesterGanjil = ($tahunAkademikArr[1] === 'Ganjil');
+
+    // Hitung total SKS
+    $totalSKS = IRS::where('nim', $nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')
+        ->sum('matakuliah.sks');
+
+    // Jadwal yang sudah dipilih
+    $selectedJadwal = IRS::where('nim', $nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->whereNotNull('id_jadwal')
+        ->pluck('id_jadwal')
+        ->toArray();
+
+    // Ambil semua jadwal
+    $jadwal = Jadwal::with(['matakuliah', 'ruang'])->get();
+
+    $selectedMataKuliah = Jadwal::whereIn('id_jadwal', $selectedJadwal)
+        ->pluck('kode_mk')
+        ->unique()
+        ->toArray();
+
+    $mataKuliah = MataKuliah::selectRaw("
+        kode_mk, 
+        nama_mk, 
+        sks, 
+        jenis_mk, 
+        CASE 
+            WHEN semester = '0' AND ? THEN '7'
+            WHEN semester = '0' AND NOT ? THEN '8'
+            ELSE semester
+        END AS semester", [$semesterGanjil, $semesterGanjil])
         ->where(function ($query) use ($semesterGanjil) {
             if ($semesterGanjil) {
-                // Semester Ganjil: Ambil mata kuliah untuk semester 1, 3, 5, dst.
-                $query->whereIn('semester', ['1', '3', '5', '0']); // Semester ganjil termasuk pilihan (0)
+                $query->whereIn('semester', ['1', '3', '5', '7', '0']);
             } else {
-                // Semester Genap: Ambil mata kuliah untuk semester 2, 4, 6, dst.
-                $query->whereIn('semester', ['2', '4', '6', '0']);
+                $query->whereIn('semester', ['2', '4', '6', '8', '0']);
             }
         })
         ->orWhereIn('kode_mk', $selectedMataKuliah)
         ->orderBy('semester', 'asc')
         ->get();
 
-        
-        // $jadwal = Jadwal::whereIn('id_jadwal', $selectedJadwal)
-        // ->with(['waktu', 'matakuliah', 'ruang'])
-        // ->get()
-        // ->map(function ($item) use ($semester) {
-        //     // Tandai jadwal yang sesuai dengan semester aktif
-        //     $item->checked = $item->matakuliah->semester == $semester;
-        //     $item->ruang = $item->ruang ? $item->ruang->nama : 'Tidak Ada Ruang';
-        //     $item->waktu = $item->waktu ? $item->waktu->formatted_time : 'Tidak Ada Waktu';
-        //     return $item;
-        // });
-        // $selectedMataKuliah = Jadwal::whereIn('id_jadwal', $selectedJadwal)
-        // ->whereHas('matakuliah', function ($q) use ($semester) {
-        //     $q->where('semester', $semester);
-        // })
-        // ->pluck('kode_mk')
-        // ->unique()
-        // ->toArray();
-        
-        
+    // Menghitung IPS dan IPK
+    $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+    $ipk = $this->hitungIpk($nim);
 
-        // Menghitung IP Semester Lalu
-        $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+    $maxSKS = $this->hitungMaxBebanSKS($ips);
 
-        // Menghitung IPK berdasarkan semua semester yang sudah diambil
-        $ipk = $this->hitungIpk($nim);
+    // Deteksi konflik jadwal
+    $conflictingJadwal = $this->deteksiKonflikJadwal($selectedJadwal);
 
-        $maxSKS = $this->hitungMaxBebanSKS($ips);
+    // Ambil semua semester aktif mahasiswa
+    $semesterAktifAll = SemesterAktif::where('nim', $nim)->orderBy('tahun_akademik', 'asc')->get();
 
-        // Deteksi konflik jadwal
-        $conflictingJadwal = $this->deteksiKonflikJadwal($selectedJadwal);
+    // Inisialisasi variabel untuk menyimpan data semester aktif dengan jumlah SKS
+    $semesterAktifData = [];
 
-        return view('content.mhs.akademik', compact('mhs','tahunAkademik', 'status', 'semester', 'mataKuliah', 'ipk', 'ips', 'maxSKS', 'conflictingJadwal', 'jadwal', 'selectedJadwal', 'selectedMataKuliah', 'timeslots', 'days'));
+    // Loop untuk menghitung total SKS per semester dan mengambil data IRS
+    foreach ($semesterAktifAll as $semesterItem) {
+        $irs = IRS::with([
+            'matakuliah',
+            'jadwal',
+            'jadwal.ruang',
+            'jadwal.waktu',
+            'matakuliah.dosen'
+        ])
+            ->where('id_TA', $semesterItem->id)
+            ->get();
+
+        $totalSKSPerSemester = $irs->sum(function ($ir) {
+            return $ir->matakuliah->sks ?? 0;
+        });
+
+        $statusIRS = $irs->pluck('status')->first();
+
+        $semesterItem->irsData = $irs;
+        $semesterItem->statusIRS = $statusIRS ?? 'Belum Disetujui';
+        $semesterItem->jumlah_sks = $totalSKSPerSemester;
+
+        $semesterAktifData[] = $semesterItem;
     }
+
+    // Timeslots dan days untuk jadwal
+    $timeslots = ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+    $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
+
+    // Return ke view
+    return view('content.mhs.akademik', compact(
+        'mhs',
+        'tahunAkademik',
+        'status',
+        'semester',
+        'mataKuliah',
+        'ipk',
+        'ips',
+        'maxSKS',
+        'totalSKS',
+        'conflictingJadwal',
+        'jadwal',
+        'selectedJadwal',
+        'selectedMataKuliah',
+        'semesterAktifData',
+        'timeslots',
+        'days'
+    ));
+}
+
+   
     public function getTotalSks(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $mhs = $user->mahasiswa;
 
         if (!$mhs) {
@@ -114,19 +236,21 @@ class BuatIRSController extends Controller
             return response()->json(['error' => 'Semester aktif tidak ditemukan.'], 404);
         }
 
-        // Hitung total SKS yang sudah diambil dari IRS
+        $nim = $mhs->nim;
+        $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+        $maxSks = $this->hitungMaxBebanSKS($ips);
         $totalSks = IRS::where('nim', $mhs->nim)
-            ->where('id_TA', $semesterAktif->id)
-            ->whereHas('matakuliah', function($query) {
-                $query->select('sks');
-            })
-            ->sum('matakuliah.sks');
+        ->where('id_TA', $semesterAktif->id)
+        ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
+        ->sum('matakuliah.sks');
+        
+        return response()->json([
+            'total_sks' => $totalSks,
+            'max_sks' => $maxSks
+        ], 200);
 
-        return response()->json(['total_sks' => $totalSks], 200);
     }
-
     
-
     public function getJadwal($kodeMk)
     {
         try {
@@ -277,6 +401,35 @@ class BuatIRSController extends Controller
         if (!$jadwal) {
             return response()->json(['status' => 'error', 'message' => 'Jadwal tidak ditemukan.'], 404);
         }
+        $nim = $mhs->nim;
+        $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+        $maxSks = $this->hitungMaxBebanSKS($ips);
+        $totalSks = IRS::where('nim', $mhs->nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
+        ->sum('matakuliah.sks');
+        $sksJadwal = MataKuliah::where('kode_mk', $jadwal->kode_mk)->value('sks');
+        if (!$sksJadwal) {
+            return response()->json(['status' => 'error', 'message' => 'SKS untuk mata kuliah tidak ditemukan.'], 404);
+        }
+        if ($totalSks + $sksJadwal > $maxSks) {
+            return response()->json(['status' => 'error', 'message' => 'Total SKS melebihi batas maksimal!'], 400);
+        }
+        $nilaiKhs = DB::table('khs')
+        ->join('irs', 'khs.id_irs', '=', 'irs.id')
+        ->where('irs.nim', $nim)
+        ->where('irs.kode_mk', $jadwal->kode_mk)
+        
+        ->value('nilai');
+
+        $statusMataKuliah = 'BARU';
+        if ($nilaiKhs) {
+            if (in_array($nilaiKhs, ['A', 'B', 'C', 'AB', 'BC'])) {
+                $statusMataKuliah = 'PERBAIKAN';
+            } elseif (in_array($nilaiKhs, ['D', 'E'])) {
+                $statusMataKuliah = 'ULANG';
+            }
+        }
 
         // Mengecek apakah mahasiswa sudah memilih jadwal yang sama
         $existingIrs = IRS::where('nim', $nim)
@@ -289,50 +442,22 @@ class BuatIRSController extends Controller
         if ($existingIrs) {
             return response()->json(['status' => 'error', 'message' => 'Jadwal sudah dipilih sebelumnya.'], 400);
         }
-        // Mendapatkan semua jadwal yang sudah dipilih oleh mahasiswa
-        // $selectedJadwal = IRS::where('nim', $nim)
-        // ->where('id_TA', $semesterAktif->id)
-        // ->whereNotNull('id_jadwal')
-        // ->with('jadwal.matakuliah') // Pastikan relasi sudah didefinisikan
-        // ->get();
-
-        // // Deteksi konflik jadwal
-        // $jadwalMulai = Carbon::createFromFormat('H:i:s', $jadwal->jam_mulai);
-        // $jadwalSelesai = $jadwalMulai->copy()->addMinutes($jadwal->matakuliah->sks * 50);
-
-        // foreach ($selectedJadwal as $irs) {
-        //     $existingJadwal = $irs->jadwal;
-
-        //     // Pastikan existingJadwal ada
-        //     if (!$existingJadwal) {
-        //         continue;
-        //     }
-
-        //     // Cek apakah hari sama
-        //     if (strtoupper($existingJadwal->hari) !== strtoupper($jadwal->hari)) {
-        //         continue;
-        //     }
-
-        //     // Hitung waktu mulai dan selesai jadwal yang sudah dipilih
-        //     $existingMulai = Carbon::createFromFormat('H:i:s', $existingJadwal->jam_mulai);
-        //     $existingSelesai = $existingMulai->copy()->addMinutes($existingJadwal->matakuliah->sks * 50);
-
-        //     // Cek tumpang tindih waktu
-        //     if ($jadwalMulai < $existingSelesai && $existingMulai < $jadwalSelesai) {
-        //         return response()->json(['status' => 'error', 'message' => 'Jadwal bentrok dengan jadwal yang sudah ada.'], 400);
-        //     }
-        // }
-        // $conflictingJadwal = $this->deteksiKonflikJadwal($jadwal);
+       
         IRS::create([
             'nim' => $nim,
             'kode_mk' => $jadwal->kode_mk,
             'id_TA' => $semesterAktif->id,
             'id_jadwal' => $jadwalId,
             'status' => 'Belum Disetujui',  // Status awal IRS
-            'status_mata_kuliah' => 'BARU'  // Status mata kuliah
+            'status_mata_kuliah' => $statusMataKuliah  // Status mata kuliah
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dipilih dan dimasukkan ke IRS.'], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Jadwal berhasil dipilih dan dimasukkan ke IRS.',
+            'sks_jadwal' => $sksJadwal,
+            'status_mata_kuliah' => $statusMataKuliah
+        ], 200);
     }
 
     public function simpanMk(Request $request)
@@ -513,5 +638,41 @@ class BuatIRSController extends Controller
     
         return response()->json(['status' => 'success', 'message' => 'Mata kuliah berhasil dihapus dari IRS.'], 200);
     }
+    public function irsTemp() {
 
+        $user = auth()->user();
+        $mhs = $user->mahasiswa;
+
+        $nim = $mhs->nim;
+        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+        // Mengambil id semester aktif
+        $semesterAktifId = $semesterAktif->id;
+
+        // Menjalankan query dengan id semester aktif
+        $irsData = DB::table('irs')
+            ->join('semester_aktif', 'irs.id_TA', '=', 'semester_aktif.id')
+            ->join('jadwal', 'irs.id_jadwal', '=', 'jadwal.id_jadwal')
+            ->join('ruang', 'jadwal.id_ruang', '=', 'ruang.id') // Menggunakan join yang benar
+            ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')
+            ->select('jadwal.id_jadwal as jadwalId', 'irs.id', 'irs.status_mata_kuliah as status', 'matakuliah.kode_mk', 'matakuliah.nama_mk as mata_kuliah', 
+                    'semester_aktif.semester', 'jadwal.kelas', DB::raw("CONCAT(ruang.gedung, ruang.nama) as ruang"), // Menggabungkan gedung dan nama ruang, 
+                    'matakuliah.sks')
+            ->where('semester_aktif.id', '=', $semesterAktifId) // Menambahkan kondisi untuk filter berdasarkan id semester aktif
+            ->get();
+         // Menghitung IP Semester Lalu
+        $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+ 
+        $maxSKS = $this->hitungMaxBebanSKS($ips);
+    
+        $totalSKS = IRS::where('nim', $mhs->nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
+        ->sum('matakuliah.sks');  // Ambil sum dari kolom sks yang ada di matakuliah
+
+            
+        return view('content.mhs.irsSementara', compact('irsData', 'ips', 'maxSKS', 'totalSKS'));
+    }
+    
 }
+
+
