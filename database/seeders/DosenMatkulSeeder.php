@@ -453,5 +453,41 @@ class DosenMatkulSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1982030920060410',
+            'kode_mk' => 'PAIK6502',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1996030320220410',
+            'kode_mk' => 'PAIK6501',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1989030320150420',
+            'kode_mk' => 'PAIK6505',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1980091420060410',
+            'kode_mk' => 'PAIK6503',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1978051620031210',
+            'kode_mk' => 'PAIK6702',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1971081119970210',
+            'kode_mk' => 'PAIK6706',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

@@ -175,6 +175,18 @@
                         class="flex items-center p-2 text-base font-medium rounded-lg group
                         <?php echo e(Request::is('kaprodi/mata_kuliah') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
+                    <svg
+                    class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                    <?php echo e(Request::is('kaprodi/matakuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M18 2H6C4.9 2 4 2.9 4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 20V4h12v16H6zm2-4h8v2H8v-2z"
+                    ></path>
+                </svg>
+                
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
                             <?php echo e(Request::is('kaprodi/mata_kuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
@@ -200,17 +212,18 @@
                         class="flex items-center p-2 text-base font-medium rounded-lg group
                         <?php echo e(Request::is('kaprodi/jadwal') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
-                        <svg
-                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            <?php echo e(Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M12 2C8.14 2 5 5.14 5 9c0 1.66.64 3.17 1.69 4.32L12 22l5.31-8.68A6.977 6.977 0 0019 9c0-3.86-3.14-7-7-7zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
-                            ></path>
-                        </svg>
+                    <svg
+                    class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                    <?php echo e(Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10m-12 4h.01M15 19h.01M6 19h.01M9 21h6a2 2 0 002-2v-5H5v5a2 2 0 002 2z"></path>
+                </svg>
+                
                         <span class="ml-3">Jadwal</span>
                     </a>
                 </li>

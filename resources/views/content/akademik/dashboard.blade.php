@@ -12,11 +12,11 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <x-header></x-header>
         <x-sidebar></x-sidebar>
-        <main class="p-16 md:ml-64 h-auto pt-20">
+        <main class="p-16 md:ml-64 h-auto pt-20 flex-grow">
             <div class="text-3xl font-sans font-semibold text-gray-600 m-3">
                 <h1>Dashboard</h1>
             </div>
