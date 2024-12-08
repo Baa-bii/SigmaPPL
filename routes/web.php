@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->name('mhs.registrasi.updateStatus');
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
-   
+    Route::get('/mhs/cetakirs/{semesterId}', [CetakIRSController::class, 'cetakIRS'])->name('mhs.cetakirs');
     // Route::post('/default-mk', [BuatIRSController::class, 'addDefaultMK'])->name('mhs.akademik.index');
     Route::post('/update-mk', [BuatIRSController::class, 'updateMK'])->name('mhs.akademik.updateMK');
     Route::get('/jadwal', [BuatIRSController::class, 'showJadwal'])->name('mhs.akademik.showJadwal');
