@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
-            $table->string('id_jadwal')->unique();
+            $table->string('id_jadwal');
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
             $table->unsignedBigInteger('id_TA');
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');

@@ -69,13 +69,10 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::post('/isi-irs', [BuatIRSController::class, 'isiIrs'])->name('isi-irs'); 
     // Route::post('/update-irs', [BuatIRSController::class, 'isiIrs'])->name('isi.irs');
     Route::get('/mhs-irs-temp', [BuatIRSController::class, 'irsTemp'])->name('mhs.akademik.irsTemp');
+    Route::post('/irs/delete/{id}', [BuatIrsController::class, 'hapusJadwal'])->name('irs.delete');
     Route::get('/sks/{nim}', [DashboardMhsController::class, 'hitungSks']);
-    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
+    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->name('getTotalSks');
     Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
-
-
-
-
 
     // Route::post('mhs/irs/remove-courses', [BuatIRSController::class, 'removeCourseSelection']);
     // Route::post('mhs/irs/update-courses', [BuatIRSController::class, 'saveCourseSelection']);
