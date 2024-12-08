@@ -229,7 +229,7 @@
                             </div>
                         </div>    
                     </div>  
-                    <div class="flex items-center space-x-2 mt-4">
+                    <div class="flex items-center space-x-2 mt-4"> 
                         <button type="btn" class="text-white  bg-yellow-400  border-yellow-500 hover:bg-yellow-600 hover:text-white border focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2 text-center">
                             Lihat Timetable Jadwal
                         </button>
@@ -245,7 +245,7 @@
                     <!-- Tabel Jadwal -->
                 <div class="overflow-x-auto pl-4 mr-4">
                         <table class="table-auto w-full border-collapse border border-green-500">
-                            <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700">>
+                            <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700">
                                 <tr class="bg-green-500">
                                     <th scope="col" class="p-4">No</th>
                                     <th class="px-4 py-2 border">ID Jadwal</th>
