@@ -10,7 +10,7 @@ class RuangKelas extends Model
     use HasFactory;
 
     protected $table = 'ruang';
-
+    protected $primaryKey = 'id';
     protected $fillable = ['id', 'nama', 'status', 'gedung', 'kapasitas', 'kode_prodi'];
 
     public function program_studi()
@@ -18,14 +18,10 @@ class RuangKelas extends Model
         return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
 
-    // public function jadwal()
-    // {
-    //     return $this->hasMany(Jadwal::class, 'id_ruang', 'id');
-    // }
-
     public function jadwal()
     {
-    return $this->hasMany(Jadwal::class, 'id_jadwal');
+        return $this->hasMany(Jadwal::class, 'id_ruang', 'id');
+        
     }
 
 }

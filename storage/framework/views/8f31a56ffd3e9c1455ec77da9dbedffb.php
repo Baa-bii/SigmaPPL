@@ -97,11 +97,11 @@
                     <a
                         href="<?php echo e(route('dekan.jadwal.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
+                        <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                            <?php echo e(Request::is('dekan/jadwal') || Request::is('dekan/verifikasijadwal') || Request::is('dekan/jadwal/search') || Request::is('dekan/jadwal/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 52 52"
                             xmlns="http://www.w3.org/2000/svg"
@@ -122,11 +122,11 @@
                     <a
                         href="<?php echo e(route('dekan.ruang.index')); ?>"
                         class="flex items-center p-2 text-base font-medium rounded-lg group
-                        <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
+                        <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
                         <svg
                             class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                            <?php echo e(Request::is('dekan/ruang') || Request::is('dekan/verifikasiruang') || Request::is('dekan/ruang/search') || Request::is('dekan/ruang/filter') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
@@ -457,4 +457,4 @@
       });
     </script>
 </aside>
-<?php /**PATH /var/www/sigmappl/resources/views/components/sidebar.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\SIgma\resources\views/components/sidebar.blade.php ENDPATH**/ ?>

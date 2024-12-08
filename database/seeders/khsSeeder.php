@@ -6,8 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\KHS;
 use App\Models\IRS;
-
-
+use App\Models\SemesterAktif;
+use App\Models\Mahasiswa;
 
 class khsSeeder extends Seeder
 {
@@ -16,19 +16,60 @@ class khsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Ambil IRS yang ada, misalnya IRS untuk semester aktif sekarang
-        $irsData = IRS::where('nim', '24060122140999')->get();
+        // // Ambil IRS yang ada, misalnya IRS untuk semester aktif sekarang
+        // $irsData = IRS::where('nim', '24060122140999')->get();
 
-        foreach ($irsData as $irs) {
-            // Menambahkan KHS untuk IRS yang diambil
-            KHS::create([
-                'nim' => $irs->nim,
-                // 'kode_mk' => $irs->kode_mk,
-                'id_irs' => $irs->id,
-                'nilai' => $this->generateRandomGrade(),  // Nilai acak, misalnya
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        // foreach ($irsData as $irs) {
+        //     // Menambahkan KHS untuk IRS yang diambil
+        //     KHS::create([
+        //         'nim' => $irs->nim,
+        //         // 'kode_mk' => $irs->kode_mk,
+        //         'id_irs' => $irs->id,
+        //         'nilai' => $this->generateRandomGrade(),  // Nilai acak, misalnya
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        // }
+        // Ambil semua mahasiswa
+        $mahasiswaList = Mahasiswa::all();
+
+        foreach ($mahasiswaList as $mahasiswa) {
+            // Ambil semester aktif untuk mahasiswa (is_active = 1)
+            $currentSemester = SemesterAktif::where('nim', $mahasiswa->nim)
+                ->where('is_active', 1)
+                ->first();
+
+            // Jika tidak ada semester aktif, skip mahasiswa ini
+            if (!$currentSemester) {
+                continue;
+            }
+
+            // Ambil semua IRS dari semester sebelumnya (is_active = 0 dan semester < is_active sekarang)
+            $previousIRS = IRS::where('nim', $mahasiswa->nim)
+                ->whereIn('id_TA', function ($query) use ($mahasiswa, $currentSemester) {
+                    $query->select('id')
+                        ->from('semester_aktif')
+                        ->where('nim', $mahasiswa->nim)
+                        ->where('is_active', 0)
+                        ->where('semester', '<', $currentSemester->semester);
+                })
+                ->get();
+
+            foreach ($previousIRS as $irs) {
+                // Periksa apakah KHS untuk IRS ini sudah ada
+                $exists = KHS::where('id_irs', $irs->id)->exists();
+
+                if (!$exists) {
+                    // Buat KHS baru dengan nilai acak
+                    KHS::create([
+                        'nim' => $irs->nim,
+                        'id_irs' => $irs->id,
+                        'nilai' => $this->generateRandomGrade(), // Nilai acak
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
         }
     }
         //   // Ambil id_TA dari semester_aktif yang relevan

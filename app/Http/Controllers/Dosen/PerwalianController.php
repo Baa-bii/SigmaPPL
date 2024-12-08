@@ -34,14 +34,27 @@ class PerwalianController extends Controller
         }
 
         // Ambil mahasiswa berdasarkan nip_dosen dosen yang login, dengan pagination
-        $mahasiswa = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
+        // $mahasiswa = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
+        //     ->when($angkatan, function ($query, $angkatan) {
+        //         return $query->where('angkatan', $angkatan);
+        //     })
+        //     ->when($search, function ($query, $search) {
+        //         return $query->where('nama_mhs', 'like', '%' . $search . '%');
+        //     })
+        //     ->get();
+
+        $mahasiswa = Mahasiswa::with(['irs' => function ($query) {
+            $query->whereHas('semesterAktif', function ($subQuery) {
+                $subQuery->where('is_active', 1);
+            });
+        }])->where('nip_dosen', $dosen->nip_dosen)
             ->when($angkatan, function ($query, $angkatan) {
                 return $query->where('angkatan', $angkatan);
             })
             ->when($search, function ($query, $search) {
                 return $query->where('nama_mhs', 'like', '%' . $search . '%');
             })
-            ->get();
+            ->get();        
     
         // Hitung IP Lalu untuk setiap mahasiswa
         foreach ($mahasiswa as $mhs) {
@@ -86,6 +99,8 @@ class PerwalianController extends Controller
                         // Tentukan status berdasarkan IRS
                         if ($irsList->pluck('status')->contains('Belum Disetujui')) {
                             $mhs->status = 'Belum Disetujui';
+                        } elseif ($irsList->pluck('status')->contains('Pembatalan')) {
+                            $mhs->status = 'Pembatalan';
                         } else {
                             $mhs->status = 'Sudah Disetujui';
                         }
@@ -102,38 +117,51 @@ class PerwalianController extends Controller
                 case 'cuti':
                     return $mhs->status === 'Cuti';
                 case 'aktif':
-                    return in_array($mhs->status, ['Belum Isi IRS', 'Belum Disetujui', 'Sudah Disetujui']);
+                    return in_array($mhs->status, ['Belum Isi IRS', 'Belum Disetujui', 'Pembatalan', 'Sudah Disetujui']);
                 case 'belum_isi_irs':
                     return $mhs->status === 'Belum Isi IRS';
                 case 'sudah_isi_irs':
-                    return in_array($mhs->status, ['Belum Disetujui', 'Sudah Disetujui']);
+                    return in_array($mhs->status, ['Belum Disetujui', 'Pembatalan', 'Sudah Disetujui']);
                 case 'belum_disetujui':
                     return $mhs->status === 'Belum Disetujui';
+                case 'pembatalan':
+                    return $mhs->status === 'Pembatalan';
                 case 'sudah_disetujui':
                     return $mhs->status === 'Sudah Disetujui';
                 default:
                     return true; // Tidak ada filter, tampilkan semua
             }
-        })->filter(function ($mhs) use ($angkatan) {
-            return !$angkatan || $mhs->angkatan == $angkatan;
-        });
+        })->values();
+        // })->filter(function ($mhs) use ($angkatan) {
+        //     return !$angkatan || $mhs->angkatan == $angkatan;
+        // });
+
+        $currentPage = max(1, (int) $request->input('page', 1));
+        $paginatedData = $mahasiswa->forPage($currentPage, $perPage);
 
         // Handle jika tidak ada data hasil filter dan pencarian
-        if ($mahasiswa->isEmpty()) {
-            $paginatedData = collect([]);
-        } else {
-            // Pagination manual
-            $currentPage = max(1, $request->input('page', 1));
-            $paginatedData = $mahasiswa->forPage($currentPage, $perPage);
-        }
+        // if ($mahasiswa->isEmpty()) {
+        //     $paginatedData = collect([]);
+        // } else {
+        //     // Pagination manual
+        //     $currentPage = max(1, $request->input('page', 1));
+        //     $paginatedData = $mahasiswa->forPage($currentPage, $perPage);
+        // }
 
         $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator(
             $paginatedData,
             $mahasiswa->count(),
             $perPage,
             $currentPage,
-            ['path' => $request->url(), 'query' => array_merge($request->query(), ['per_page' => $perPage])]
+            ['path' => $request->url(), 'query' => $request->query()]
         );
+        // $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator(
+        //     $paginatedData,
+        //     $mahasiswa->count(),
+        //     $perPage,
+        //     $currentPage,
+        //     ['path' => $request->url(), 'query' => array_merge($request->query(), ['per_page' => $perPage])]
+        // );
     
         // Ambil angkatan unik
         $angkatanList = Mahasiswa::where('nip_dosen', $dosen->nip_dosen)
@@ -146,28 +174,46 @@ class PerwalianController extends Controller
     }
     
     public function updateIRSStatus(Request $request)
-    {
-        $request->validate([
-            'ids' => 'required|array',
-            'ids.*' => 'exists:irs,id',
-            'status' => 'required|string|in:Sudah Disetujui,Belum Disetujui',
-        ]);
+{
+    \Log::info('Data yang diterima:', [
+        'idTAs' => $request->input('idTAs'),
+        'status' => $request->input('status')
+    ]);
 
-        try {
-            // Perbarui status IRS berdasarkan ID yang dipilih
-            IRS::whereIn('id', $request->ids)->update(['status' => $request->status]);
+    $request->validate([
+        'idTAs' => 'required|array',
+        'idTAs.*' => 'exists:semester_aktif,id', 
+        'status' => 'required|string|in:Sudah Disetujui,Belum Disetujui,Pembatalan',
+    ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Status IRS berhasil diperbarui.',
-            ]);
-        } catch (\Exception $e) {
+    try {
+        $validIdTAs = SemesterAktif::whereIn('id', $request->idTAs)
+            ->where('is_active', 1) 
+            ->pluck('id')
+            ->toArray();
+
+        if (empty($validIdTAs)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan saat memperbarui status IRS.',
-            ], 500);
+                'message' => 'Tidak ada semester aktif yang valid untuk diperbarui.',
+            ], 400);
         }
+
+        IRS::whereIn('id_TA', $validIdTAs)->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status IRS berhasil diperbarui.',
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Error saat update IRS:', ['error' => $e->getMessage()]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat memperbarui status IRS.',
+        ], 500);
     }
+}
+
 
     public function getStatistics()
     {
@@ -190,6 +236,7 @@ class PerwalianController extends Controller
             'Belum Isi IRS' => 0,
             'Sudah Isi IRS' => 0,
             'Belum Disetujui' => 0,
+            'Pembatalan' => 0,
             'Sudah Disetujui' => 0,
         ];
 
@@ -206,20 +253,26 @@ class PerwalianController extends Controller
                     $statusCounts['Cuti']++;
                 } elseif ($semesterAktif->status == 'Aktif') {
                     // Tambahkan hitungan untuk Aktif
-                    $irs = IRS::where('id_TA', $semesterAktif->id)->where('nim', $mhs->nim)->first();
-
-                    if (!$irs) {
+                    $irs = IRS::where('id_TA', $semesterAktif->id)->where('nim', $mhs->nim)->get();
+    
+                    if ($irs->isEmpty()) {
                         $statusCounts['Belum Isi IRS']++;
                     } else {
                         $statusCounts['Sudah Isi IRS']++;
-                        if ($irs->status == 'Sudah Disetujui') {
-                            $statusCounts['Sudah Disetujui']++;
-                        } else {
+                        
+                        // Hitung status individual di IRS
+                        if ($irs->pluck('status')->contains('Pembatalan')) {
+                            $statusCounts['Pembatalan']++;
+                        }
+                        if ($irs->pluck('status')->contains('Belum Disetujui')) {
                             $statusCounts['Belum Disetujui']++;
                         }
+                        if ($irs->pluck('status')->contains('Sudah Disetujui')) {
+                            $statusCounts['Sudah Disetujui']++;
+                        }
                     }
-
-                    // "Aktif" mencakup "Belum Isi IRS", "Belum Disetujui", dan "Sudah Disetujui"
+    
+                    // "Aktif" mencakup "Belum Isi IRS", "Belum Disetujui", "Pembatalan", dan "Sudah Disetujui"
                     $statusCounts['Aktif']++;
                 }
             }
@@ -394,6 +447,8 @@ class PerwalianController extends Controller
         }
     }
 
+
+    // VIEW = DETAIL MAHASISWA /////////////////////////////////////////////////////////////////////////////
     public function show($nim)
     {
         // Ambil data mahasiswa beserta program studi yang terkait
@@ -491,12 +546,11 @@ class PerwalianController extends Controller
         return [$semesterAktifData, $hasIRS];
     }
 
-    public function setujuiIRS($id)
+    public function setujuiIRS($Id)
     {
         try {
-            $irs = IRS::findOrFail($id);
-            $irs->status = 'Sudah Disetujui';
-            $irs->save();
+            // Perbarui semua IRS untuk semester yang bersangkutan menjadi "Sudah Disetujui"
+            IRS::where('id_TA', $Id)->update(['status' => 'Sudah Disetujui']);
 
             return response()->json([
                 'success' => true,

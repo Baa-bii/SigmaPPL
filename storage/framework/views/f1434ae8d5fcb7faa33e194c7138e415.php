@@ -117,4 +117,4 @@
         }
     });
 </script>
-<?php /**PATH /var/www/sigmappl/resources/views/components/header.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\SIgma\resources\views/components/header.blade.php ENDPATH**/ ?>
