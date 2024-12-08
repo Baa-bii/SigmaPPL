@@ -749,6 +749,7 @@
          
         // Menangani checkbox yang sudah tercentang saat halaman dimuat
         $('.course-checkbox:checked').each(function() {
+            // auto checked yg sesuai semester
             var checkbox = $(this);
             var kodeMk = checkbox.val();
             var isChecked = checkbox.is(':checked');
@@ -780,13 +781,6 @@
                         markConflictingSchedules();
                         fetchTotalSks();
                         updateProgressBar();
-                        // Optional: Tampilkan SweetAlert sukses (bisa dihapus jika tidak diinginkan)
-                        // Swal.fire({
-                        //     icon: 'success',
-                        //     title: 'Berhasil',
-                        //     text: 'Jadwal mata kuliah berhasil ditambahkan ke timetable.',
-                        //     confirmButtonText: 'OK'
-                        // });
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
@@ -883,30 +877,6 @@
                             icon: 'error',
                             title: 'Gagal',
                             text: 'Terjadi kesalahan saat mengambil jadwal.',
-                            confirmButtonText: 'OK'
-                        });
-                        checkbox.prop('checked', false);
-                    }
-                });
-
-                // Simpan mata kuliah yang dipilih ke server
-                $.ajax({
-                    url: '/simpan-mk',
-                    method: 'POST',
-                    data: {
-                        nim: nim,
-                        mk: [kodeMk]
-                    },
-                    success: function(response) {
-                        console.log('Mata kuliah berhasil disimpan');
-                        // Optional: Anda dapat menambahkan notifikasi tambahan di sini
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Terjadi kesalahan saat menyimpan mata kuliah.',
                             confirmButtonText: 'OK'
                         });
                         checkbox.prop('checked', false);

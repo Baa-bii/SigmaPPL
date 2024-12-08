@@ -56,40 +56,28 @@ class BuatIRSController extends Controller
             ->pluck('kode_mk')
             ->unique()
             ->toArray();
-        $mataKuliah = MataKuliah::select('kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk')
+            $mataKuliah = MataKuliah::selectRaw("
+            kode_mk, 
+            nama_mk, 
+            sks, 
+            jenis_mk, 
+            CASE 
+                WHEN semester = '0' AND ? THEN '7'
+                WHEN semester = '0' AND NOT ? THEN '8'
+                ELSE semester
+            END AS semester", [$semesterGanjil, $semesterGanjil])
         ->where(function ($query) use ($semesterGanjil) {
             if ($semesterGanjil) {
-                // Semester Ganjil: Ambil mata kuliah untuk semester 1, 3, 5, dst.
-                $query->whereIn('semester', ['1', '3', '5', '7', '0']); // Semester ganjil termasuk pilihan (0)
+                // Semester Ganjil
+                $query->whereIn('semester', ['1', '3', '5', '7', '0']);
             } else {
-                // Semester Genap: Ambil mata kuliah untuk semester 2, 4, 6, dst.
-                $query->whereIn('semester', ['2', '4', '6', '8' ,'0']);
+                // Semester Genap
+                $query->whereIn('semester', ['2', '4', '6', '8', '0']);
             }
         })
         ->orWhereIn('kode_mk', $selectedMataKuliah)
         ->orderBy('semester', 'asc')
         ->get();
-
-        
-        // $jadwal = Jadwal::whereIn('id_jadwal', $selectedJadwal)
-        // ->with(['waktu', 'matakuliah', 'ruang'])
-        // ->get()
-        // ->map(function ($item) use ($semester) {
-        //     // Tandai jadwal yang sesuai dengan semester aktif
-        //     $item->checked = $item->matakuliah->semester == $semester;
-        //     $item->ruang = $item->ruang ? $item->ruang->nama : 'Tidak Ada Ruang';
-        //     $item->waktu = $item->waktu ? $item->waktu->formatted_time : 'Tidak Ada Waktu';
-        //     return $item;
-        // });
-        // $selectedMataKuliah = Jadwal::whereIn('id_jadwal', $selectedJadwal)
-        // ->whereHas('matakuliah', function ($q) use ($semester) {
-        //     $q->where('semester', $semester);
-        // })
-        // ->pluck('kode_mk')
-        // ->unique()
-        // ->toArray();
-        
-        
 
         // Menghitung IP Semester Lalu
         $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
@@ -104,31 +92,7 @@ class BuatIRSController extends Controller
 
         return view('content.mhs.akademik', compact('mhs','tahunAkademik', 'status', 'semester', 'mataKuliah', 'ipk', 'ips', 'maxSKS', 'totalSKS', 'conflictingJadwal', 'jadwal', 'selectedJadwal', 'selectedMataKuliah', 'timeslots', 'days'));
     }
-    // public function getTotalSks(Request $request)
-    // {
-    //     $user = auth()->user();
-    //     $mhs = $user->mahasiswa;
-
-    //     if (!$mhs) {
-    //         return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 404);
-    //     }
-
-    //     $semesterAktif = SemesterAktif::where('is_active', true)->first();
-
-    //     if (!$semesterAktif) {
-    //         return response()->json(['error' => 'Semester aktif tidak ditemukan.'], 404);
-    //     }
-
-    //     // Hitung total SKS yang sudah diambil dari IRS
-    //     $totalSks = IRS::where('nim', $mhs->nim)
-    //         ->where('id_TA', $semesterAktif->id)
-    //         ->whereHas('matakuliah', function($query) {
-    //             $query->select('sks');
-    //         })
-    //         ->sum('matakuliah.sks');
-
-    //     return response()->json(['total_sks' => $totalSks], 200);
-    // }
+   
     public function getTotalSks(Request $request)
     {
         $user = Auth::user();
@@ -151,25 +115,14 @@ class BuatIRSController extends Controller
         ->where('id_TA', $semesterAktif->id)
         ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
         ->sum('matakuliah.sks');
+        
         return response()->json([
             'total_sks' => $totalSks,
             'max_sks' => $maxSks
         ], 200);
 
-        // return response()->json(['total_sks' => $totalSks], 200);
-         // // Ambil IRS dengan relasi matakuliah
-        // $irs = IRS::where('nim', $mhs->nim)
-        //     ->where('id_TA', $semesterAktif->id)
-        //     ->with('matakuliah') // Eager load matakuliah
-        //     ->get();
-
-        // // Hitung total SKS di PHP
-        // $totalSks = $irs->sum(function($item) {
-        //     return $item->matakuliah ? $item->matakuliah->sks : 0;
-        // });
     }
     
-
     public function getJadwal($kodeMk)
     {
         try {

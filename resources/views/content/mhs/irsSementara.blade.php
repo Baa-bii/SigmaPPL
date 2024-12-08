@@ -57,7 +57,7 @@
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         <button type="button" 
                                                 class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-xs px-5 py-2.5 text-center mb-2"
-                                                onclick="handleDelete({{ $row->id }})">
+                                                onclick="handleCancelJadwal('{{ $row->jadwalId }}', '{{ $row->kode_mk }}')">
                                             Hapus
                                         </button>
                                     </td>
@@ -67,9 +67,9 @@
                         </table>
                     </div>
 
-                    <button class="ajukan mt-10 focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                    <!-- <button class="ajukan mt-10 focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
                         Ajukan
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>       
@@ -78,49 +78,57 @@
     <x-footerdosen></x-footerdosen>
 </body>
 </html>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-   function handleDelete(jadwalID) {
-    // Tampilkan konfirmasi sebelum menghapus
+   function handleCancelJadwal(jadwalId, kodeMk) {
+    // Tampilkan konfirmasi sebelum membatalkan jadwal
     Swal.fire({
-        title: 'Konfirmasi Hapus',
-        text: "Apakah Anda yakin ingin menghapus data ini?",
+        title: 'Konfirmasi Batalkan Jadwal',
+        text: "Apakah Anda yakin ingin membatalkan jadwal ini?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, hapus',
+        confirmButtonText: 'Ya, batalkan',
         cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Kirim permintaan AJAX untuk menghapus data
-            axios.post(`/irs/cancel/${jadwalID}`, {
-                _token: '{{ csrf_token() }}'
-            })
-            .then((response) => {
-                if (response.data.status === 'success') {
+            // Kirim permintaan AJAX untuk membatalkan jadwal
+            $.ajax({
+                url: `/irs/cancel/${jadwalId}`,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Sertakan CSRF token
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({ jadwal_id: jadwalId }),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message,
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Muat ulang halaman setelah pembatalan berhasil
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Gagal', data.message, 'error');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: response.data.message,
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: error.responseJSON?.message || 'Terjadi kesalahan saat membatalkan jadwal.',
                         confirmButtonText: 'OK'
-                    }).then(() => {
-                        // Hapus baris tabel yang sesuai
-                        const row = document.getElementById(`row-${jadwalID}`);
-                        if (row) {
-                            row.remove();  // Hapus baris tabel terkait
-                        }
                     });
-                } else {
-                    Swal.fire('Gagal', response.data.message, 'error');
                 }
-            })
-            .catch((error) => {
-                Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus data.', 'error');
             });
         }
     });
 }
-
 
 </script>
