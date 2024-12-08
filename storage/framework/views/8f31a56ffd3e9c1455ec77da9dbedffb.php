@@ -175,20 +175,19 @@
                         class="flex items-center p-2 text-base font-medium rounded-lg group
                         <?php echo e(Request::is('kaprodi/mata_kuliah') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
-                        <svg
-                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            <?php echo e(Request::is('kaprodi/mata_kuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
-                            fill="currentColor"
-                            viewBox="0 0 52 52"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M42,22.3c-2.8-1.1-3.2-2.2-3.2-3.3s0.8-2.2,1.8-3c1.7-1.4,2.6-3.5,2.6-5.8c0-4.4-2.9-8.2-8-8.2c-4.7,0-7.5,3.2-7.9,7.1c0,0.4,0.2,0.7,0.5,0.9c3.8,2.4,6.1,6.6,6.1,11.7c0,3.8-1.5,7.2-4.2,9.6c-0.2,0.2-0.2,0.6,0,0.8c0.7,0.5,2.3,1.2,3.3,1.7c0.3,0.1,0.5,0.2,0.8,0.2h12.1c2.3,0,4.1-1.9,4.1-4v-0.6C50,25.9,46.2,24,42,22.3z"
-                            ></path>
-                            <path
-                                d="M28.6,36.2c-3.4-1.4-3.9-2.6-3.9-3.9c0-1.3,1-2.6,2.1-3.6c2-1.7,3.1-4.1,3.1-6.9c0-5.2-3.4-9.7-9.6-9.7c-6.1,0-9.6,4.5-9.6,9.7c0,2.8,1.1,5.2,3.1,6.9c1.1,1,2.1,2.3,2.1,3.6c0,1.3-0.5,2.6-4,3.9c-5,2-9.9,4.3-9.9,8.5V45v1c0,2.2,1.8,4,4.1,4h27.7c2.3,0,4.2-1.8,4.2-4v-1v-0.4C38,40.5,33.6,38.2,28.6,36.2z"
-                            ></path>
-                        </svg>
+                    <svg
+                    class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                    <?php echo e(Request::is('kaprodi/matakuliah') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M18 2H6C4.9 2 4 2.9 4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 20V4h12v16H6zm2-4h8v2H8v-2z"
+                    ></path>
+                </svg>
+                
+                        
                         <span class="ml-3">Mata Kuliah</span>
                     </a>
                 </li>
@@ -200,17 +199,18 @@
                         class="flex items-center p-2 text-base font-medium rounded-lg group
                         <?php echo e(Request::is('kaprodi/jadwal') ? 'bg-yellow-400 text-black' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'); ?>"
                     >
-                        <svg
-                            class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
-                            <?php echo e(Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M12 2C8.14 2 5 5.14 5 9c0 1.66.64 3.17 1.69 4.32L12 22l5.31-8.68A6.977 6.977 0 0019 9c0-3.86-3.14-7-7-7zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
-                            ></path>
-                        </svg>
+                    <svg
+                    class="w-6 h-6 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white
+                    <?php echo e(Request::is('kaprodi/jadwal') ? 'text-black' : 'text-gray-500 dark:text-gray-400'); ?>"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10m-12 4h.01M15 19h.01M6 19h.01M9 21h6a2 2 0 002-2v-5H5v5a2 2 0 002 2z"></path>
+                </svg>
+                
                         <span class="ml-3">Jadwal</span>
                     </a>
                 </li>

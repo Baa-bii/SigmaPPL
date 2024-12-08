@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Akademik</title>
+    <title>Dashboard Kaprodi</title>
     <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -12,8 +12,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body  class="antialiased bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen">
-    <div class="antialiased bg-gray-50 dark:bg-gray-900 flex-grow">
+<body>
+    <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -52,17 +52,50 @@
 <?php $component = $__componentOriginal2880b66d47486b4bfeaf519598a469d6; ?>
 <?php unset($__componentOriginal2880b66d47486b4bfeaf519598a469d6); ?>
 <?php endif; ?>
-        <main class="p-16 md:ml-64 h-auto pt-20">
-            <div class="text-3xl font-sans font-semibold text-gray-600 m-3">
-                <h1>Dashboard</h1>
-            </div>
-            <div class="rounded shadow-2xl">
-                <h2 class="flex text-gray-700 font-sans font-medium m-4 justify-center text-lg">Data Ruangan</h2>
-                <div class="py-6" id="pie-chart-1"></div>
-            </div>
+        <main class="md:ml-64 h-auto pt-20 flex-grow">
+          <div class="container max-w-7xl mx-auto p-6">
+            <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16 flex flex-col min-h-screen">
+                <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+                  <div class="mx-auto max-w-5xl">
+                    <div class="gap-4 sm:flex sm:items-center sm:justify-between flex-col">
+                      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Mata Kuliah dan Jadwal</h2>
+                        <div class="mt-10 grid grid-cols-2  gap-6">
+                            <!-- Kotak Mata Kuliah -->
+                            <div class="bg-red-200 p-10  rounded-lg shadow-lg dark:bg-gray-800">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mata Kuliah</h3>
+                                <?php
+                                    $mataKuliahCount = DB::table('matakuliah')->count();  // Menghitung jumlah mata kuliah
+                                ?>
+                                <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                                    <?php echo e($mataKuliahCount); ?>
+
+                                </p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Jumlah Mata Kuliah yang terdaftar</p>
+                            </div>
+
+                            <!-- Kotak Jadwal -->
+                            <div class="bg-blue-400 p-10 top-6 rounded-lg shadow-lg dark:bg-gray-800">
+                                <h3 class="text-lg font-semibold text-white dark:text-white">Jadwal</h3>
+                                <?php
+                                    $jadwalCount = \App\Models\Jadwal::whereHas('semesterAktif', function ($query) {
+                                        $query->whereRaw('semester % 2 = 1');
+                                    })->count();  // Menghitung jumlah jadwal
+                                ?>
+
+
+                                <p class="text-2xl font-bold text-white dark:text-gray-200">
+                                    <?php echo e($jadwalCount); ?>
+
+                                </p>
+                                <p class="text-sm text-white dark:text-gray-400">Jumlah Jadwal yang terdaftar</p>
+                            </div>
+                        </div>
+                    </div> 
+                </div>   
+              </section>
+            </div>             
         </main>
-    </div>
-    <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+        <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('footerdosen'); ?>
@@ -81,46 +114,7 @@
 <?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
 <?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
 <?php endif; ?>
+    </div>
 </body>
-<script>
-    // Ambil data dari Blade template
-    const prodiLabels = <?php echo json_encode($prodiCounts->map(function($item) {
-        return $item->program_studi->nama_prodi; // Gantilah 'nama' dengan kolom yang sesuai di tabel program_studi
-    }), 15, 512) ?>;
-    const prodiValues = <?php echo json_encode($prodiCounts->pluck('total'), 15, 512) ?>;
-
-    const getChartOptions = (labels, values) => {
-        return {
-            series: values,
-            colors: ["#9CA3AF", "#B63546", "#2B2B8B", "#2F8B76", "#53B635", "#E3A008", "#CE39BA"],
-            chart: {
-                height: 250,
-                width: "100%",
-                type: "pie",
-            },
-            labels: labels,
-            dataLabels: {
-                enabled: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                },
-            },
-            legend: {
-                position: "bottom",
-                fontFamily: "Inter, sans-serif",
-            },
-        };
-    };
-
-    // Render chart if element exists
-    if (document.getElementById("pie-chart-1")) {
-        const chart1 = new ApexCharts(
-            document.getElementById("pie-chart-1"),
-            getChartOptions(prodiLabels, prodiValues)
-        );
-        chart1.render();
-    }
-</script>
-
-
-</html><?php /**PATH C:\SIgma\resources\views/content/akademik/dashboard.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\resources\views/content/kaprodi/dashboard.blade.php ENDPATH**/ ?>
