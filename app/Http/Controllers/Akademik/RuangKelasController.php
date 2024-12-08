@@ -32,6 +32,11 @@ class RuangKelasController extends Controller
         // Fetch the filtered or full data with relationships
         $ruangKelas = $query->with('program_studi')->get();
 
+        $ruangKelas = $query->with('program_studi')
+        ->join('program_studi', 'ruang.kode_prodi', '=', 'program_studi.kode_prodi')
+        ->orderBy('program_studi.nama_prodi') // Automatically sort by program_studi.nama_prodi
+        ->get();
+
         // Return the view with filtered data
         return view('content.akademik.ruangan', compact('ruangKelas', 'programStudi'));
     }
@@ -115,21 +120,24 @@ class RuangKelasController extends Controller
     public function ajukanAll(Request $request)
     {
         try {
+            // Debug log
+            Log::info('Request diterima:', $request->all());
+
             // Validasi input
             $validated = $request->validate([
                 'status' => 'required|in:diajukan',
             ]);
 
-            // Perbarui semua status dalam tabel RuangKelas
-            RuangKelas::query()
-            ->where('status', 'menunggu')
-            ->update(['status' => $validated['status']]);
+            // Update status
+            $updated = RuangKelas::where('status', 'menunggu')
+                ->update(['status' => $validated['status']]);
+
+            Log::info('Jumlah data diupdate:', ['count' => $updated]);
 
             return redirect()->back()->with('success', 'Semua status berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
-    
+        
 }

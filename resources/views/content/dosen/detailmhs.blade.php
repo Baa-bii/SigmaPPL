@@ -81,7 +81,7 @@
         </div>
 
         <!-- Tabs -->
-        <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <!-- <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex justify-center flex-wrap -mb-px text-sm font-medium text-center" id="tabs" role="tablist">
                 <li role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg border-blue-500 text-blue-500" id="tab-irs" data-tab-target="#content-irs" type="button" role="tab" aria-controls="irs" aria-selected="true">IRS</button>
@@ -90,7 +90,7 @@
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="tab-khs" data-tab-target="#content-khs" type="button" role="tab" aria-controls="khs" aria-selected="false">KHS</button>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <div id="tabs-content">
             <!-- Konten 2 IRS -->
@@ -241,31 +241,31 @@
             </div>
 
             <!-- Konten 2 KHS -->
-            <div id="content-khs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6 hidden">
-                <div id="tabs-title" class="text-xl font-semibold pt-8 pb-4 text-center">Kartu Hasil Studi</div>
+            <!-- <div id="content-khs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6 hidden">
+                <div id="tabs-title" class="text-xl font-semibold pt-8 pb-4 text-center">Kartu Hasil Studi</div> -->
                 <!-- Accordion KHS content here -->
-                <div id="accordion-khs">    
-                    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+                <!-- <div id="accordion-khs">    
+                    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400"> -->
                     
                         <!-- 10 -->
-                        <h2 id="accordion-flush-heading-10">
+                        <!-- <h2 id="accordion-flush-heading-10">
                             <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-10" aria-expanded="false" aria-controls="accordion-flush-body-10">
                                 <div class="flex flex-col items-start">
                                     <span>Semester 1  |  Tahun Ajaran 2022/2023 Ganjil</span>
                                     <span class="text-sm text-gray-500 mt-2">Jumlah SKS 21</span>
-                                </div>
+                                </div> -->
                                 <!-- Ikon defaultnya mengarah ke bawah, menggunakan rotate-0 -->
-                                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <!-- <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
                                 </svg>
                             </button>
-                        </h2>
+                        </h2> -->
 
-                        <div id="accordion-flush-body-10" class="hidden" aria-labelledby="accordion-flush-heading-10">
+                        <!-- <div id="accordion-flush-body-10" class="hidden" aria-labelledby="accordion-flush-heading-10">
                             <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                                <p class="mb-2 text-gray-500 dark:text-gray-400">
+                                <p class="mb-2 text-gray-500 dark:text-gray-400"> -->
                                     <!-- Table -->
-                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <!-- <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                 <tr>
@@ -356,9 +356,9 @@
                                                     <td class="px-6 py-4">
                                                         12
                                                     </td>
-                                                </tr>
+                                                </tr> -->
                                                 <!-- Total row -->
-                                                <tr class="font-semibold bg-gray-100 dark:bg-gray-800 dark:text-white">
+                                                <!-- <tr class="font-semibold bg-gray-100 dark:bg-gray-800 dark:text-white">
                                                     <td colspan="5" class="px-6 py-3 text-right">Total</td>
                                                     <td class="px-6 py-3">6</td>
                                                     <td class="px-6 py-3"></td>
@@ -385,7 +385,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
     
@@ -473,8 +473,8 @@
     });
   </script>
 
-<script>
-    function setujuiIRS(semesterId) {
+  <script>
+        function setujuiIRS(semesterId) {
         if (confirm('Apakah Anda yakin ingin menyetujui IRS?')) {
             fetch(`/dosen/setujuiirs/${semesterId}`, {
                 method: 'POST',
@@ -487,7 +487,8 @@
             .then(data => {
                 if (data.success) {
                     alert(data.message);
-                    // Update status dan tombol secara dinamis
+
+                    // Perbarui status di UI
                     const accordion = document.querySelector(`#accordion-flush-body-${semesterId}`);
                     const statusElement = accordion.querySelector('caption');
                     const buttonContainer = accordion.querySelector('.flex button');
@@ -513,7 +514,7 @@
             });
         }
     }
-</script>
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.2.19/dist/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

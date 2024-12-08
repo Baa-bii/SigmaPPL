@@ -25,9 +25,12 @@
             <!-- Progress Pilih SKS -->
             <div class="flex items-center mb-4">
                 <div class="w-full h-5 bg-gray-200 rounded dark:bg-gray-700 mr-2">
-                    <div class="h-5 bg-yellow-300 rounded" style="width: 70%"></div>
+                    <div id="progress-sks" class="h-5 bg-yellow-300 rounded" style="width: 0%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $maxSKS }} SKS</span>
+                <span id="sks-text" class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $maxSKS }} SKS</span>
+            </div>
+            <div id="sks-warning" class="text-red-500 text-sm mt-2 hidden">
+                Total SKS melebihi batas maksimal!
             </div>
             
             <!-- Dropdown menu -->
@@ -66,7 +69,7 @@
     <!-- Jadwal Mata Kuliah -->
     <div class="w-full lg:w-2/3 scroll-smooth">
         <div class="overflow-x-auto">
-            <table id="jadwalTable" class="w-full border-collapse border border-gray-300 bg-white">
+            <table id="jadwalTable" class="w-full mb-5 border-collapse border border-gray-300 bg-white">
                 <thead class="bg-white shadow-sm">
                     <tr>
                         <th class="border border-gray-300 p-2">WAKTU<br><span class="italic text-sm font-medium">TIME</span></th>
@@ -155,10 +158,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <a href="/mhs-irs-temp" class="mt-15 mb-15 focus:outline-none text-white bg-purple-800 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                Lihat IRS Sementara
+            </a>
         </div>
-        <a href="/mhs-irs-temp" class="mt-10 focus:outline-none text-white bg-purple-800 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-            Lihat IRS Sementara
-        </a>
+       
     </div>
 </div>
 @else
@@ -209,6 +213,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <!-- Script untuk Mengelola Pilihan Mata Kuliah dan Notifikasi -->
 <script>
     $(document).ready(function() {
@@ -224,13 +229,14 @@
         var selectedMataKuliah = @json($selectedMataKuliah);
         var conflictingJadwal = @json($conflictingJadwal);
         var selectedJadwal = @json($selectedJadwal);
-        var totalSks = 0;
-        var maxSks = {{ $maxSKS }};
-        // Hitung total SKS dari checkbox yang sudah dicentang
+        var totalSks = {{ $totalSKS}};
+      
+        var maxSks = {{ $maxSKS}};
+        var jadwal = @json($jadwal);
+        
         fetchTotalSks();
-
-        // Panggil fungsi untuk menandai konflik saat halaman dimuat
         markConflictingSchedules();
+        updateProgressBar();
 
         // Fungsi untuk mengonversi waktu 'HH:MM' ke total menit
         function convertTimeToMinutes(time) {
@@ -258,7 +264,58 @@
             });
             return matchedSlot;
         }
+        $('#irs-form').on('submit', function(e) {
+            if (totalSks > maxSks) {
+                e.preventDefault(); // Mencegah form submission
+                Swal.fire({
+                    icon: 'error',
+                    title: 'SKS Terlampaui',
+                    text: 'Total SKS melebihi batas maksimal. Silakan kurangi pilihan mata kuliah Anda.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
 
+         // Fungsi untuk mengupdate progress bar
+         function updateProgressBar() {
+            console.log(`Total SKS: ${totalSks}`);
+            console.log(`Max SKS: ${maxSks}`);
+
+            // Hitung persentase SKS
+            var persen = (totalSks / maxSks) * 100;
+            persen = persen > 100 ? 100 : persen; // Batasi maksimal 100%
+            console.log(`Persentase SKS: ${persen}%`);
+
+            // Update lebar progress bar
+            $('#progress-sks').css('width', persen + '%');
+
+            // Update teks SKS
+            $('#sks-text').text(totalSks + ' SKS / ' + maxSks + ' SKS');
+
+            // Ubah warna progress bar berdasarkan total SKS dan tampilkan/ sembunyikan peringatan
+            if (totalSks > maxSks) {
+                $('#progress-sks').removeClass('bg-yellow-300 bg-green-500').addClass('bg-red-500');
+                // Tampilkan peringatan
+                $('#sks-warning').removeClass('hidden').addClass('block');
+                // Nonaktifkan tombol Ajukan
+                $('.ajukan').addClass('opacity-50 cursor-not-allowed').attr('disabled', true);
+                // Nonaktifkan checkbox yang belum dicentang
+                $('.sks-checkbox:not(:checked)').attr('disabled', true);
+            } else {
+                if (totalSks === maxSks) {
+                    $('#progress-sks').removeClass('bg-yellow-300 bg-red-500').addClass('bg-green-500');
+                } else {
+                    $('#progress-sks').removeClass('bg-red-500 bg-green-500').addClass('bg-yellow-300');
+                }
+                // Sembunyikan peringatan
+                $('#sks-warning').removeClass('block').addClass('hidden');
+                // Aktifkan kembali tombol Ajukan
+                $('.ajukan').removeClass('opacity-50 cursor-not-allowed').attr('disabled', false);
+                // Aktifkan checkbox yang belum dicentang
+                $('.sks-checkbox').attr('disabled', false);
+            }
+        }
+        
         function markConflictingSchedules() {
             // Loop melalui setiap jadwal yang dipilih
             $('.jadwal-item[data-status="selected"]').each(function() {
@@ -280,52 +337,7 @@
             });
             
         }
-        // Fungsi untuk menandai jadwal yang bentrok
-        // function markConflictingSchedules() {
-        //     console.log("Menandai jadwal yang bentrok...");
-        //     // Reset semua kelas konflik
-        //      $('.jadwal-item').removeClass('border-red-500 bg-red-100 border-gray-500 bg-gray-200');
 
-        //     // Iterasi setiap jadwal yang dipilih untuk mendeteksi konflik
-        //     selectedJadwal.forEach(function(jadwalId) {
-        //         var jadwalItem = $(`[data-jadwal-id="${jadwalId}"]`);
-        //         var hari = jadwalItem.data('hari');
-        //         var jamMulai = jadwalItem.data('jam-mulai');
-        //         var jamSelesai = jadwalItem.data('jam-selesai');
-
-        //         console.log(`Memeriksa konflik untuk Jadwal ID: ${jadwalId}, Hari: ${hari}, Mulai: ${jamMulai}, Selesai: ${jamSelesai}`);
-
-        //         var start1 = convertTimeToMinutes(jamMulai);
-        //         var end1 = convertTimeToMinutes(jamSelesai);
-
-        //         // Cari jadwal lain yang bentrok (overlapping)
-        //         $('.jadwal-item').not(`[data-jadwal-id="${jadwalId}"]`).each(function() {
-        //             var otherHari = $(this).data('hari');
-        //             var otherJamMulai = $(this).data('jam-mulai');
-        //             var otherJamSelesai = $(this).data('jam-selesai');
-        //             var otherKodeMk = $(this).data('kode-mk');
-
-        //             // Deteksi Konflik Waktu
-        //             if (hari === otherHari) {
-        //                 var start2 = convertTimeToMinutes(otherJamMulai);
-        //                 var end2 = convertTimeToMinutes(otherJamSelesai);
-
-        //                 if (isOverlapping(start1, end1, start2, end2)) {
-        //                     var conflictingId = $(this).data('jadwal-id');
-        //                     console.log(`Jadwal ID: ${conflictingId} bentrok dengan Jadwal ID: ${jadwalId}`);
-        //                     $(this).addClass('border-red-500 bg-red-100');
-        //                 }
-        //             }
-
-        //             // Penandaan Mata Kuliah yang Sama
-        //             if (kodeMk === otherKodeMk && !selectedJadwal.includes($(this).data('jadwal-id'))) {
-        //                 var sameMkId = $(this).data('jadwal-id');
-        //                 console.log(`Jadwal ID: ${sameMkId} adalah mata kuliah yang sama dengan Jadwal ID: ${jadwalId}`);
-        //                 $(this).addClass('border-gray-500 bg-gray-200');
-        //             }
-        //         });
-        //     });
-        // }
 
         // Fungsi untuk menambahkan jadwal ke tabel
         function addJadwalToTable(jadwal) {
@@ -498,6 +510,12 @@
 
                 cell.append(jadwalDiv);
                 console.log('Jadwal berhasil ditambahkan ke dalam cell.');
+                // Jika jadwal ini dipilih, tambahkan ke selectedJadwal dan perbarui progress bar
+                if (isSelected) {
+                    selectedJadwal.push(jadwal.id_jadwal);
+                    fetchTotalSks();
+                    updateProgressBar();
+                }
             } else {
                 console.error('Row untuk timeslot tidak ditemukan:', matchedSlot);
             }
@@ -514,6 +532,10 @@
                 // Hapus elemen jadwal dari DOM
                 $(this).remove();
             });
+            fetchTotalSks();
+            updateProgressBar();
+            
+            
             // Tandai ulang konflik
             markConflictingSchedules();
         }
@@ -527,8 +549,8 @@
                 success: function(data) {
                     if (data.total_sks !== undefined) {
                         totalSks = data.total_sks;
-                        $('#total-sks').text(totalSks);
-                        $('#max-sks').text(maxSks);
+                        maxSks = data.max_sks; 
+                        updateProgressBar();
                     } else {
                         console.error('Data total_sks tidak ditemukan dalam respon.');
                     }
@@ -539,8 +561,29 @@
             });
         }
 
+
         // Fungsi untuk menangani pemilihan jadwal
         function handleSelectJadwal(jadwalId, kodeMk) {
+            // Cari jadwal berdasarkan jadwalId
+            var jadwalItem = jadwal.find(j => j.id_jadwal === jadwalId);
+            if (!jadwalItem) {
+                Swal.fire('Gagal', 'Jadwal tidak ditemukan.', 'error');
+                return;
+            }
+
+            // Hitung SKS setelah memilih jadwal ini
+            // var newTotalSks = totalSks + parseInt(jadwalItem.sks);
+            // var newTotalSks = totalSks + sksJadwal;
+            // if (newTotalSks > maxSks) {
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'SKS Terlampaui',
+            //         text: 'Anda tidak dapat memilih jadwal ini karena total SKS akan melebihi batas maksimal.',
+            //         confirmButtonText: 'OK'
+            //     });
+            //     return;
+            // }
+
             // Tampilkan konfirmasi sebelum memilih jadwal
             Swal.fire({
                 title: 'Konfirmasi Pilih Jadwal',
@@ -551,61 +594,69 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Kirim permintaan AJAX untuk mengonfirmasi pemilihan jadwal
+                    // Kirim permintaan AJAX ke server untuk memvalidasi dan menyimpan jadwal
                     $.ajax({
                         url: '/isi-irs',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ jadwal_id: jadwalId }),
-                        success: function(data) {
-                            if (data.status === 'success') {
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                const sksJadwal = response.sks_jadwal;
+                                const newTotalSks = totalSks + sksJadwal;
+
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
-                                    text: data.message,
+                                    text: response.message,
                                     confirmButtonText: 'OK'
                                 }).then(() => {
-                                    // // Update UI: tandai jadwal sebagai dipilih (hijau)
-                                    // var jadwalElement = $(`[data-jadwal-id="${jadwalId}"]`);
-                                    // jadwalElement.removeClass('border-yellow-300 bg-white')
-                                    //     .addClass('border-green-500 bg-green-400')
-                                    //     .attr('data-status', 'selected');
+                                    // Tambahkan jadwal ke daftar terpilih
+                                    selectedJadwal.push(jadwalId);
 
-                                    // // Ubah kelas jadwal lain dari mata kuliah yang sama menjadi abu-abu
-                                    // $(`.jadwal-item[data-kode-mk="${kodeMk}"]`).not(`[data-jadwal-id="${jadwalId}"]`)
-                                    //     .removeClass('border-yellow-300 bg-white')
-                                    //     .addClass('border-gray-500 bg-gray-200')
-                                    //     .attr('data-status', 'unselected');
-                                    var jadwalItem = $(`[data-jadwal-id="${jadwalId}"]`).closest('.jadwal-item');
-                                    var button = jadwalItem.find('button.pilih-jadwal');
+                                    // Update total SKS dan progress bar
+                                    totalSks += sksJadwal;
+                                    updateProgressBar();
 
-                                    // Ubah kelas dan teks tombol
+                                    // Ubah tampilan tombol
+                                    const button = $(`[data-jadwal-id="${jadwalId}"]`).find('.pilih-jadwal');
                                     button.removeClass('bg-blue-500 pilih-jadwal')
                                         .addClass('bg-red-500 batalkan-jadwal')
                                         .text('Batalkan Jadwal')
                                         .removeAttr('disabled');
 
-                                    // Tambahkan jadwalId ke selectedJadwal
-                                    selectedJadwal.push(jadwalId);
-
                                     // Tandai ulang konflik
                                     markConflictingSchedules();
 
-                                    // Perbarui total SKS dari backend
-                                    fetchTotalSks();
-
+                                    // Reload UI jika diperlukan
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire('Gagal', data.message, 'error');
+                                // Tangani pesan error sesuai jenis error
+                                if (response.error_type === 'sks_exceeded') {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'SKS Terlampaui',
+                                        text: 'Anda tidak dapat memilih jadwal ini karena total SKS akan melebihi batas maksimal.',
+                                        confirmButtonText: 'OK'
+                                    });
+                                } else if (response.error_type === 'conflict') {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Jadwal Bentrok',
+                                        text: 'Jadwal ini bentrok dengan jadwal lain yang sudah dipilih.',
+                                        confirmButtonText: 'OK'
+                                    });
+                                } else {
+                                    Swal.fire('Gagal', response.message, 'error');
+                                }
                             }
                         },
-                        error: function(error) {
-                            console.error('Error:', error);
+                        error: function(xhr) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal',
-                                text: 'Jadwal bentrok atau Anda sudah memilih kelas lain',
+                                text: xhr.responseJSON.message || 'Terjadi kesalahan.',
                                 confirmButtonText: 'OK'
                             });
                         }
@@ -653,7 +704,8 @@
 
                                 // Perbarui total SKS di sidebar jika ada
                                 // $('#total-sks').text(totalSks); // Sesuaikan dengan ID elemen yang sesuai
-
+                                fetchTotalSks();
+                                updateProgressBar();
                                 // Tandai ulang konflik
                                 markConflictingSchedules();
                             });
@@ -695,6 +747,7 @@
          
         // Menangani checkbox yang sudah tercentang saat halaman dimuat
         $('.course-checkbox:checked').each(function() {
+            // auto checked yg sesuai semester
             var checkbox = $(this);
             var kodeMk = checkbox.val();
             var isChecked = checkbox.is(':checked');
@@ -724,13 +777,8 @@
                         });
 
                         markConflictingSchedules();
-                        // Optional: Tampilkan SweetAlert sukses (bisa dihapus jika tidak diinginkan)
-                        // Swal.fire({
-                        //     icon: 'success',
-                        //     title: 'Berhasil',
-                        //     text: 'Jadwal mata kuliah berhasil ditambahkan ke timetable.',
-                        //     confirmButtonText: 'OK'
-                        // });
+                        fetchTotalSks();
+                        updateProgressBar();
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
@@ -764,6 +812,8 @@
                                     selectedJadwal = selectedJadwal.filter(id => id !== jadwalId);
                                 });
                                 markConflictingSchedules();
+                                fetchTotalSks();
+                                updateProgressBar();
                         } else {
                             console.log('Tidak ada perubahan pada IRS.');
                         }
@@ -809,6 +859,7 @@
                         });
                         markConflictingSchedules();
                         fetchTotalSks();
+                        updateProgressBar();
 
                         // Tampilkan SweetAlert sukses
                         Swal.fire({
@@ -829,30 +880,6 @@
                         checkbox.prop('checked', false);
                     }
                 });
-
-                // Simpan mata kuliah yang dipilih ke server
-                $.ajax({
-                    url: '/simpan-mk',
-                    method: 'POST',
-                    data: {
-                        nim: nim,
-                        mk: [kodeMk]
-                    },
-                    success: function(response) {
-                        console.log('Mata kuliah berhasil disimpan');
-                        // Optional: Anda dapat menambahkan notifikasi tambahan di sini
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Terjadi kesalahan saat menyimpan mata kuliah.',
-                            confirmButtonText: 'OK'
-                        });
-                        checkbox.prop('checked', false);
-                    }
-                });
             } else {
                 // Hapus jadwal mata kuliah dari tabel
                 removeJadwalFromTable(kodeMk);
@@ -868,6 +895,7 @@
                         if (data.status === 'success') {
                             console.log('Mata kuliah dihapus dari IRS.');
                             fetchTotalSks();
+                            updateProgressBar();
                         } else {
                             console.log('Tidak ada perubahan pada IRS.');
                         }

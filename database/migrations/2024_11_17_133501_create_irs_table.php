@@ -17,11 +17,11 @@ return new class extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade'); 
             $table->string('kode_mk'); 
             $table->foreign('kode_mk')->references('kode_mk')->on('matakuliah')->onDelete('cascade');
-            $table->string('id_jadwal')->nullable();
+            $table->string('id_jadwal');
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
             $table->unsignedBigInteger('id_TA');
             $table->foreign('id_TA')->references('id')->on('semester_aktif')->onDelete('cascade');
-            $table->enum('status', ['Sudah Disetujui', 'Belum Disetujui'])->default('Belum Disetujui');
+            $table->enum('status', ['Sudah Disetujui', 'Belum Disetujui', 'Pembatalan'])->default('Belum Disetujui');
             $table->enum('status_mata_kuliah', ['BARU', 'PERBAIKAN', 'ULANG'])->default('BARU');            
             $table->timestamps();
             $table->unique(['nim', 'kode_mk', 'id_TA']);

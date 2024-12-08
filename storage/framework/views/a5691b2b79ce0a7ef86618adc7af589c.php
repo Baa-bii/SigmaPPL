@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard Mahasiswa</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -119,12 +120,12 @@
                             <div class="flex items-center justify-center h-full gap-8">
                                 <div class="text-center">
                                     <p class="text-sm">IPK</p>
-                                    <p class="text-xl font-bold mt-1">4.0</p>
+                                    <p class="text-xl font-bold mt-1"><?php echo e($ipk); ?></p>
                                 </div>
                                 <div class="h-12 border-l border-gray-400"></div>
                                 <div class="text-center">
                                     <p class="text-sm">SKS</p>
-                                    <p class="text-xl font-bold mt-1">84</p>
+                                    <p class="text-xl font-bold mt-1"><?php echo e($totalSKS); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -182,4 +183,4 @@
 <?php endif; ?>
     </div>
 </html>
-<?php /**PATH /var/www/sigmappl/resources/views/content/mhs/dashboard.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\PPL\SiGMA\resources\views/content/mhs/dashboard.blade.php ENDPATH**/ ?>

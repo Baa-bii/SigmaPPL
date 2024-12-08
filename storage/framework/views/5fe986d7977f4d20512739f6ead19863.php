@@ -332,6 +332,7 @@
     const dataPenyetujuanIRS = [
         statusCounts['Belum Disetujui'],
         statusCounts['Sudah Disetujui'],
+        statusCounts['Pembatalan'],
     ];
 
     // Render chart untuk Status Registrasi Mahasiswa
@@ -356,7 +357,7 @@
     if (document.getElementById("pie-chart-2")) {
         const chart2 = new ApexCharts(
             document.getElementById("pie-chart-2"), 
-            getChartOptions(["Belum Disetujui", "Sudah Disetujui"], dataPenyetujuanIRS)
+            getChartOptions(["Belum Disetujui", "Sudah Disetujui", "Pembatalan"], dataPenyetujuanIRS)
         );
         chart2.render();
     }

@@ -69,11 +69,6 @@
                             Prodi
                         </p>
                         </th>
-                        <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50" data-sort="prodi">
-                            <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">
-                                Status
-                            </p>
-                            </th>
                         <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                         <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">Action</p>
                         </th>
@@ -90,9 +85,6 @@
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <p class="text-sm text-blue-gray-900">{{ $ruang->program_studi->nama_prodi}}</p>
-                            </td>
-                            <td class="p-4 border-b border-blue-gray-50">
-                                <p class="text-sm text-blue-gray-900">{{ $ruang->status}}</p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <a href="{{ route('akademik.ruang.edit', $ruang->id) }}">
@@ -120,7 +112,9 @@
                 </a>
                 <form action="{{ route('akademik.ruang.ajukan-all') }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    @method('PATCH')
+                    <button type="submit" name="status" value="menunggu" 
+                            class="w-auto h-auto p-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Ajukan
                     </button>
                 </form>

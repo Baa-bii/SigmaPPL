@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Jadwal</title>
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap" rel="stylesheet">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <style>
@@ -72,10 +73,17 @@
 
         <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                <?php if(session('success')): ?>
+                    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+                        <?php echo e(session('success')); ?>
+
+                    </div>
+                <?php endif; ?>
                 <div class="mb-6 pl-4">
                     <h2 class="text-2xl font-bold">Daftar Jadwal</h2>
                     <p>Tahun Ajaran Aktif: <?php echo e($tahunAjaran); ?></p>
                     <p>Program Studi: <?php echo e($programStudi->nama_prodi); ?></p>
+                    <p>Status Jadwal: <?php echo e($statusJadwal); ?></p>
                 </div>
                 <div class="flex justify-between items-center mb-6 pl-4">
                     
@@ -259,7 +267,9 @@
                                         <!-- Kolom untuk tombol -->
                                         <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <div class="flex items-center space-x-4">
-                                                <button type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
+                                                
+                                                <button type="button'"
+                                                    class="py-2 px-3 flex items-center text-sm font-medium text-center text-black bg-yellow-400 rounded-lg border-yellow-500 hover:bg-yellow-600 hover:text-white border">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="false">
                                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                                         <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -273,12 +283,39 @@
                                                     </svg>
                                                     Lihat
                                                 </button>
-                                                <button type="button" data-modal-target="delete-modal" data-modal-toggle="delete-modal" class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                    </svg>
-                                                    Hapus
-                                                </button>
+                                                <form id="delete-form-<?php echo e($item->id_jadwal); ?>" action="<?php echo e(route('kaprodi.jadwal.destroy', $item->id_jadwal)); ?>" method="POST">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="button" onclick="openDialog('custom-confirm-<?php echo e($item->id_jadwal); ?>')" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded-lg text-sm item-center font-medium px-3 py-2.5 text-center ">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        Hapus
+                                                    </button>
+                                                    
+                                                </form>
+                                                <div id="custom-confirm-<?php echo e($item->id_jadwal); ?>" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                                    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+                                                        <p class="mb-4">Apakah Anda yakin ingin menghapus jadwal <strong><?php echo e($item->id_jadwal); ?></strong>?</p>
+                                                        <div class="flex justify-end gap-4">
+                                                            <button onclick="closeDialog('custom-confirm-<?php echo e($item->id_jadwal); ?>')" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded">Batal</button>
+                                                            <button onclick="submitForm('delete-form-<?php echo e($item->id_jadwal); ?>')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <script>
+                                                    function openDialog(dialogId) {
+                                                        document.getElementById(dialogId).classList.remove('hidden');
+                                                    }
+
+                                                    function closeDialog(dialogId) {
+                                                        document.getElementById(dialogId).classList.add('hidden');
+                                                    }
+
+                                                    function submitForm(formId) {
+                                                        document.getElementById(formId).submit();
+                                                    }
+                                                </script>
                                             </div>
                                         </td>
                                     </tr>
@@ -295,7 +332,7 @@
                 </div>
                 <div id="timetable" class="hidden overflow-x-auto pl-4">
                     <table class="table-auto w-full border-collapse border border-green-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th class="px-4 py-2 border">Waktu</th>
                                 <th class="px-4 py-2 border">Senin</th>
@@ -354,8 +391,6 @@
                 });
 
                 </script>
-                 <!-- Ajukan -->
-                 <!-- Ajukan -->
                 <!-- Ajukan -->
                 <div id="ajukan-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center backdrop-blur-lg">
                     <div class="relative w-full h-auto max-w-md max-h-full">
@@ -366,9 +401,13 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Ajukan Jadwal Ini?</h3>
-                                <button id="confirm-button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                <button id="confirm-button" onclick="document.getElementById('ajukan-form').submit()" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                     Iya, ajukan
                                 </button>
+                                <form id="ajukan-form" action="<?php echo e(route('kaprodi.jadwal.ajukan')); ?>" method="POST" class="hidden">
+                                    <?php echo csrf_field(); ?>
+                                </form>
+                                
                                 <button data-modal-toggle="ajukan-modal" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     Kembali
                                 </button>
@@ -376,8 +415,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 
                 <script>
                     document.querySelectorAll('[data-modal-toggle]').forEach((button) => {
@@ -407,9 +444,6 @@
                         });
                     });
                 </script>
-                
-                
-             
 
             </div>
         </section>

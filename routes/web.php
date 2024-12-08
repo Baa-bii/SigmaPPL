@@ -75,9 +75,13 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     Route::post('/isi-irs', [BuatIRSController::class, 'isiIrs'])->name('isi-irs'); 
     // Route::post('/update-irs', [BuatIRSController::class, 'isiIrs'])->name('isi.irs');
     Route::get('/mhs-irs-temp', [BuatIRSController::class, 'irsTemp'])->name('mhs.akademik.irsTemp');
+    // Route::post('/irs/delete/{id}', [BuatIrsController::class, 'hapusJadwal'])->name('irs.delete');
+    // Route::post('/irs/delete/temp', [BuatIrsController::class, 'hapusJadwal'])->name('irs.delete');
     Route::get('/sks/{nim}', [DashboardMhsController::class, 'hitungSks']);
-    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->middleware('auth');
+    Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->name('getTotalSks');
     Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+    Route::post('/irs/cancel', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+
 
 
     // Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');
@@ -103,7 +107,9 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
         return Dosen::select('nip_dosen', 'nama_dosen')->get();
     });
     Route::delete('/kaprodi/mata_kuliah/{kode_mk}', [MataKuliahController::class, 'destroy'])->name('kaprodi.mata_kuliah.destroy');
-
+    Route::delete('/kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'destroy'])->name('kaprodi.jadwal.destroy');
+    Route::post('kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
+    Route::post('/jadwal/ajukan', [JadwalController::class, 'ajukan'])->name('jadwal.ajukan');
 
     // Route::post('/kaprodi/jadwal/store', [JadwalController::class, 'store'])->name('kaprodi.jadwal.store');
 
@@ -152,7 +158,7 @@ Route::group(['middleware'=>'auth:akademik'], function(){
             'destroy' => 'akademik.ruang.destroy',
         ],
     ])->except(['show']);
-    Route::post('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
+    Route::patch('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
