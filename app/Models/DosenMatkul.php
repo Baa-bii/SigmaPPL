@@ -19,6 +19,7 @@ class DosenMatkul extends Model
     }
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'nip_dosen');
+        return $this->belongsTo(Dosen::class, 'nip_dosen', 'nip_dosen');
     }
+
 }

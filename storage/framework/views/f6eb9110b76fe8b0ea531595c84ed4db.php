@@ -8,4 +8,4 @@
       &copy; 2024 <a href="#" class="hover:underline" target="_blank">SiGMARizz</a>. Made with luv
   </p>
 </footer>
-<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\resources\views/components/footerdosen.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\user\Downloads\sigmaPPL\resources\views/components/footerdosen.blade.php ENDPATH**/ ?>

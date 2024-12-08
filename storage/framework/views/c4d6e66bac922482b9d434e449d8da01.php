@@ -161,4 +161,4 @@
         </div>
     </div>
 </div>
-<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/trace.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\user\Downloads\sigmaPPL\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/trace.blade.php ENDPATH**/ ?>
