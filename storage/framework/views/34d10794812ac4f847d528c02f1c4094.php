@@ -185,8 +185,5 @@
     }
 
 </script>
-
-
-
 </html>
 <?php /**PATH C:\PPL\SiGMA\resources\views/content/mhs/registrasi.blade.php ENDPATH**/ ?>

@@ -17,22 +17,42 @@ class DashboardDekanController extends Controller
      * Menampilkan halaman dashboard dengan statistik jadwal dan ruang
      */
     public function index(): View
-    {
-        $jadwal = Jadwal::with([
-            'matakuliah:kode_mk,nama_mk',
-            'waktu:id,jam_mulai',
-            'ruang:id,nama'
-        ])->paginate(10);
-        
-        $ruang = RuangKelas::select('id', 'nama')->get();
+{
+    // Query jadwal dengan status 'diajukan' dan semester ganjil
+    $jadwal = Jadwal::with(['matakuliah', 'waktu', 'ruang'])
+        ->where('status', 'diajukan') 
+        ->whereHas('matakuliah', function ($query) {
+            $query->whereRaw('MOD(CAST(semester AS UNSIGNED), 2) = 1'); // Filter semester ganjil
+        })
+        ->paginate(10);
 
-        $belum_disetujui = Jadwal::where('status', 'menunggu')->count();
-        $sudah_disetujui = Jadwal::where('status', 'disetujui')->count();
-        $ditolak = Jadwal::where('status', 'ditolak')->count();
+    // Data ruang kelas
+    $ruang = RuangKelas::select('id', 'nama')->get();
 
-        return view('content.dekan.jadwal', compact('ruang', 'jadwal', 'belum_disetujui', 'sudah_disetujui', 'ditolak'));
-    }
+    // Hitung jumlah status jadwal dengan filter status 'diajukan' dan semester ganjil
+    $belum_disetujui = Jadwal::where('status', 'diajukan')
+        ->whereHas('matakuliah', function ($query) {
+            $query->whereRaw('MOD(CAST(semester AS UNSIGNED), 2) = 1'); // Filter semester ganjil
+        })
+        ->count();
 
+    // Hitung jumlah status lainnya jika diperlukan
+    $sudah_disetujui = Jadwal::where('status', 'disetujui')
+        ->whereHas('matakuliah', function ($query) {
+            $query->whereRaw('MOD(CAST(semester AS UNSIGNED), 2) = 1'); // Filter semester ganjil
+        })
+        ->count();
+
+    $ditolak = Jadwal::where('status', 'ditolak')
+        ->whereHas('matakuliah', function ($query) {
+            $query->whereRaw('MOD(CAST(semester AS UNSIGNED), 2) = 1'); // Filter semester ganjil
+        })
+        ->count();
+
+    // Kirim data ke view
+    return view('content.dekan.jadwal', compact('jadwal', 'ruang', 'belum_disetujui', 'sudah_disetujui', 'ditolak'));
+}
+ 
     /**
      * Menampilkan daftar ruang kelas
      */
@@ -70,10 +90,16 @@ class DashboardDekanController extends Controller
      * Menampilkan jadwal yang membutuhkan verifikasi
      */
     public function verifikasijadwal()
-    {
-        $jadwal = Jadwal::with(['ruang', 'waktu'])->where('status', 'menunggu')->paginate(10);
-        return view('content.dekan.verifikasijadwal', compact('jadwal'));
-    }
+{
+    $jadwal = Jadwal::with(['ruang', 'waktu', 'matakuliah'])
+        ->where('status', 'diajukan') // Filter hanya jadwal yang statusnya diajukan
+        ->whereHas('matakuliah', function ($query) {
+            $query->whereRaw('MOD(CAST(semester AS UNSIGNED), 2) = 1'); // Filter semester ganjil
+        })
+        ->paginate(10);
+
+    return view('content.dekan.verifikasijadwal', compact('jadwal'));
+}
 
     /**
      * Menampilkan ruang yang terkait dengan jadwal yang menunggu verifikasi
@@ -82,12 +108,6 @@ class DashboardDekanController extends Controller
     {
         // Ambil data ruang yang memiliki status menunggu
         $ruang = RuangKelas::where('status', 'menunggu')->paginate(10);
-
-        // Cek apakah ada data
-        if ($ruang->isEmpty()) {
-            return redirect()->back()->with('error', 'Tidak ada ruang menunggu verifikasi.');
-        }
-
         return view('content.dekan.verifikasiruang', compact('ruang'));
     }
 
@@ -96,8 +116,19 @@ class DashboardDekanController extends Controller
      */
     public function dashboard(): View
     {
-        $jadwal = Jadwal::with(['matakuliah', 'waktu', 'ruang'])->paginate(10);
-        $ruang = RuangKelas::with(['jadwal.waktu'])->paginate(10);
+        // Query jadwal hanya untuk semester ganjil
+        $jadwal = Jadwal::with(['matakuliah', 'waktu', 'ruang', 'semesterAktif'])
+            ->whereHas('semesterAktif', function ($query) {
+                $query->whereRaw('MOD(semester, 2) = 1'); // Filter semester ganjil
+            })
+            ->paginate(10);
+
+        // Query ruang kelas beserta jadwal terkait
+        $ruang = RuangKelas::with(['jadwal' => function ($query) {
+            $query->whereHas('semesterAktif', function ($subQuery) {
+                $subQuery->whereRaw('MOD(semester, 2) = 1'); // Filter semester ganjil untuk jadwal di ruang
+            });
+        }])->paginate(10);
 
         return view('content.dekan.dashboard', compact('jadwal', 'ruang'));
     }

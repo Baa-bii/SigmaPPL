@@ -186,4 +186,4 @@
 }
 
 </script>
-<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\resources\views/content/mhs/irsSementara.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\PPL\SiGMA\resources\views/content/mhs/irsSementara.blade.php ENDPATH**/ ?>

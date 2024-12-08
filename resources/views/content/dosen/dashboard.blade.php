@@ -28,34 +28,46 @@
       <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Dashboard</h1>
       
       <!-- Konten 1 -->
-      <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-56 mb-8">
-            <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28 flex items-center">
-                 <!-- Foto Profil -->
-                <div class="absolute -bottom-16 left-12">
-                    <img 
-                        class="w-36 h-36 rounded-full" 
-                        src="{{ asset('img/USERFIX.jpg') }}" 
-                        alt="photo profile"
-                    />
-                </div>
-                <!-- Nama Dosen -->
-                <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
+      <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto md:h-auto lg:h-auto mb-8">
+        <!-- Header dengan Foto Profil -->
+        <div class="relative bg-gray-800 rounded-t-lg border-gray-300 dark:border-gray-600 h-auto md:h-32 lg:h-28 pb-2 flex flex-col md:flex-col lg:flex-col  items-center md:items-start lg:items-start">
+            <!-- Foto Profil -->
+            <div class="w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 mt-4 md:absolute md:top-8 md:left-10 lg:top-4 lg:left-12">
+                <img 
+                    class="w-full h-full object-cover" 
+                    src="{{ asset('img/USERFIX.jpg') }}" 
+                    alt="photo profile"
+                />
+            </div>
+            <!-- Nama Dosen -->
+            <div class="text-center md:text-left lg:text-left mt-4 md:mt-16 lg:mt-14 md:ml-56 lg:ml-64 flex-1">
+                <h1 class="text-l md:text-l lg:text-xl font-semibold text-yellow-400 dark:text-white">
                     {{ $dosen->nama_dosen ?? 'Nama tidak ditemukan' }}
                 </h1>
             </div>
-            <!-- Konten Dua Kolom -->
-            <div class="flex flex-row justify-between mt-6">
-                <!-- Kolom Kiri -->
-                <div class="text-left pl-64">
-                    <p class="text-l text-black dark:text-white mb-4">
-                        NIP : {{ $dosen->nip_dosen ?? 'NIP tidak ditemukan' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->email }}
-                    </p>
-                    <p class="text-l text-black dark:text-white mb-4">
-                        Total Mahasiswa Perwalian : {{ $totalMahasiswa }}
-                    </p>
-                </div>
+        </div>
+
+        <!-- Konten Dua Kolom -->
+        <div class="relative flex flex-col justify-between items-center lg:flex-row md:items-start mt-6 md:mt-2 p-4 md:px-56 lg:px-64">
+            <!-- Kolom Kiri -->
+            <div class="text-center md:text-left mb-4 md:mb-4 lg:mr-10 flex-1">
+                <p class="text-base text-black dark:text-white mb-4 md:mb-4">
+                    <strong>NIP :</strong> {{ $dosen->nip_dosen ?? 'NIP tidak ditemukan' }}
+                </p>
+                <p class="text-base text-black dark:text-white">
+                    <strong>Email :</strong> {{ $user->email ?? 'Email tidak ditemukan' }}
+                </p>
+            </div>
+
+            <!-- Kolom Kanan -->
+            <div class="text-center md:text-left flex-1">
+                <p class="text-base text-black dark:text-white">
+                    <strong>Total Mahasiswa Perwalian :</strong> {{ $totalMahasiswa }}
+                </p>
             </div>
         </div>
+    </div>
+
       
       <!-- Konten 2 -->
       @if($statusCounts)

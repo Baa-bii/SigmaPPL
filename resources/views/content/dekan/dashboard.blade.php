@@ -66,17 +66,17 @@
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index }}</td> <!-- Nomor urut yang memperhitungkan pagination -->
                             <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->matakuliah->nama_mk ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-left">{{ $item->waktu->jam_mulai }} - {{ $item->waktu->jam_selesai }}</td>
-                            <td class="p-4 whitespace-nowrap text-sm">{{ $item->matakuliah->dosenmatkul->dosen->nama_dosen ?? 'N/A' }}</td>
-                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm">{{ $item->matakuliah->dosenmatkul->first()->dosen->nama_dosen ?? 'Belum tersedia' }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->semesterAktif->semester ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->nama ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->ruang->gedung ?? 'N/A' }}</td> 
-                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->id_TA }}</td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center">{{ $item->semesterAktif->tahun_akademik ?? 'N/A' }}</td>
                             <td class="p-4 whitespace-nowrap">
                                 <span 
                                     class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full
                                     {{ $item->status === 'disetujui' ? 'bg-green-200 text-green-600' : '' }}
                                     {{ $item->status === 'ditolak' ? 'bg-red-200 text-red-600' : '' }}
-                                    {{ $item->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : '' }} ">
+                                    {{ $item->status === 'diajukan' ? 'bg-yellow-200 text-yellow-600' : '' }} ">
                                     {{ $item->status }}
                                 </span>
                             </td>
@@ -108,11 +108,11 @@
             @foreach($ruang as $index => $data)
                 <tr class="bg-white text-black dark:bg-gray-800">
                     <td class="p-4 whitespace-nowrap text-sm text-center">{{ $index + 1 }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->jadwal->first()?->kelas ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->jadwal->first()?->kelas ?? 'X' }}</td>
                     <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->gedung ?? 'N/A' }}</td>
                     <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->nama ?? 'N/A' }}</td>
                     <td class="p-4 whitespace-nowrap text-sm text-center">{{ $data->kapasitas ?? 'N/A' }}</td>
-                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->jadwal->first()?->waktu?->jam_mulai ?? 'N/A' }} - {{ $data->jadwal->first()?->waktu?->jam_selesai ?? 'N/A' }}</td>
+                    <td class="p-4 whitespace-nowrap text-sm text-left">{{ $data->jadwal->first()?->waktu?->jam_mulai ?? '00:00:00' }} - {{ $data->jadwal->first()?->waktu?->jam_selesai ?? '00:00:00' }}</td>
                     <td class="p-4 whitespace-nowrap">
                         <span 
                             class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full

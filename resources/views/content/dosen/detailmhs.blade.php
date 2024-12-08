@@ -35,46 +35,50 @@
         </div>
 
         <!-- Konten 1 -->
-        <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-64 mb-8">
-            <div class="relative bg-gray-800 rounded-lg border-gray-300 dark:border-gray-600 h-28 flex items-center">
-                 <!-- Foto Profil -->
-                <div class="absolute -bottom-16 left-12">
+        <div class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto md:h-auto lg:h-64 mb-8">
+            <!-- Header -->
+            <div class="relative bg-gray-800 rounded-t-lg border-gray-300 dark:border-gray-600 h-auto md:h-28 flex flex-col md:flex-row items-center md:items-start">
+                <!-- Foto Profil -->
+                <div class="w-24 h-24 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 mt-4 md:absolute md:-bottom-16 md:left-12">
                     <img 
-                        class="w-36 h-36 rounded-full" 
+                        class="w-full h-full object-cover" 
                         src="{{ asset('img/USERFIX.jpg') }}" 
                         alt="photo profile"
                     />
                 </div>
                 <!-- Nama Mahasiswa -->
-                <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
-                    {{ $mahasiswa->nama_mhs ?? 'Nama tidak ditemukan' }}
-                </h1>
+                <div class="text-center md:text-left mt-4 mb-4 md:mt-14 md:pl-64 w-full">
+                    <h1 class="text-l md:text-xl font-semibold text-yellow-400 dark:text-white">
+                        {{ $mahasiswa->nama_mhs ?? 'Nama tidak ditemukan' }}
+                    </h1>
+                </div>
             </div>
+
             <!-- Konten Dua Kolom -->
-            <div class="flex flex-row justify-between mt-4">
+            <div class="relative flex flex-col md:flex-row lg:flex-row justify-between mt-6 px-4 md:px-64">
                 <!-- Kolom Kiri -->
-                <div class="w-1/2 text-left pl-64">
-                    <p class="text-l text-black dark:text-white mb-4">
+                <div class="w-full md:w-1/2 text-center md:text-left md:mr-32 md:mb-0">
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
                         <strong>NIM :</strong> {{ $mahasiswa->nim }}
                     </p>
-                    <p class="text-l text-black dark:text-white mb-4">
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
                         <strong>Semester :</strong> {{ $semester }}
                     </p>
-                    <p class="text-l text-black dark:text-white mb-4">
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
                         <strong>Tahun Ajaran :</strong> {{ $tahunAkademik }}
                     </p>
                 </div>
 
                 <!-- Kolom Kanan -->
-                <div class="w-1/2 text-left pl-24">
-                    <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPS / SKSs :</strong> {{ $ips }} / {{ $ipsData['sks'] }}
+                <div class="w-full md:w-1/2 text-center md:text-left">
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
+                        <strong>IPs/SKSs : </strong>{{ $ips }}/{{ $ipsData['sks'] }}
                     </p>
-                    <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPK / SKSk :</strong> {{ $ipk }} / {{ $ipkData['sks'] }}
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
+                        <strong>IPk/SKSk : </strong>{{ $ipk }}/{{ $ipkData['sks'] }}
                     </p>
-                    <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Max Beban SKS :</strong> {{ $maxBebanSKSData['max_beban_sks'] }}
+                    <p class="text-sm md:text-l text-black dark:text-white mb-4">
+                        <strong>Max Beban SKS : </strong>{{ $maxBebanSKSData['max_beban_sks'] }}
                     </p>
                 </div>
             </div>
