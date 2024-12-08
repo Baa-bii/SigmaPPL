@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Detail Mahasiswa</title>
-    <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    <link rel="icon" href="<?php echo e(asset('img/fix.png')); ?>" type="image/png">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -18,15 +18,51 @@
   <div class="antialiased bg-gray-50 dark:bg-gray-900">
 
     <!--Navbar-->    
-    <x-header></x-header>
+    <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('header'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $attributes = $__attributesOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__attributesOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalfd1f218809a441e923395fcbf03e4272)): ?>
+<?php $component = $__componentOriginalfd1f218809a441e923395fcbf03e4272; ?>
+<?php unset($__componentOriginalfd1f218809a441e923395fcbf03e4272); ?>
+<?php endif; ?>
 
     <!-- Sidebar -->
-    <x-sidebar></x-sidebar>
+    <?php if (isset($component)) { $__componentOriginal2880b66d47486b4bfeaf519598a469d6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal2880b66d47486b4bfeaf519598a469d6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $attributes = $__attributesOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__attributesOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal2880b66d47486b4bfeaf519598a469d6)): ?>
+<?php $component = $__componentOriginal2880b66d47486b4bfeaf519598a469d6; ?>
+<?php unset($__componentOriginal2880b66d47486b4bfeaf519598a469d6); ?>
+<?php endif; ?>
 
     <!-- Main Content -->
     <main class="p-16 md:ml-64 h-auto pt-20">
         <div class="mt-4 mb-4 flex items-center space-x-4">
-            <a href="{{ route('dosen.perwalian.index') }}" class="text-xl text-black hover:text-blue-500 font-semibold">
+            <a href="<?php echo e(route('dosen.perwalian.index')); ?>" class="text-xl text-black hover:text-blue-500 font-semibold">
                 Perwalian >
             </a>
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
@@ -41,13 +77,14 @@
                 <div class="absolute -bottom-16 left-12">
                     <img 
                         class="w-36 h-36 rounded-full" 
-                        src="{{ asset('img/USERFIX.jpg') }}" 
+                        src="<?php echo e(asset('img/USERFIX.jpg')); ?>" 
                         alt="photo profile"
                     />
                 </div>
                 <!-- Nama Mahasiswa -->
                 <h1 class="text-xl font-semibold text-yellow-400 dark:text-white text-center mt-8 pl-64">
-                    {{ $mahasiswa->nama_mhs ?? 'Nama tidak ditemukan' }}
+                    <?php echo e($mahasiswa->nama_mhs ?? 'Nama tidak ditemukan'); ?>
+
                 </h1>
             </div>
             <!-- Konten Dua Kolom -->
@@ -55,26 +92,32 @@
                 <!-- Kolom Kiri -->
                 <div class="w-1/2 text-left pl-64">
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>NIM :</strong> {{ $mahasiswa->nim }}
+                        <strong>NIM :</strong> <?php echo e($mahasiswa->nim); ?>
+
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Semester :</strong> {{ $semester }}
+                        <strong>Semester :</strong> <?php echo e($semester); ?>
+
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Tahun Ajaran :</strong> {{ $tahunAkademik }}
+                        <strong>Tahun Ajaran :</strong> <?php echo e($tahunAkademik); ?>
+
                     </p>
                 </div>
 
                 <!-- Kolom Kanan -->
                 <div class="w-1/2 text-left pl-24">
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPS / SKSs :</strong> {{ $ips }} / {{ $ipsData['sks'] }}
+                        <strong>IPS / SKSs :</strong> <?php echo e($ips); ?> / <?php echo e($ipsData['sks']); ?>
+
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>IPK / SKSk :</strong> {{ $ipk }} / {{ $ipkData['sks'] }}
+                        <strong>IPK / SKSk :</strong> <?php echo e($ipk); ?> / <?php echo e($ipkData['sks']); ?>
+
                     </p>
                     <p class="text-l text-black dark:text-white mb-4">
-                        <strong>Max Beban SKS :</strong> {{ $maxBebanSKSData['max_beban_sks'] }}
+                        <strong>Max Beban SKS :</strong> <?php echo e($maxBebanSKSData['max_beban_sks']); ?>
+
                     </p>
                 </div>
             </div>
@@ -99,24 +142,24 @@
                 <!-- Accordion IRS content here -->
                 <div id="accordion-irs">
                     <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
-                        @foreach ($semesterAktifData as $index => $semester)
-                            @php
+                        <?php $__currentLoopData = $semesterAktifData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $semester): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
                                 // Periksa apakah semester ini sudah memiliki IRS
                                 $hasIRSForSemester = App\Models\IRS::where('id_TA', $semester->id)->exists();
                                 // Ambil status IRS (misal: Disetujui, Belum Disetujui, dll)
                                 $statusIRS = $hasIRSForSemester ? App\Models\IRS::where('id_TA', $semester->id)->first()->status : null;
-                            @endphp
+                            ?>
 
-                            @if (!$hasIRSForSemester)
+                            <?php if(!$hasIRSForSemester): ?>
                                 <!-- Jika belum ada IRS, jangan tampilkan accordion untuk semester ini -->
-                                @continue
-                            @endif
+                                <?php continue; ?>
+                            <?php endif; ?>
                             
-                            <h2 id="accordion-flush-heading-{{ $semester->id }}" class="pb-4">
-                                <button type="button" class="flex items-center justify-between bg-gray-100 rounded-lg border-gray-300 w-full pl-3 pr-3 py-3 font-medium rtl:text-right text-black border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-{{ $semester->id }}" aria-expanded="false" aria-controls="accordion-flush-body-{{ $semester->id }}">
+                            <h2 id="accordion-flush-heading-<?php echo e($semester->id); ?>" class="pb-4">
+                                <button type="button" class="flex items-center justify-between bg-gray-100 rounded-lg border-gray-300 w-full pl-3 pr-3 py-3 font-medium rtl:text-right text-black border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-<?php echo e($semester->id); ?>" aria-expanded="false" aria-controls="accordion-flush-body-<?php echo e($semester->id); ?>">
                                     <div class="flex flex-col items-start">
-                                        <span>Semester {{ $semester->semester }} | Tahun Ajaran {{ $semester->tahun_akademik }}</span>
-                                        <span class="text-sm text-gray-500 mt-2">Jumlah SKS {{ $semester->jumlah_sks ?? 'N/A' }}</span>
+                                        <span>Semester <?php echo e($semester->semester); ?> | Tahun Ajaran <?php echo e($semester->tahun_akademik); ?></span>
+                                        <span class="text-sm text-gray-500 mt-2">Jumlah SKS <?php echo e($semester->jumlah_sks ?? 'N/A'); ?></span>
                                     </div>
                                     <!-- Ikon defaultnya mengarah ke bawah, menggunakan rotate-0 -->
                                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -125,12 +168,12 @@
                                 </button>
                             </h2>
                            
-                            <div id="accordion-flush-body-{{ $semester->id }}" class="hidden" aria-labelledby="accordion-flush-heading-{{ $semester->id }}">  
+                            <div id="accordion-flush-body-<?php echo e($semester->id); ?>" class="hidden" aria-labelledby="accordion-flush-heading-<?php echo e($semester->id); ?>">  
                                 <!-- Table -->
                                 <div class="relative overflow-x-auto rounded-lg border border-gray-300 shadow-md mb-8 sm:rounded-lg">
                                     <table class="w-full text-sm text-left roundertl:text-right text-gray-500 dark:text-gray-400">
                                         <caption class="p-5 text-center text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                                            {{ $semester->statusIRS }} <!-- Menampilkan status IRS -->
+                                            <?php echo e($semester->statusIRS); ?> <!-- Menampilkan status IRS -->
                                         </caption>
                                         <thead class="text-xs text-yellow-400 uppercase rounded-lg border border-gray-300 bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
@@ -161,34 +204,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($semester->irsData as $index => $ir)
+                                            <?php $__currentLoopData = $semester->irsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $ir): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <!-- Baris Utama -->
                                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                     <th scope="row" class="px-4 py-4 border-r font-medium text-gray-900 whitespace-nowrap dark:text-white" rowspan="2">
-                                                        {{ $index + 1 }}
+                                                        <?php echo e($index + 1); ?>
+
                                                     </th>
-                                                    <td class="px-4 py-4 border-r w-4">{{ $ir->matakuliah->kode_mk }}</td>
-                                                    <td class="px-6 py-4 border-r">{{ $ir->matakuliah->nama_mk }}</td>
-                                                    <td class="px-4 py-4 border-r text-center align-middle">{{ $ir->jadwal->kelas }}</td>
-                                                    <td class="px-4 py-4 border-r text-center align-middle">{{ $ir->matakuliah->sks }}</td>
-                                                    <td class="px-4 py-4 border-r text-center align-middle">{{ $ir->jadwal->ruang->gedung ?? 'N/A' }}{{ $ir->jadwal->ruang->nama ?? 'N/A' }}</td>
-                                                    <td class="px-4 py-4 border-r text-center align-middle">{{ $ir->status_mata_kuliah }}</td>
+                                                    <td class="px-4 py-4 border-r w-4"><?php echo e($ir->matakuliah->kode_mk); ?></td>
+                                                    <td class="px-6 py-4 border-r"><?php echo e($ir->matakuliah->nama_mk); ?></td>
+                                                    <td class="px-4 py-4 border-r text-center align-middle"><?php echo e($ir->jadwal->kelas); ?></td>
+                                                    <td class="px-4 py-4 border-r text-center align-middle"><?php echo e($ir->matakuliah->sks); ?></td>
+                                                    <td class="px-4 py-4 border-r text-center align-middle"><?php echo e($ir->jadwal->ruang->gedung ?? 'N/A'); ?><?php echo e($ir->jadwal->ruang->nama ?? 'N/A'); ?></td>
+                                                    <td class="px-4 py-4 border-r text-center align-middle"><?php echo e($ir->status_mata_kuliah); ?></td>
                                                     <td class="px-6 py-4">
-                                                        @if ($ir->matakuliah->dosen->isNotEmpty())
-                                                            @foreach ($ir->matakuliah->dosen as $dosen)
-                                                                {{ $dosen->nama_dosen }}<br>
-                                                            @endforeach
-                                                        @else
+                                                        <?php if($ir->matakuliah->dosen->isNotEmpty()): ?>
+                                                            <?php $__currentLoopData = $ir->matakuliah->dosen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dosen): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <?php echo e($dosen->nama_dosen); ?><br>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php else: ?>
                                                             N/A
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                                 <!-- Baris Tambahan -->
                                                 <tr class="bg-gray-50 border-b dark:bg-gray-700">
                                                     <td colspan="7" class="px-6 py-4 text-gray-700 dark:text-gray-300">
-                                                        <strong>{{ $ir->jadwal->hari ?? 'N/A' }}</strong>
+                                                        <strong><?php echo e($ir->jadwal->hari ?? 'N/A'); ?></strong>
                                                         pukul 
-                                                        @php
+                                                        <?php
                                                             try {
                                                                 // Pastikan jam_mulai valid dan format sesuai
                                                                 if (!empty($ir->jadwal->waktu->jam_mulai)) {
@@ -210,32 +254,32 @@
                                                                 $jamMulaiFormatted = 'Invalid Time';
                                                                 $jamSelesaiFormatted = 'Invalid Time';
                                                             }
-                                                        @endphp
-                                                        <strong>{{ $jamMulaiFormatted }}</strong> - <strong>{{ $jamSelesaiFormatted }}</strong>
+                                                        ?>
+                                                        <strong><?php echo e($jamMulaiFormatted); ?></strong> - <strong><?php echo e($jamSelesaiFormatted); ?></strong>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </tbody>
                                     </table>
                                 </div>  
                                 <!-- Tombol Setujui IRS atau Cetak IRS berdasarkan status -->
                                 <div class="flex justify-start mt-4 pl-4">
-                                    @if ($statusIRS === 'Sudah Disetujui')
-                                        <a href=" {{ route('dosen.cetakirs', $semester->id) }}" target="_blank">
+                                    <?php if($statusIRS === 'Sudah Disetujui'): ?>
+                                        <a href=" <?php echo e(route('dosen.cetakirs', $semester->id)); ?>" target="_blank">
                                             <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800">
                                                 Cetak IRS
                                             </button>
                                         </a>
-                                    @else
+                                    <?php else: ?>
                                         <button type="button" 
                                             class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-8 dark:text-white dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800"
-                                            onclick="setujuiIRS({{ $semester->id }})">
+                                            onclick="setujuiIRS(<?php echo e($semester->id); ?>)">
                                             Setujui IRS
                                         </button>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </div>
@@ -390,7 +434,25 @@
     </main>
     
     <!--Footer-->    
-    <x-footerdosen></x-footerdosen>
+    <?php if (isset($component)) { $__componentOriginal178110e4649b332c26946e049de185fe = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal178110e4649b332c26946e049de185fe = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footerdosen','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('footerdosen'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?> <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $attributes = $__attributesOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__attributesOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal178110e4649b332c26946e049de185fe)): ?>
+<?php $component = $__componentOriginal178110e4649b332c26946e049de185fe; ?>
+<?php unset($__componentOriginal178110e4649b332c26946e049de185fe); ?>
+<?php endif; ?>
 
   </div>
   <script>
@@ -520,4 +582,4 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </body>
-</html>
+</html><?php /**PATH C:\PPL\SiGMA\resources\views/content/dosen/detailmhs.blade.php ENDPATH**/ ?>

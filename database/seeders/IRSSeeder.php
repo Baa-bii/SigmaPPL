@@ -18,11 +18,60 @@ class IRSSeeder extends Seeder
      */
     public function run(): void
     {
-        // //Ambil id_TA dari semester aktif yang sedang berjalan
-        // $id_TA_Ganjil_2024 = DB::table('semester_aktif')
-        // ->where('tahun_akademik', '2024/2025 Ganjil') // Misalnya semester sekarang
-        // ->where('semester', 5)  // Semester yang sedang berjalan
-        // ->first()->id;
+        // // Ambil id_TA untuk semester 5 yang is_active = 1
+        // $id_TA = DB::table('semester_aktif')
+        //     ->where('nim', '24060122140999')
+        //     ->where('is_active', 1)
+        //     ->where('semester', 5)
+        //     ->value('id');
+
+        // // Data IRS manual untuk Rizelle
+        // $dataIRS = [
+        //     [
+        //         'nim' => '24060122140999',
+        //         'kode_mk' => 'PAIK6501',
+        //         'id_jadwal' => 'JDWDASPROD', // ID jadwal sesuai tabel jadwal
+        //         'id_TA' => $id_TA,
+        //         'status' => 'Belum Disetujui',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'nim' => '24060122140999',
+        //         'kode_mk' => 'PAIK6502',
+        //         'id_jadwal' => 'JDWALPROD',
+        //         'id_TA' => $id_TA,
+        //         'status' => 'Belum Disetujui',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'nim' => '24060122140999',
+        //         'kode_mk' => 'UUW00009',
+        //         'id_jadwal' => 'JDWKJID',
+        //         'id_TA' => $id_TA,
+        //         'status' => 'Belum Disetujui',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        // ];
+
+        // // Insert data IRS
+        // foreach ($dataIRS as $irs) {
+        //     IRS::updateOrCreate(
+        //         [
+        //             'nim' => $irs['nim'],
+        //             'kode_mk' => $irs['kode_mk'],
+        //             'id_TA' => $irs['id_TA'],
+        //         ],
+        //         $irs
+        //     );
+        // }
+        // // //Ambil id_TA dari semester aktif yang sedang berjalan
+        // // $id_TA_Ganjil_2024 = DB::table('semester_aktif')
+        // // ->where('tahun_akademik', '2024/2025 Ganjil') // Misalnya semester sekarang
+        // // ->where('semester', 5)  // Semester yang sedang berjalan
+        // // ->first()->id;
         
         // // Ambil id_TA dari semester_aktif yang relevan
         //   $id_TA_Ganjil_2022 = DB::table('semester_aktif')
