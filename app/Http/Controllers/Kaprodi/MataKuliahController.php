@@ -13,9 +13,11 @@ class MataKuliahController extends Controller
 {
     public function index()
     {
-        $mataKuliah = MataKuliah::with('dosen')->get();
+        $mataKuliah = MataKuliah::with('dosen', 'dosenmatkul')->get();
         $dosen = Dosen::all(); // Pastikan ini ditambahkan
         $programStudi = ProgramStudi::all(); // Pastikan ini ditambahkan
+        // $mataKuliah = MataKuliah::with(['dosenMatkul.dosen'])->get();
+
         return view('content.kaprodi.matakuliah', compact('mataKuliah', 'dosen', 'programStudi')); // Mengirimkan dosen
     }
     

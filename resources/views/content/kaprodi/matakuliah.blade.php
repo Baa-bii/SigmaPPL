@@ -275,29 +275,44 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <button type="button" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
-                                                                data-id="{{ $item->kode_mk }}" 
-                                                                data-nama="{{ $item->nama_mk }}">
+                                                        <button type="button" 
+                                                            class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-300 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
+                                                            data-id="{{ $item->kode_mk }}" 
+                                                            data-nama="{{ $item->nama_mk }}"
+                                                            data-sks="{{ $item->sks }}"
+                                                            data-semester="{{ $item->semester }}"
+                                                            data-jenis="{{ $item->jenis_mk }}"
+                                                            data-dosen="{{ $item->dosen->pluck('nama_dosen')->join(', ') }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
                                                                 <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
                                                             </svg>
                                                             Lihat
                                                         </button>
+
                                                         <div id="drawer-read-product-advanced" class="fixed top-0 right-0 z-50 hidden h-full w-80 bg-white dark:bg-gray-800 dark:text-white border-l border-gray-200 dark:border-gray-600 p-6">
                                                             <h2 class="text-2xl font-bold">Detail Mata Kuliah</h2>
-                                                            <p id="mata-kuliah-nama">Loading...</p>
-                                                            <!-- Anda bisa menambahkan data lainnya seperti kode MK, deskripsi, dll. -->
+                                                            <p><strong>Kode Mata Kuliah:</strong> <span id="mata-kuliah-kode">Loading...</span></p>
+                                                            <p><strong>Nama Mata Kuliah:</strong> <span id="mata-kuliah-nama">Loading...</span></p>
+                                                            <p><strong>SKS:</strong> <span id="mata-kuliah-sks">Loading...</span></p>
+                                                            <p><strong>Semester:</strong> <span id="mata-kuliah-semester">Loading...</span></p>
+                                                            <p><strong>Jenis Mata Kuliah:</strong> <span id="mata-kuliah-jenis">Loading...</span></p>
+                                                            <p><strong>Dosen Pengampu:</strong> <span id="mata-kuliah-dosen">Loading...</span></p>
                                                             <button type="button" class="mt-4 py-2 px-4 bg-red-500 text-white rounded" onclick="closeDrawer()">Tutup</button>
                                                         </div>
+                                                        
                                                         <script>
                                                             // Fungsi untuk menampilkan drawer dan mengisi data mata kuliah
-                                                            function openDrawer(mataKuliahNama) {
+                                                            function openDrawer(data) {
                                                                 const drawer = document.getElementById("drawer-read-product-advanced");
-                                                                const mataKuliahNamaElement = document.getElementById("mata-kuliah-nama");
                                                         
-                                                                // Update konten dengan nama mata kuliah yang dipilih
-                                                                mataKuliahNamaElement.innerHTML = mataKuliahNama;
+                                                                // Mengisi elemen dengan data yang sesuai
+                                                                document.getElementById("mata-kuliah-kode").innerHTML = data.kodeMk || "Tidak tersedia";
+                                                                document.getElementById("mata-kuliah-nama").innerHTML = data.namaMk || "Tidak tersedia";
+                                                                document.getElementById("mata-kuliah-sks").innerHTML = data.sks || "Tidak tersedia";
+                                                                document.getElementById("mata-kuliah-semester").innerHTML = data.semester || "Tidak tersedia";
+                                                                document.getElementById("mata-kuliah-jenis").innerHTML = data.jenisMk || "Tidak tersedia";
+                                                                document.getElementById("mata-kuliah-dosen").innerHTML = data.dosen || "Tidak tersedia";
                                                         
                                                                 // Menampilkan drawer
                                                                 drawer.classList.remove("hidden");
@@ -311,12 +326,22 @@
                                                         
                                                             // Menambahkan event listener untuk tombol "Lihat"
                                                             document.querySelectorAll("button[data-id]").forEach(button => {
-                                                                button.addEventListener("click", function() {
-                                                                    const mataKuliahNama = this.getAttribute("data-nama"); // Mendapatkan nama mata kuliah
-                                                                    openDrawer(mataKuliahNama);
+                                                                button.addEventListener("click", function () {
+                                                                    // Mengambil data dari atribut tombol
+                                                                    const data = {
+                                                                        kodeMk: this.getAttribute("data-id"),
+                                                                        namaMk: this.getAttribute("data-nama"),
+                                                                        sks: this.getAttribute("data-sks"),
+                                                                        semester: this.getAttribute("data-semester"),
+                                                                        jenisMk: this.getAttribute("data-jenis"),
+                                                                        dosen: this.getAttribute("data-dosen")
+                                                                    };
+                                                        
+                                                                    openDrawer(data);
                                                                 });
                                                             });
                                                         </script>
+                                                        
                                                         
 
                                                         <form id="delete-form-{{$item->kode_mk}}" action="{{ route('kaprodi.mata_kuliah.destroy', $item->kode_mk) }}" method="POST">
