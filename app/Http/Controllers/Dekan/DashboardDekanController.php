@@ -18,19 +18,25 @@ class DashboardDekanController extends Controller
      */
     public function index(): View
     {
+        // Mengambil data jadwal yang statusnya 'menunggu' (diajukan)
         $jadwal = Jadwal::with([
             'matakuliah:kode_mk,nama_mk',
             'waktu:id,jam_mulai',
             'ruang:id,nama'
-        ])->paginate(10);
-        
-        $ruang = RuangKelas::select('id', 'nama')->get();
+        ])
+        ->where('status', 'diajukan')  // Filter status 'menunggu' (diajukan)
+        ->paginate(10);
 
-        $belum_disetujui = Jadwal::where('status', 'menunggu')->count();
+        // Mengambil data ruang kelas
+        $ruang = RuangKelas::select('id', 'nama')->paginate(10);
+
+        // Menghitung jumlah status jadwal yang berbeda
+        $belum_disetujui = Jadwal::where('status', 'diajukan')->count();
         $sudah_disetujui = Jadwal::where('status', 'disetujui')->count();
         $ditolak = Jadwal::where('status', 'ditolak')->count();
 
-        return view('content.dekan.jadwal', compact('ruang', 'jadwal', 'belum_disetujui', 'sudah_disetujui', 'ditolak'));
+        // Mengirim data ke view
+        return view('content.dekan.jadwal', compact( 'jadwal', 'belum_disetujui', 'sudah_disetujui', 'ditolak'));
     }
 
     /**
@@ -40,7 +46,7 @@ class DashboardDekanController extends Controller
     {
         $ruang = RuangKelas::paginate(10);
 
-        $belum_disetujui = RuangKelas::where('status', 'menunggu')->count();
+        $belum_disetujui = RuangKelas::where('status', 'diajukan')->count();
         $sudah_disetujui = RuangKelas::where('status', 'disetujui')->count();
         $ditolak = RuangKelas::where('status', 'ditolak')->count();
 
@@ -71,7 +77,7 @@ class DashboardDekanController extends Controller
      */
     public function verifikasijadwal()
     {
-        $jadwal = Jadwal::with(['ruang', 'waktu'])->where('status', 'menunggu')->paginate(10);
+        $jadwal = Jadwal::with(['ruang', 'waktu'])->where('status', 'diajukan')->paginate(10);
         return view('content.dekan.verifikasijadwal', compact('jadwal'));
     }
 
@@ -81,12 +87,12 @@ class DashboardDekanController extends Controller
     public function verifikasiruang(): View
     {
         // Ambil data ruang yang memiliki status menunggu
-        $ruang = RuangKelas::where('status', 'menunggu')->paginate(10);
+        $ruang = RuangKelas::where('status', 'diajukan')->paginate(10);
 
         // Cek apakah ada data
-        if ($ruang->isEmpty()) {
-            return redirect()->back()->with('error', 'Tidak ada ruang menunggu verifikasi.');
-        }
+        //if ($ruang->isEmpty()) {
+            //return redirect()->back()->with('error', 'Tidak ada ruang menunggu verifikasi.');
+        //}
 
         return view('content.dekan.verifikasiruang', compact('ruang'));
     }

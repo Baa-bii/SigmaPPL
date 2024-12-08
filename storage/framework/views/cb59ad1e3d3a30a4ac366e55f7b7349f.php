@@ -104,11 +104,11 @@
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($index); ?></td> <!-- Nomor urut yang memperhitungkan pagination -->
                             <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($item->matakuliah->nama_mk ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($item->waktu->jam_mulai); ?> - <?php echo e($item->waktu->jam_selesai); ?></td>
-                            <td class="p-4 whitespace-nowrap text-sm"><?php echo e($item->matakuliah->dosenmatkul->dosen->nama_dosen ?? 'N/A'); ?></td>
-                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->matakuliah->semester ?? 'N/A'); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm"><?php echo e($item->matakuliah->dosenmatkul->first()->dosen->nama_dosen ?? 'N/A'); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->semesterAktif->semester ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->ruang->nama ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->ruang->gedung ?? 'N/A'); ?></td> 
-                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->id_TA); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->semesterAktif->tahun_akademik ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap">
                                 <span 
                                     class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full

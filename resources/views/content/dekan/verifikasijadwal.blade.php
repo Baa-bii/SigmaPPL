@@ -71,9 +71,9 @@
                     <!-- Dropdown menu -->
                     <div id="dropdownFilters" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                         <ul class="py-1 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownFiltersButton">
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'disetujui']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'ditolak']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'ditolak' ? 'bg-gray-300' : '' }}">Semua Sudah Ditolak</a></li>
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'menunggu']) }}" class="block px-4 py-2 hover:bg-gray-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'menunggu' ? 'bg-gray-300' : '' }}">Semua Belum Diisi</a></li>
+                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'disetujui']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
+                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'ditolak']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'ditolak' ? 'bg-gray-300' : '' }}">Semua Sudah Ditolak</a></li>
+                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'menunggu']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'menunggu' ? 'bg-gray-300' : '' }}">Semua Belum Diisi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -138,10 +138,10 @@
                         <td class="p-4 text-xs whitespace-nowrap">{{ $item->waktu->jam_mulai ?? 'N/A' }} - {{ $item->waktu->jam_selesai ?? 'N/A' }}</td>
 
                         <!-- Dosen -->
-                        <td class="p-4 text-xs whitespace-nowrap">{{ $item->dosenmatkul->dosen->nama_dosen ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap">{{ $item->matakuliah->dosenmatkul->first()->dosen->nama_dosen ?? 'N/A' }}</td>
 
                         <!-- Semester -->
-                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->matakuliah->semester ?? 'N/A' }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->semesterAktif->semester ?? 'N/A' }}</td>
 
                         <!-- Ruangan -->
                         <td class="p-4 text-xs whitespace-nowrap text-center">
@@ -156,7 +156,7 @@
                         <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->ruang->gedung ?? 'Tidak Ada Gedung' }}</td>
 
                         <!-- Tahun Akademik -->
-                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->id_TA }}</td>
+                        <td class="p-4 text-xs whitespace-nowrap text-center">{{ $item->semesterAktif->tahun_akademik ?? 'N/A' }}</td>
 
                         <!-- Form Setujui/Tolak -->
                         <td class="p-4 flex gap-2 items-center flex-wrap md:flex-nowrap">
@@ -188,7 +188,7 @@
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                @endforeach
                 </tbody>
             </table>
         </div>
