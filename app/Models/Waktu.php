@@ -11,8 +11,8 @@ class Waktu extends Model
     use HasFactory;
 
     protected $table = 'waktu';
-
-    protected $fillable = ['id', 'jam_mulai', 'created_at', 'updated_at'];
+    protected $primaryKey = 'id';
+    protected $fillable = ['id', 'jam_mulai', 'sks', 'tanggal', 'created_at', 'updated_at'];
 
     // Relasi dengan Jadwal
     public function jadwal()

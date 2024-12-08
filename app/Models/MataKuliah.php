@@ -11,12 +11,10 @@ class MataKuliah extends Model
 
     protected $table = 'matakuliah';
     protected $primaryKey = 'kode_mk';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    // protected $casts = [
-    //     'kode_mk' => 'string', // Pastikan kode_mk di-cast sebagai string
-    // ];
+    public $incrementing = false; // Jika kode_mk bukan auto-increment
+    protected $casts = [
+        'kode_mk' => 'string', // Pastikan kode_mk di-cast sebagai string
+    ];
 
     protected $fillable = ['kode_mk', 'nama_mk', 'sks', 'semester', 'jenis_mk', 'kode_prodi', 'created_at', 'updated_at'];
 

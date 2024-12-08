@@ -59,7 +59,7 @@ Route::group(['middleware'=>'auth:dosen'], function(){
 
 });
 
-Route::middleware('auth:mhs')->group(function () {
+Route::group(['middleware' => 'auth:mhs'], function () {
     Route::get('/mhs/home', [DashboardMhsController::class, 'index'])->name('mhs.dashboard.index');
     Route::get('/mhs/registrasi', [RegistrasiController::class, 'index'])->name('mhs.registrasi.index');
     Route::get('/mhs/akademik', [BuatIRSController::class, 'index'])->name('mhs.akademik.index');

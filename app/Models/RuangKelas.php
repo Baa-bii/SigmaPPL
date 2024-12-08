@@ -18,14 +18,10 @@ class RuangKelas extends Model
         return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_prodi');
     }
 
-    // public function jadwal()
-    // {
-    //     return $this->hasMany(Jadwal::class, 'id_ruang', 'id');
-    // }
-
     public function jadwal()
     {
-    return $this->hasMany(Jadwal::class, 'id_jadwal');
+        return $this->hasMany(Jadwal::class, 'id_ruang', 'id');
+        
     }
 
 }
