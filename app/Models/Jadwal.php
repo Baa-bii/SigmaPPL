@@ -42,7 +42,7 @@ class Jadwal extends Model
     // Relasi ke model SemesterAktif
     public function semesterAktif()
     {
-        return $this->belongsTo(SemesterAktif::class, 'id_TA');
+        return $this->belongsTo(SemesterAktif::class, 'id_TA', 'id');
     }
 
     public function irs()

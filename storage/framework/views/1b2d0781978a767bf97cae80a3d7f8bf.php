@@ -64,10 +64,10 @@
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Perwalian</h1>
 
         <!-- Konten 1 -->
-        <div class="relative rounded-lg shadow-md bg-white h-48 mb-4 p-4">
+        <div class="relative rounded-lg shadow-md bg-white h-auto md:h-auto lg:h-44 mb-4 p-8">
             <!-- Dropdown Pilih Angkatan -->
-            <form class="absolute left-8 top-8 w-[320px]">
-                <form method="GET" action="<?php echo e(route('dosen.perwalian.index')); ?>" class="mb-6">
+            <form class="w-full md:w-[320px] mb-4 md:mb-0">
+                <form method="GET" action="<?php echo e(route('dosen.perwalian.index')); ?>">
                     <?php echo csrf_field(); ?>    
                     <select name="angkatan" onchange="this.form.submit()" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" <?php echo e($angkatan == null ? 'selected' : ''); ?>>Semua Angkatan</option>
@@ -82,9 +82,9 @@
             </form>
 
             <!-- Container Flex untuk memusatkan tombol -->
-            <div class="flex justify space-x-8 mt-24 ml-4">
+            <div class="flex flex-col md:flex-row md:items-center md:space-x-8 mt-4 md:mt-8">
                 <!-- Tombol Setujui IRS -->
-                <button id="approveIRS" type="button" class="px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button id="approveIRS" type="button" class="w-full md:w-auto px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 md:mb-0">
                     <svg class="w-3 h-3 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
@@ -93,7 +93,7 @@
                 </button>
 
                 <!-- Tombol Batalkan Persetujuan IRS -->
-                <button id="rejectIRS" type="button" class="px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button id="rejectIRS" type="button" class="w-full md:w-auto px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 md:mb-0">
                     <svg class="w-3 h-3 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
@@ -102,7 +102,7 @@
                 </button>
 
                 <!-- Tombol Beri Izin Perubahan IRS -->
-                <button id="givePermission" type="button" class="px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button id="givePermission" type="button" class="w-full md:w-auto px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-3 h-3 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
@@ -111,6 +111,7 @@
                 </button>
             </div>
         </div>
+
 
         <!-- Konten 2 -->
         <div class="rounded-lg bg-white h-auto mb-4">
@@ -166,7 +167,7 @@
                     </form>
 
                     <!-- Search Bar -->
-                    <div class="relative flex items-center mr-10 mt-8">
+                    <div class="relative flex items-center mr-10 mt-8 ml-8 md:ml-0">
                         <div class="absolute left-3 inset-y-0 flex items-center pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>

@@ -23,6 +23,11 @@ class MataKuliah extends Model
         return $this->belongsToMany(Dosen::class, 'dosenmatkul', 'kode_mk', 'nip_dosen');
     }
 
+    public function dosenmatkul()
+    {
+        return $this->hasMany(DosenMatkul::class, 'kode_mk', 'kode_mk');
+    }
+
     // Relasi ke IRS
     public function irs()
     {

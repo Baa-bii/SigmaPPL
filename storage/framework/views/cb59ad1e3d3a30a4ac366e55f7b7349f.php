@@ -104,11 +104,11 @@
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($index); ?></td> <!-- Nomor urut yang memperhitungkan pagination -->
                             <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($item->matakuliah->nama_mk ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($item->waktu->jam_mulai); ?> - <?php echo e($item->waktu->jam_selesai); ?></td>
-                            <td class="p-4 whitespace-nowrap text-sm"><?php echo e($item->matakuliah->dosenmatkul->dosen->nama_dosen ?? 'N/A'); ?></td>
-                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->matakuliah->semester ?? 'N/A'); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm"><?php echo e($item->matakuliah->dosenmatkul->first()->dosen->nama_dosen ?? 'Belum tersedia'); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->semesterAktif->semester ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->ruang->nama ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->ruang->gedung ?? 'N/A'); ?></td> 
-                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->id_TA); ?></td>
+                            <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($item->semesterAktif->tahun_akademik ?? 'N/A'); ?></td>
                             <td class="p-4 whitespace-nowrap">
                                 <span 
                                     class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full
@@ -116,7 +116,7 @@
 
                                     <?php echo e($item->status === 'ditolak' ? 'bg-red-200 text-red-600' : ''); ?>
 
-                                    <?php echo e($item->status === 'menunggu' ? 'bg-yellow-200 text-yellow-600' : ''); ?> ">
+                                    <?php echo e($item->status === 'diajukan' ? 'bg-yellow-200 text-yellow-600' : ''); ?> ">
                                     <?php echo e($item->status); ?>
 
                                 </span>
@@ -149,11 +149,11 @@
             <?php $__currentLoopData = $ruang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="bg-white text-black dark:bg-gray-800">
                     <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($index + 1); ?></td>
-                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->jadwal->first()?->kelas ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->jadwal->first()?->kelas ?? 'X'); ?></td>
                     <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->gedung ?? 'N/A'); ?></td>
                     <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->nama ?? 'N/A'); ?></td>
                     <td class="p-4 whitespace-nowrap text-sm text-center"><?php echo e($data->kapasitas ?? 'N/A'); ?></td>
-                    <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($data->jadwal->first()?->waktu?->jam_mulai ?? 'N/A'); ?> - <?php echo e($data->jadwal->first()?->waktu?->jam_selesai ?? 'N/A'); ?></td>
+                    <td class="p-4 whitespace-nowrap text-sm text-left"><?php echo e($data->jadwal->first()?->waktu?->jam_mulai ?? '00:00:00'); ?> - <?php echo e($data->jadwal->first()?->waktu?->jam_selesai ?? '00:00:00'); ?></td>
                     <td class="p-4 whitespace-nowrap">
                         <span 
                             class="statusCell rounded-full px-4 py-1 text-sm inline-flex justify-center items-center w-full

@@ -23,9 +23,10 @@ class SemesterAktif extends Model
         return $this->hasMany(IRS::class, 'id_TA', 'id');  // Relasi satu ke banyak ke irs
     }
 
+    // Model SemesterAktif
     public function jadwal()
     {
-        return $this->hasMany(Jadwal::class, 'id_TA', 'id'); 
+        return $this->hasMany(Jadwal::class, 'id_TA', 'id');
     }
 
     // Relasi ke RiwayatIRS (RiwayatIRS mengarah ke RiwayatSemesterAktif)

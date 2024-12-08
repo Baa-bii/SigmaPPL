@@ -1,0 +1,1 @@
+<?php /**PATH C:\00 KULIAH\00 SEMESTER 5\SiGMA\SigmaPPL\resources\views/content/mhs/khs.blade.php ENDPATH**/ ?>
