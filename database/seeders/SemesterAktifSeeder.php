@@ -71,6 +71,7 @@ class SemesterAktifSeeder extends Seeder
         SemesterAktif::updateOrCreate([
             'tahun_akademik' => '2024/2025 Ganjil',
             'semester' => '5',
+            'status' => 'Aktif',
             'nim' => '24060122140999',
         ], [
             'created_at' => now(),
@@ -108,11 +109,12 @@ class SemesterAktifSeeder extends Seeder
             'is_active' => false,
         ]);
 
+        // Generate data untuk mahasiswa selain Rizelle
         $tahunSekarang = 2024;
         $semesters = ['Ganjil', 'Genap'];
 
-        // Ambil semua mahasiswa dari database
-        $mahasiswaList = Mahasiswa::all();
+        // Ambil semua mahasiswa kecuali Rizelle
+        $mahasiswaList = Mahasiswa::where('nim', '!=', '24060122140999')->get();
 
         foreach ($mahasiswaList as $mahasiswa) {
             $tahunMasuk = (int)$mahasiswa->angkatan;
@@ -146,6 +148,5 @@ class SemesterAktifSeeder extends Seeder
                 ]);
             }
         }
-        
     }
 }

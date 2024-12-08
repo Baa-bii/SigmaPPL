@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Perwalian</title>
     <link rel="icon" href="{{ asset('img/fix.png') }}" type="image/png">
     @vite(['resources/css/app.css','resources/js/app.js'])
@@ -90,6 +91,7 @@
                                     'aktif' => 'Semua Aktif',
                                     'cuti' => 'Semua Cuti',
                                     'belum_registrasi' => 'Semua Belum Registrasi',
+                                    'pembatalan' => 'Semua Pembatalan',
                                     default => 'Filter', // Default teks jika tidak ada filter
                                 }
                             }}
@@ -101,7 +103,8 @@
                         <!-- Dropdown menu -->
                         <div id="dropdownAction" class="z-10 hidden border border-gray-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownActionButton">
-                            <li><a href="?filter=sudah_disetujui&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
+                                <li><a href="?filter=sudah_disetujui&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
+                                <li><a href="?filter=pembatalan&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'pembatalan' ? 'bg-gray-300' : '' }}">Semua Pembatalan</a></li>
                                 <li><a href="?filter=belum_disetujui&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_disetujui' ? 'bg-gray-300' : '' }}">Semua Belum Disetujui</a></li>
                                 <li><a href="?filter=sudah_isi_irs&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'sudah_isi_irs' ? 'bg-gray-300' : '' }}">Semua Sudah Isi IRS</a></li>
                                 <li><a href="?filter=belum_isi_irs&angkatan={{ request('angkatan') }}" class="block px-4 py-2 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'belum_isi_irs' ? 'bg-gray-300' : '' }}">Semua Belum Isi IRS</a></li>
@@ -154,48 +157,49 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="p-4">
-                                <div class="flex items-center">
+                                <div class="flex items-center pl-2">
                                     <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                 </div>
                             </th>
-                            <th scope="col" class="px-6 py-3">Nama</th>
-                            <th scope="col" class="px-6 py-3">NIM</th>
-                            <th scope="col" class="px-6 py-3">Prodi</th>
-                            <th scope="col" class="px-6 py-3">Angkatan</th>
-                            <th scope="col" class="px-6 py-3">Jalur Masuk</th>
-                            <th scope="col" class="px-6 py-3">IP Lalu</th>
-                            <th scope="col" class="px-6 py-3">SKS Diambil</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-3 py-3">Nama</th>
+                            <th scope="col" class="px-4 py-3">NIM</th>
+                            <th scope="col" class="px-4 py-3">Prodi</th>
+                            <th scope="col" class="px-4 py-3">Angkatan</th>
+                            <th scope="col" class="px-4 py-3">Jalur Masuk</th>
+                            <th scope="col" class="px-4 py-3">IP Lalu</th>
+                            <th scope="col" class="px-4 py-3">SKS Diambil</th>
+                            <th scope="col" class="px-4 py-3">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($mahasiswa as $mhs)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input 
-                                            type="checkbox" 
-                                            class="checkbox-item w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
-                                            value="{{ $mhs->irs_id }}" 
-                                            data-status="{{ $mhs->status }}">
-                                        <label for="checkbox-table-search-{{ $mhs->irs_id }}" class="sr-only">checkbox</label>
+                                    <div class="flex items-center pl-2">
+                                        @if($mhs->irs->isNotEmpty())
+                                            <input 
+                                                type="checkbox" 
+                                                class="checkbox-item w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
+                                                value="{{ $mhs->irs->first()->id_TA }}" 
+                                                data-status="{{ $mhs->status }}" 
+                                                data-nim="{{ $mhs->nim }}">
+                                            <label for="checkbox-table-search-{{ $mhs->nim }}" class="sr-only">checkbox</label>
+                                        @endif
                                     </div>
                                 </td>
-                                <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="pl-3 ">
-                                        <a href="{{ route('dosen.perwalian.show', $mhs->nim) }}" class="text-blue-600 font:light hover:underline">
-                                            {{ $mhs->nama_mhs }}
-                                        </a>
-                                    </div>
+                                <th scope="row" class="px-3 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    <a href="{{ route('dosen.perwalian.show', $mhs->nim) }}" class="text-blue-600 font:light hover:underline">
+                                        {{ $mhs->nama_mhs }}
+                                    </a>
                                 </th>
-                                <td class="px-6 py-4">{{ $mhs->nim }}</td>
-                                <td class="px-6 py-4">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</td>
-                                <td class="px-6 py-4">{{ $mhs->angkatan }}</td>
-                                <td class="px-6 py-4">{{ $mhs->jalur_masuk }}</td>
-                                <td class="px-6 py-4">{{ number_format($mhs->ip_lalu, 2) }}</td>
-                                <td class="px-6 py-4">{{ $mhs->sks_diambil ?? '-' }}</td>
-                                <td class="px-6 py-4">{{ $mhs->status ?? 'Belum Registrasi' }}</td>
+                                <td class="px-4 py-4">{{ $mhs->nim }}</td>
+                                <td class="px-4 py-4">{{ $mhs->programStudi->nama_prodi ?? 'Tidak Ditemukan' }}</td>
+                                <td class="px-4 py-4">{{ $mhs->angkatan }}</td>
+                                <td class="px-4 py-4">{{ $mhs->jalur_masuk }}</td>
+                                <td class="px-4 py-4">{{ number_format($mhs->ip_lalu, 2) }}</td>
+                                <td class="px-4 py-4">{{ $mhs->sks_diambil ?? '-' }}</td>
+                                <td class="px-4 py-4">{{ $mhs->status ?? 'Belum Registrasi' }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -279,77 +283,158 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const selectAllCheckbox = document.getElementById('checkbox-all-search');
-    const checkboxes = document.querySelectorAll('.checkbox-item');
     const approveButton = document.getElementById('approveIRS');
     const rejectButton = document.getElementById('rejectIRS');
     const permissionButton = document.getElementById('givePermission');
 
-    // Fungsi untuk menangani seleksi semua checkbox
-    selectAllCheckbox.addEventListener('change', () => {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-    });
-
     // Fungsi untuk Setujui IRS
     approveButton.addEventListener('click', () => {
-        handleAction('Belum Disetujui', 'Sudah Disetujui');
+        handleAction(['Belum Disetujui', 'Pembatalan'], 'Sudah Disetujui');
     });
 
     // Fungsi untuk Batalkan Persetujuan IRS
     rejectButton.addEventListener('click', () => {
-        handleAction('Sudah Disetujui', 'Belum Disetujui');
+        handleAction(['Sudah Disetujui'], 'Pembatalan');
     });
 
     // Fungsi untuk Beri Izin Perubahan IRS
     permissionButton.addEventListener('click', () => {
-        handleAction('Sudah Disetujui', 'Belum Disetujui');
+        handleAction(['Sudah Disetujui'], 'Belum Disetujui');
     });
 
-    // Fungsi untuk validasi dan pengiriman data
-    function handleAction(requiredStatus, newStatus) {
-        const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+    function handleAction(requiredStatuses, newStatus) {
+        const selectedCheckboxes = Array.from(document.querySelectorAll('.checkbox-item:checked'));
+
         if (selectedCheckboxes.length === 0) {
             alert('Pilih minimal satu mahasiswa.');
             return;
         }
 
-        const invalid = selectedCheckboxes.some(checkbox => checkbox.dataset.status !== requiredStatus);
+        const idTAs = selectedCheckboxes.map(checkbox => checkbox.value);
+        const invalid = selectedCheckboxes.some(checkbox => !requiredStatuses.includes(checkbox.dataset.status));
         if (invalid) {
-            alert(`Aksi ini hanya berlaku untuk status "${requiredStatus}".`);
+            alert(`Aksi ini hanya berlaku untuk status "${requiredStatuses.join('" atau "')}".`);
             return;
         }
 
-        const ids = selectedCheckboxes.map(checkbox => checkbox.value);
-        updateIRSStatus(ids, newStatus);
+        updateIRSStatus(idTAs, newStatus);
     }
 
-    // Fungsi untuk mengirimkan data ke server
-    function updateIRSStatus(ids, status) {
+    function updateIRSStatus(idTAs, status) {
+        console.log("Data yang dikirim:", { idTAs, status });
         fetch('/dosen/updateirsstatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             },
-            body: JSON.stringify({ ids, status }),
+            body: JSON.stringify({ idTAs, status }),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert('Terjadi kesalahan. Coba lagi.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan.');
-            });
-        }
-    });
+        .then(response => {
+            if (!response.ok) throw new Error('Gagal menghubungi server.');
+            return response.json();
+        })
+        .then(data => {
+            console.log("Respons dari server:", data);
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Reload halaman setelah berhasil
+            } else {
+                alert(data.message || 'Terjadi kesalahan.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan. Coba lagi.');
+        });
+    }
+});
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const selectAllCheckbox = document.getElementById('checkbox-all-search');
+    //     const checkboxes = document.querySelectorAll('.checkbox-item');
+    //     const approveButton = document.getElementById('approveIRS');
+    //     const rejectButton = document.getElementById('rejectIRS');
+    //     const permissionButton = document.getElementById('givePermission');
+
+    //     // Fungsi untuk menangani seleksi semua checkbox
+    //     selectAllCheckbox.addEventListener('change', () => {
+    //         checkboxes.forEach(checkbox => {
+    //             checkbox.checked = selectAllCheckbox.checked;
+    //         });
+    //     });
+
+    //     // Fungsi untuk Setujui IRS
+    //     approveButton.addEventListener('click', () => {
+    //         console.log("Setujui IRS button clicked");
+    //         handleAction(['Belum Disetujui', 'Pembatalan'], 'Sudah Disetujui');
+    //     });
+
+    //     rejectButton.addEventListener('click', () => {
+    //         console.log("Batalkan Persetujuan IRS button clicked");
+    //         handleAction(['Sudah Disetujui'], 'Pembatalan');
+    //     });
+
+    //     permissionButton.addEventListener('click', () => {
+    //         console.log("Beri Izin Perubahan IRS button clicked");
+    //         handleAction(['Sudah Disetujui'], 'Belum Disetujui');
+    //     });
+
+    //     // Fungsi untuk validasi dan pengiriman data
+    //     function handleAction(requiredStatuses, newStatus) {
+    //         const selectedCheckboxes = Array.from(document.querySelectorAll('.checkbox-item:checked'));
+
+    //         if (selectedCheckboxes.length === 0) {
+    //             alert('Pilih minimal satu mahasiswa.');
+    //             return;
+    //         }
+
+    //         selectedCheckboxes.forEach(checkbox => {
+    //             console.log(`Checkbox ID: ${checkbox.value}, Status: ${checkbox.dataset.status}`);
+    //         });
+
+    //         const idTAs = selectedCheckboxes.map(checkbox => checkbox.value);
+
+    //         const invalid = selectedCheckboxes.some(checkbox => !requiredStatuses.includes(checkbox.dataset.status));
+    //         if (invalid) {
+    //             alert(`Aksi ini hanya berlaku untuk status "${requiredStatuses.join('" atau "')}".`);
+    //             return;
+    //         }
+
+    //         console.log('Data yang dikirim ke server:', { idTAs, newStatus });
+
+    //         updateIRSStatus(idTAs, newStatus);
+    //     }
+
+    //     function updateIRSStatus(idTAs, status) {
+    //         console.log("Data yang dikirim:", { idTAs, status });
+    //         fetch('/dosen/updateirsstatus', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    //             },
+    //             body: JSON.stringify({ idTAs, status }),
+    //         })
+    //         .then(response => {
+    //             if (!response.ok) throw new Error('Gagal menghubungi server.');
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log("Respons dari server:", data);
+    //             if (data.success) {
+    //                 alert(data.message);
+    //                 location.reload(); // Reload halaman setelah berhasil
+    //             } else {
+    //                 alert(data.message || 'Terjadi kesalahan.');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error);
+    //             alert('Terjadi kesalahan. Coba lagi.');
+    //         });
+    //     }
+    // });
   </script>
 
   <!-- JS Script for filter handling -->
