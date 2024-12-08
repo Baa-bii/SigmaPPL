@@ -106,11 +106,6 @@
                             Prodi
                         </p>
                         </th>
-                        <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50" data-sort="prodi">
-                            <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">
-                                Status
-                            </p>
-                            </th>
                         <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                         <p class="block font-sans text-lg antialiased font-semibold leading-none text-blue-700 ">Action</p>
                         </th>
@@ -127,9 +122,6 @@
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <p class="text-sm text-blue-gray-900"><?php echo e($ruang->program_studi->nama_prodi); ?></p>
-                            </td>
-                            <td class="p-4 border-b border-blue-gray-50">
-                                <p class="text-sm text-blue-gray-900"><?php echo e($ruang->status); ?></p>
                             </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <a href="<?php echo e(route('akademik.ruang.edit', $ruang->id)); ?>">
