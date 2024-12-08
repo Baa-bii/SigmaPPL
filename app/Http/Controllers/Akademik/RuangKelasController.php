@@ -32,6 +32,11 @@ class RuangKelasController extends Controller
         // Fetch the filtered or full data with relationships
         $ruangKelas = $query->with('program_studi')->get();
 
+        $ruangKelas = $query->with('program_studi')
+        ->join('program_studi', 'ruang.kode_prodi', '=', 'program_studi.kode_prodi')
+        ->orderBy('program_studi.nama_prodi') // Automatically sort by program_studi.nama_prodi
+        ->get();
+
         // Return the view with filtered data
         return view('content.akademik.ruangan', compact('ruangKelas', 'programStudi'));
     }
