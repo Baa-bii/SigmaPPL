@@ -175,36 +175,43 @@ class JadwalController extends Controller
 }
 
 
-    public function edit($id_jadwal)
-    {
-        // Ambil koleksi jadwal yang ingin diedit berdasarkan ID
-        $jadwal = Jadwal::where('id_jadwal', $id_jadwal)->get(); // Mengambil jadwal yang relevan dalam bentuk koleksi
-        $waktu = Waktu::all();
-        $ruang = RuangKelas::all();
-        $matakuliah = MataKuliah::all();
-        $programStudi = ProgramStudi::all();
-        $semesterAktif = SemesterAktif::all();
+public function edit($id_jadwal)
+{
+    // Ambil jadwal yang ingin diedit berdasarkan ID
+    $jadwal = Jadwal::findOrFail($id_jadwal);
+    $waktu = Waktu::all();
+    $ruang = RuangKelas::all();
+    $matakuliah = MataKuliah::all();
 
-        return view('content.kaprodi.jadwal', compact('jadwal', 'waktu', 'ruang', 'matakuliah', 'programStudi', 'semesterAktif'));
-    }
+    return view('content.kaprodi.jadwal', compact('jadwal', 'waktu', 'ruang', 'matakuliah'));
+}
 
-    public function update(Request $request, $id_jadwal)
-    {
-        $validated = $request->validate([
-            'hari' => 'required|string',
-            'kelas' => 'required|string',
-            'id_waktu' => 'required|exists:waktu,id',
-            'id_TA' => 'required|exists:semester_aktif,id',
-            'id_ruang' => 'required|exists:ruang,id',
-            'kode_mk' => 'required|exists:matakuliah,kode_mk',
-            'kode_prodi' => 'required|exists:program_studi,kode_prodi',
-        ]);
 
-        $jadwal = Jadwal::findOrFail($id_jadwal);
-        $jadwal->update($validated);
 
-        return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
-    }
+
+public function update(Request $request, $id_jadwal)
+{
+    // Validasi data dari form
+    $validated = $request->validate([
+        'kode_mk' => 'required|exists:matakuliah,kode_mk',
+        'id_jadwal' => 'required|string',
+        'kelas' => 'required|string',
+        'hari' => 'required|string',
+        'id_ruang' => 'required|exists:ruang,id',
+        'id_waktu' => 'required|exists:waktu,id',
+    ]);
+
+    // Cari jadwal berdasarkan ID
+    $jadwal = Jadwal::findOrFail($id_jadwal);
+
+    // Update jadwal dengan data baru
+    $jadwal->update($validated);
+
+    return redirect()->route('kaprodi.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
+}
+
+
+
 
     public function destroy($id_jadwal)
     {

@@ -12,8 +12,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body>
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+<body class = 'flex flex-col min-h-screen'>
+    <div class="antialiased bg-gray-50 dark:bg-gray-900 ">
         <?php if (isset($component)) { $__componentOriginalfd1f218809a441e923395fcbf03e4272 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalfd1f218809a441e923395fcbf03e4272 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -54,7 +54,7 @@
 <?php endif; ?>
         <main>
         <!-- Main Content -->
-        <main class="p-16 md:ml-64 h-auto pt-20">
+        <main class="p-16 md:ml-64 h-auto pt-20 flex flex-col min-h-screen">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Usulan Jadwal Kuliah</h1>
             <!-- Konten 1 -->
             <div class="container mx-auto my-3">

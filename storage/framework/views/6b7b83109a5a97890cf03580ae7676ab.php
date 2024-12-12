@@ -301,8 +301,6 @@
                                                     </svg>
                                                     Edit
                                                 </button>
-
-                                                
                                                 <div id="edit-modal-<?php echo e($item->id_jadwal); ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                                     <div class="relative w-full h-auto max-w-md max-h-full">
                                                         <div class="relative bg-white p-6 w-full max-w-lg rounded-lg shadow">
@@ -311,13 +309,13 @@
                                                                 <?php echo csrf_field(); ?>
                                                                 <?php echo method_field('PUT'); ?>
                                                                 <h4 class="text-center text-2xl mb-6">Edit Jadwal</h4>
-                                                                
+                                                
                                                                 <!-- Dropdown Mata Kuliah -->
-                                                                <div class="mb-4 pl-4">
+                                                                <div class="mb-4">
                                                                     <label for="kode_mk" class="block text-sm font-medium">Mata Kuliah</label>
                                                                     <select name="kode_mk" id="kode_mk" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" required>
                                                                         <?php $__currentLoopData = $matakuliah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                            <option value="<?php echo e($mk->kode_mk); ?>" data-sks="<?php echo e($mk->sks); ?>" <?php echo e($mk->kode_mk == $item->kode_mk ? 'selected' : ''); ?>>
+                                                                            <option value="<?php echo e($mk->kode_mk); ?>" <?php echo e($mk->kode_mk == $item->kode_mk ? 'selected' : ''); ?>>
                                                                                 <?php echo e($mk->nama_mk); ?>
 
                                                                             </option>
@@ -325,15 +323,45 @@
                                                                     </select>
                                                                 </div>
                                                 
-                                                                <!-- Input Jumlah Kelas -->
-                                                                <div class="mb-4 pl-4">
-                                                                    <label for="jumlah_kelas" class="block text-sm font-medium">Jumlah Kelas</label>
-                                                                    <input type="number" id="jumlah_kelas" name="jumlah_kelas" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" min="1" max="10" value="<?php echo e($item->jumlah_kelas); ?>" required>
-                                                                </div>
-                                                
                                                                 <!-- Tempat untuk Jadwal Kelas -->
-                                                                <div id="jadwal-kelas-container" class="mb-4 pl-4">
-                                                                    
+                                                                <div id="jadwal-kelas-container" class="mb-4">
+                                                                    <div class="mb-4">
+                                                                        <h5 class="text-lg font-bold">Jadwal Kelas</h5>
+                                                                        <div class="mb-4">
+                                                                            <label for="kelas" class="block text-sm font-medium">Kelas</label>
+                                                                            <input type="text" id="kelas" name="kelas" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" value="<?php echo e($item->kelas); ?>" required>
+                                                                        </div>
+                                                                        <div class="mb-4">
+                                                                            <label for="id_jadwal" class="block text-sm font-medium">ID Jadwal</label>
+                                                                            <input type="text" id="id_jadwal" name="id_jadwal" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" value="<?php echo e($item->id_jadwal); ?>" required>
+                                                                        </div>
+                                                                        <div class="mb-4">
+                                                                            <label for="hari" class="block text-sm font-medium">Hari</label>
+                                                                            <select id="hari" name="hari" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                <option value="Senin" <?php echo e($item->hari === 'Senin' ? 'selected' : ''); ?>>Senin</option>
+                                                                                <option value="Selasa" <?php echo e($item->hari === 'Selasa' ? 'selected' : ''); ?>>Selasa</option>
+                                                                                <option value="Rabu" <?php echo e($item->hari === 'Rabu' ? 'selected' : ''); ?>>Rabu</option>
+                                                                                <option value="Kamis" <?php echo e($item->hari === 'Kamis' ? 'selected' : ''); ?>>Kamis</option>
+                                                                                <option value="Jumat" <?php echo e($item->hari === 'Jumat' ? 'selected' : ''); ?>>Jumat</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="mb-4">
+                                                                            <label for="id_ruang" class="block text-sm font-medium">Ruangan</label>
+                                                                            <select id="id_ruang" name="id_ruang" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                <?php $__currentLoopData = $ruang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                    <option value="<?php echo e($ru->id); ?>" <?php echo e($item->id_ruang == $ru->id ? 'selected' : ''); ?>><?php echo e($ru->gedung); ?><?php echo e($ru->nama); ?></option>
+                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="mb-4">
+                                                                            <label for="id_waktu" class="block text-sm font-medium">Jam Mulai</label>
+                                                                            <select id="id_waktu" name="id_waktu" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                <?php $__currentLoopData = $waktu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                    <option value="<?php echo e($wt->id); ?>" <?php echo e($item->id_waktu == $wt->id ? 'selected' : ''); ?>><?php echo e($wt->jam_mulai); ?></option>
+                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                 
                                                                 <div class="flex items-center space-x-4 mt-4">
@@ -342,82 +370,66 @@
                                                                     </button>
                                                                 </div>
                                                             </form>
-                                                            <script>
-                                                                document.getElementById('jumlah_kelas').addEventListener('input', function () {
-                                                                    const container = document.getElementById('jadwal-kelas-container');
-                                                                    const jumlahKelas = parseInt(this.value) || 0;
-                                                                    
-                                                                    console.log('Jumlah Kelas:', jumlahKelas); // Log jumlah kelas
-                                                                    // Hapus elemen sebelumnya
-                                                                    container.innerHTML = '';
-                                                            
-                                                                    // Menggunakan data kelas dari PHP ke JavaScript
-                                                                    const kelasData = <?php echo json_encode($item->kelas, 15, 512) ?>;
-
-                                                                    console.log(kelasData);
-                                                            
-                                                                    for (let i = 1; i <= jumlahKelas; i++) {
-                                                                        const kelas = kelasData[i - 1] || {};  // Mengambil data kelas atau objek kosong jika tidak ada
-                                                            
-                                                                        const jadwalHtml = `
-                                                                            <div class="mb-4">
-                                                                                <h5 class="text-lg font-bold">Jadwal Kelas ${i}</h5>
-                                                                                <!-- Kelas -->
-                                                                                <div class="mb-4 pl-2">
-                                                                                    <label for="kelas[${i}][kelas]" class="block text-sm font-medium">Kelas</label>
-                                                                                    <input type="text" id="kelas" name="kelas[${i}][kelas]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" value="${kelas.kelas || ''}" required>
-                                                                                </div>
-
-                                                                                <!-- ID Jadwal-->
-                                                                                <div class="mb-4 pl-2">
-                                                                                    <label for="kelas[${i}][id_jadwal]" class="block text-sm font-medium">ID Jadwal</label>
-                                                                                    <input type="text" id="id_jadwal" name="kelas[${i}][id_jadwal]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 w-full p-2.5" value="${kelas.id_jadwal || ''}" required>
-                                                                                </div>
-
-                                                                                <!-- Hari -->
-                                                                                <label for="kelas[${i}][hari]" class="block text-sm font-medium">Hari</label>
-                                                                                <select name="kelas[${i}][hari]" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
-                                                                                    <option value="Senin">Senin</option>
-                                                                                    <option value="Selasa">Selasa</option>
-                                                                                    <option value="Rabu">Rabu</option>
-                                                                                    <option value="Kamis">Kamis</option>
-                                                                                    <option value="Jumat">Jumat</option>
-                                                                                </select>
-
-                                                                                <!-- Ruangan -->
-                                                                                <label for="kelas[${i}][id_ruang]" class="block text-sm font-medium mt-2">Ruangan</label>
-                                                                                <select name="kelas[${i}][id_ruang]" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
-                                                                                    <?php $__currentLoopData = $ruang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                                        <option value="<?php echo e($ru->id); ?>"><?php echo e($ru->gedung); ?><?php echo e($ru->nama); ?></option>
-                                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                                                </select>
-
-                                                                                <!-- Jam Mulai -->
-                                                                                <label for="kelas[${i}][id_waktu]" class="block text-sm font-medium mt-2">Jam Mulai</label>
-                                                                                <select name="kelas[${i}][id_waktu]" id="jam_mulai_${i}" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5 jam-mulai" data-index="${i}" required>
-                                                                                    <?php $__currentLoopData = $waktu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                                        <option value="<?php echo e($wt->id); ?>" data-jam="<?php echo e($wt->jam_mulai); ?>"><?php echo e($wt->jam_mulai); ?></option>
-                                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                                                </select>
-                                                                            </div>
-                                                                        `;
-                                                                        container.insertAdjacentHTML('beforeend', jadwalHtml);
-                                                                        // Event listener untuk dropdown
-                                                                        document.getElementById('jadwal-kelas-container').addEventListener('change', function (event) {
-                                                                                    const target = event.target;
-                        
-                                                                                    // Jika dropdown jam_mulai berubah
-                                                                                    if (target.matches('.jam-mulai')) {
-                                                                                        hitungJamSelesai(target);
-                                                                                    }
-                                                                                }); 
-                                                                    }
-                                                                });
-                                                            </script>
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                                
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        const modals = document.querySelectorAll('[id^="edit-modal-"]');
+                                                
+                                                        modals.forEach((modal) => {
+                                                            const container = modal.querySelector('#jadwal-kelas-container');
+                                                            const jumlahKelasInput = modal.querySelector('#jumlah_kelas');
+                                                
+                                                            const kelasData = <?php echo json_encode($item->kelas || [], 15, 512) ?>; // Ambil data kelas
+                                                
+                                                            const generateJadwalFields = (jumlahKelas) => {
+                                                                container.innerHTML = ''; // Bersihkan kontainer
+                                                
+                                                                for (let i = 1; i <= jumlahKelas; i++) {
+                                                                    const kelas = kelasData[i - 1] || {}; // Data kelas jika ada
+                                                
+                                                                    const jadwalHtml = `
+                                                                        <div class="mb-4">
+                                                                            <h5 class="text-lg font-bold">Jadwal Kelas ${i}</h5>
+                                                                            <div class="mb-4">
+                                                                                <label for="kelas_${i}" class="block text-sm font-medium">Kelas</label>
+                                                                                <input type="text" id="kelas_${i}" name="kelas[${i}][kelas]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" value="${kelas.kelas || ''}" required>
+                                                                            </div>
+                                                                            <div class="mb-4">
+                                                                                <label for="id_jadwal_${i}" class="block text-sm font-medium">ID Jadwal</label>
+                                                                                <input type="text" id="id_jadwal_${i}" name="kelas[${i}][id_jadwal]" class="form-input bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" value="${kelas.id_jadwal || ''}" required>
+                                                                            </div>
+                                                                            <div class="mb-4">
+                                                                                <label for="hari_${i}" class="block text-sm font-medium">Hari</label>
+                                                                                <select id="hari_${i}" name="kelas[${i}][hari]" class="form-select bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required>
+                                                                                    <option value="Senin" ${kelas.hari === 'Senin' ? 'selected' : ''}>Senin</option>
+                                                                                    <option value="Selasa" ${kelas.hari === 'Selasa' ? 'selected' : ''}>Selasa</option>
+                                                                                    <option value="Rabu" ${kelas.hari === 'Rabu' ? 'selected' : ''}>Rabu</option>
+                                                                                    <option value="Kamis" ${kelas.hari === 'Kamis' ? 'selected' : ''}>Kamis</option>
+                                                                                    <option value="Jumat" ${kelas.hari === 'Jumat' ? 'selected' : ''}>Jumat</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    `;
+                                                                    container.insertAdjacentHTML('beforeend', jadwalHtml);
+                                                                }
+                                                            };
+                                                
+                                                            jumlahKelasInput.addEventListener('input', (e) => {
+                                                                const jumlahKelas = parseInt(e.target.value) || 0;
+                                                                generateJadwalFields(jumlahKelas);
+                                                            });
+                                                
+                                                            // Generate fields saat pertama kali modal dibuka
+                                                            const jumlahKelas = parseInt(jumlahKelasInput.value) || 0;
+                                                            generateJadwalFields(jumlahKelas);
+                                                        });
+                                                    });
+                                                </script>
+                                                
                                                 
                                                 
                                                 <form id="delete-form-<?php echo e($item->id_jadwal); ?>" action="<?php echo e(route('kaprodi.jadwal.destroy', $item->id_jadwal)); ?>" method="POST">
