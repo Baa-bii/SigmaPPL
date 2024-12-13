@@ -525,7 +525,7 @@ class MataKuliahSeeder extends Seeder
                 'kode_mk' => 'UUW00009',
                 'nama_mk' => 'Kuliah Kerja Nyata (KKN)',
                 'sks' => 3,
-                'semester' => '0',
+                'semester' => '7',
                 'jenis_mk' => 'wajib',
                 'kode_prodi' => 'INF123',
                 'created_at' => now(),

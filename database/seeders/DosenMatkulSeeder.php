@@ -548,6 +548,12 @@ class DosenMatkulSeeder extends Seeder
             'kode_mk' => 'PAIK6802',
             'created_at' => now(),
             'updated_at' => now(),
+        ]); 
+        DosenMatkul::create([
+            'nip_dosen' =>'1983020320060410',
+            'kode_mk' => 'UUW00009',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }
