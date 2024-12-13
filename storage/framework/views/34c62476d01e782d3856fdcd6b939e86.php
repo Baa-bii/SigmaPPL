@@ -64,7 +64,11 @@
                             <div class="bg-red-200 p-10  rounded-lg shadow-lg dark:bg-gray-800">
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mata Kuliah</h3>
                                 <?php
-                                    $mataKuliahCount = DB::table('matakuliah')->count();  // Menghitung jumlah mata kuliah
+                                    $mataKuliahCount = DB::table('matakuliah')
+                                        ->whereRaw('semester % 2 = 1') // Semester ganjil
+                                        ->orWhere('semester', 0)       // Atau semester 0
+                                        ->count();
+                                    // Menghitung jumlah mata kuliah
                                 ?>
                                 <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">
                                     <?php echo e($mataKuliahCount); ?>
