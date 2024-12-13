@@ -977,7 +977,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Rabu',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_1540,
-            'id_TA' => $id_TA_Ganjil_2024,
+            'id_TA' => $id_TA_Ganjil_2025,
             'id_ruang' => $id_ruang_K202,
             'kode_mk' => 'PAIK6701', 
             'kode_prodi' => 'INF123', 
@@ -1137,7 +1137,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Senin',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_1540,
-            'id_TA' => $id_TA_Genap_2024,
+            'id_TA' => $id_TA_Ganjil_2024,
             'id_ruang' => $id_ruang_K202,
             'kode_mk' => 'PAIK6604', 
             'kode_prodi' => 'INF123', 
@@ -1301,7 +1301,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Rabu',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_07,  // 07:00
-            'id_TA' => $id_TA_Genap_2025,
+            'id_TA' => $id_TA_Ganjil_2025,
             'id_ruang' => $id_ruang_K101,
             'kode_mk' => 'PAIK6801',
             'kode_prodi' => 'INF123',
@@ -1328,7 +1328,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Kamis',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_08,  // 08:00
-            'id_TA' => $id_TA_Genap_2025,
+            'id_TA' => $id_TA_Ganjil_2025,
             'id_ruang' => $id_ruang_A304,
             'kode_mk' => 'PAIK6802',
             'kode_prodi' => 'INF123',
@@ -1409,7 +1409,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Selasa',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_1540,  // 15:40
-            'id_TA' => $id_TA_Genap_2025,
+            'id_TA' => $id_TA_Ganjil_2025,
             'id_ruang' => $id_ruang_B201,
             'kode_mk' => 'PAIK6821',
             'kode_prodi' => 'INF123',
@@ -1424,7 +1424,7 @@ class JadwalSeeder extends Seeder
             'hari' => 'Kamis',
             'kelas' => 'A',
             'id_waktu' => $id_waktu_0650,  // 06:50
-            'id_TA' => $id_TA_Genap_2024,
+            'id_TA' => $id_TA_Ganjil_2025,
             'id_ruang' => $id_ruang_E102,
             'kode_mk' => 'UUW00009',
             'kode_prodi' => 'INF123',

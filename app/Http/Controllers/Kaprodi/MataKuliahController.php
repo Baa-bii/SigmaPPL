@@ -13,7 +13,13 @@ class MataKuliahController extends Controller
 {
     public function index()
     {
-        $mataKuliah = MataKuliah::with('dosen', 'dosenmatkul')->get();
+        // $mataKuliah = MataKuliah::with('dosen', 'dosenmatkul')->get();
+        $mataKuliah = MataKuliah::whereRaw('semester % 2 = 1') // Semester ganjil
+            ->orWhere('semester', 0) // Atau semester 0
+            ->with('dosen', 'dosenmatkul')
+            ->get();
+
+        // $matkul = MataKuliah::where('semester % 2 = 1')->get();
         $dosen = Dosen::all(); // Pastikan ini ditambahkan
         $programStudi = ProgramStudi::all(); // Pastikan ini ditambahkan
         // $mataKuliah = MataKuliah::with(['dosenMatkul.dosen'])->get();

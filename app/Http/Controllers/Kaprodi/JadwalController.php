@@ -32,7 +32,11 @@ class JadwalController extends Controller
     
         // Mendapatkan semua data lainnya
         $programStudi = ProgramStudi::where('kode_prodi', 'INF123')->first();
-        $matakuliah = MataKuliah::all();
+        // $matakuliah = MataKuliah::all();
+        $matakuliah = MataKuliah::whereRaw('semester % 2 = 1') // Semester ganjil
+            ->orWhere('semester', 0) // Atau semester 0
+            ->with('dosen', 'dosenmatkul')
+            ->get();
         // $ruang = RuangKelas::all();
         $ruang = RuangKelas::where('status', 'disetujui')->get();
         $waktu = Waktu::all();
@@ -102,7 +106,6 @@ class JadwalController extends Controller
 }
 
     
-
 
     public function store(Request $request)
 {
@@ -185,8 +188,6 @@ public function edit($id_jadwal)
 
     return view('content.kaprodi.jadwal', compact('jadwal', 'waktu', 'ruang', 'matakuliah'));
 }
-
-
 
 
 public function update(Request $request, $id_jadwal)
