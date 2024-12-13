@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
                 ], [
                     'name' => $name,
                     'role' => 'mhs',
-                    'password' => bcrypt("{$name}123"),
+                    'password' => bcrypt(strtolower(str_replace(' ', '', "{$name}123"))),
                 ]);
             }
         }
