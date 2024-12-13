@@ -489,5 +489,65 @@ class DosenMatkulSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1988032220201210',
+            'kode_mk' => 'PAIK6701',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1981042020050120', 
+            'kode_mk' => 'PAIK6701',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1996030320220410', 
+            'kode_mk' => 'PAIK6604',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1979072020031210',
+            'kode_mk' =>  'PAIK6821',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1980091420060410',
+            'kode_mk' =>  'PAIK6801',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1973082919980220',
+            'kode_mk' =>  'PAIK6801',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1973082919980220', 
+            'kode_mk' =>  'PAIK6708',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1974040119990310', 
+            'kode_mk' =>  'PAIK6504',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1976011020091220',
+            'kode_mk' =>  'PAIK6504',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DosenMatkul::create([
+            'nip_dosen' =>'1971081119970210', 
+            'kode_mk' => 'PAIK6802',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

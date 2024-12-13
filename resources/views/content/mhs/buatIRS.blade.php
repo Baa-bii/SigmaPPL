@@ -514,7 +514,7 @@
                 if (isSelected) {
                     selectedJadwal.push(jadwal.id_jadwal);
                     fetchTotalSks();
-                    updateProgressBar();
+                    // updateProgressBar();
                 }
             } else {
                 console.error('Row untuk timeslot tidak ditemukan:', matchedSlot);
@@ -533,7 +533,7 @@
                 $(this).remove();
             });
             fetchTotalSks();
-            updateProgressBar();
+            // updateProgressBar();
             
             
             // Tandai ulang konflik
@@ -550,7 +550,7 @@
                     if (data.total_sks !== undefined) {
                         totalSks = data.total_sks;
                         maxSks = data.max_sks; 
-                        updateProgressBar();
+                       // updateProgressBar();
                     } else {
                         console.error('Data total_sks tidak ditemukan dalam respon.');
                     }
@@ -570,20 +570,6 @@
                 Swal.fire('Gagal', 'Jadwal tidak ditemukan.', 'error');
                 return;
             }
-
-            // Hitung SKS setelah memilih jadwal ini
-            // var newTotalSks = totalSks + parseInt(jadwalItem.sks);
-            // var newTotalSks = totalSks + sksJadwal;
-            // if (newTotalSks > maxSks) {
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'SKS Terlampaui',
-            //         text: 'Anda tidak dapat memilih jadwal ini karena total SKS akan melebihi batas maksimal.',
-            //         confirmButtonText: 'OK'
-            //     });
-            //     return;
-            // }
-
             // Tampilkan konfirmasi sebelum memilih jadwal
             Swal.fire({
                 title: 'Konfirmasi Pilih Jadwal',
@@ -616,7 +602,7 @@
 
                                     // Update total SKS dan progress bar
                                     totalSks += sksJadwal;
-                                    updateProgressBar();
+                                    // updateProgressBar();
 
                                     // Ubah tampilan tombol
                                     const button = $(`[data-jadwal-id="${jadwalId}"]`).find('.pilih-jadwal');
@@ -705,7 +691,7 @@
                                 // Perbarui total SKS di sidebar jika ada
                                 // $('#total-sks').text(totalSks); // Sesuaikan dengan ID elemen yang sesuai
                                 fetchTotalSks();
-                                updateProgressBar();
+                                // updateProgressBar();
                                 // Tandai ulang konflik
                                 markConflictingSchedules();
                             });
@@ -742,9 +728,6 @@
 
         handleCancelJadwal(jadwalId, kodeMk);
     });
-
-        
-         
         // Menangani checkbox yang sudah tercentang saat halaman dimuat
         $('.course-checkbox:checked').each(function() {
             // auto checked yg sesuai semester
@@ -778,7 +761,7 @@
 
                         markConflictingSchedules();
                         fetchTotalSks();
-                        updateProgressBar();
+                        // updateProgressBar();
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
@@ -813,7 +796,7 @@
                                 });
                                 markConflictingSchedules();
                                 fetchTotalSks();
-                                updateProgressBar();
+                                // updateProgressBar();
                         } else {
                             console.log('Tidak ada perubahan pada IRS.');
                         }
@@ -859,7 +842,7 @@
                         });
                         markConflictingSchedules();
                         fetchTotalSks();
-                        updateProgressBar();
+                        // updateProgressBar();
 
                         // Tampilkan SweetAlert sukses
                         Swal.fire({
@@ -895,7 +878,7 @@
                         if (data.status === 'success') {
                             console.log('Mata kuliah dihapus dari IRS.');
                             fetchTotalSks();
-                            updateProgressBar();
+                            // updateProgressBar();
                         } else {
                             console.log('Tidak ada perubahan pada IRS.');
                         }
@@ -924,162 +907,6 @@
                 ? (hh + 1).toString().padStart(2, '0') + ':00' 
                 : hh.toString().padStart(2, '0') + ':00';
         }
-
-        // $('.pilih-jadwal').on('click', function() {
-        //     var jadwalId = $(this).data('jadwal-id');
-        //     var kodeMk = $(this).data('kode-mk');
-        //     var namaMk = $(this).data('nama-mk');
-
-        //     // Tampilkan konfirmasi sebelum memilih jadwal
-        //     Swal.fire({
-        //         title: 'Konfirmasi Pilih Jadwal',
-        //         text: "Apakah Anda yakin ingin memilih jadwal ini?",
-        //         icon: 'question',
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Ya, pilih',
-        //         cancelButtonText: 'Batal'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             // Kirim permintaan AJAX untuk mengonfirmasi pemilihan jadwal
-        //             $.ajax({
-        //                 url: '/isi-irs',
-        //                 method: 'POST',
-        //                 contentType: 'application/json',
-        //                 data: JSON.stringify({ jadwal_id: jadwalId }),
-        //                 success: function(data) {
-        //                     if (data.status === 'success') {
-        //                         Swal.fire({
-        //                             icon: 'success',
-        //                             title: 'Berhasil',
-        //                             text: data.message,
-        //                             confirmButtonText: 'OK'
-        //                         }).then(() => {
-        //                             // Ubah warna jadwal menjadi hijau
-        //                             $(`[data-jadwal-id="${jadwalId}"]`).removeClass('border-yellow-300 bg-white')
-        //                                 .addClass('border-green-500 bg-green-400')
-        //                                 .attr('data-status', 'selected');
-
-        //                             // Tandai kelas lain dari Mata Kuliah yang sama sebagai abu-abu
-        //                             $(`.jadwal-item[data-kode-mk="${kodeMk}"]`).not(`[data-jadwal-id="${jadwalId}"]`)
-        //                                 .removeClass('border-yellow-300 bg-white')
-        //                                 .addClass('border-gray-500 bg-gray-200')
-        //                                 .attr('data-status', 'unselected');
-
-        //                             // Tambahkan jadwalId ke selectedJadwal
-        //                             selectedJadwal.push(jadwalId);
-        
-        //                             // Tandai jadwal yang bentrok
-        //                             markConflictingSchedules();
-        //                             location.reload();
-        //                         });
-        //                     } else {
-        //                         Swal.fire('Gagal', data.message, 'error');
-        //                     }
-        //                 },
-        //                 error: function(error) {
-        //                     console.error('Error:', error);
-        //                     Swal.fire({
-        //                         icon: 'error',
-        //                         title: 'Gagal',
-        //                         text: 'Terjadi kesalahan saat mengonfirmasi pemilihan jadwal.',
-        //                         confirmButtonText: 'OK'
-        //                     });
-        //                 }
-        //             });
-        //         }
-        //     });
-        // });
-
-        // window.selectJadwal = function(jadwalId, kodeMk) {
-        //     // Tampilkan konfirmasi sebelum memilih jadwal
-        //     Swal.fire({
-        //         title: 'Konfirmasi Pilih Jadwal',
-        //         text: "Apakah Anda yakin ingin memilih jadwal ini?",
-        //         icon: 'question',
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Ya, pilih',
-        //         cancelButtonText: 'Batal'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             // Kirim permintaan AJAX untuk mengonfirmasi pemilihan jadwal
-        //             $.ajax({
-        //                 url: '/isi-irs',
-        //                 method: 'POST',
-        //                 contentType: 'application/json',
-        //                 data: JSON.stringify({ jadwal_id: jadwalId }),
-        //                 success: function(data) {
-        //                     if (data.status === 'success') {
-        //                         Swal.fire({
-        //                             icon: 'success',
-        //                             title: 'Berhasil',
-        //                             text: data.message,
-        //                             confirmButtonText: 'OK'
-        //                         }).then(() => {
-        //                             // Ubah warna jadwal menjadi hijau
-        //                     $(`[data-jadwal-id="${jadwalId}"]`).addClass('border-green-500 bg-green-400').attr('data-status', 'selected');
-                            
-        //                     // Tambahkan jadwalId ke selectedJadwals
-        //                     selectedJadwal.push(jadwalId);
-                            
-        //                     // Tandai jadwal yang bentrok
-        //                     markConflictingSchedules();
-                            
-                            
-        //                     // Tandai checkbox sebagai checked
-        //                     $('input[type="checkbox"][value="' + kodeMk + '"]').prop('checked', true);
-        //                             location.reload(); // Atau update tanpa reload
-        //                         });
-        //                     } else {
-        //                         Swal.fire({
-        //                             icon: 'error',
-        //                             title: 'Gagal',
-        //                             text: 'Terjadi kesalahan dalam memilih jadwal.',
-        //                             confirmButtonText: 'OK'
-        //                         });
-        //                     }
-        //                 },
-                        
-        //                 error: function(error) {
-        //                     console.error('Error:', error);
-        //                     Swal.fire({
-        //                         icon: 'error',
-        //                         title: 'Gagal',
-        //                         text: 'Terjadi kesalahan saat mengonfirmasi pemilihan jadwal.',
-        //                         confirmButtonText: 'OK'
-        //                     });
-        //                 }
-        //             });
-        //         }
-        //     });
-        // };
-
-        // Fungsi untuk disable conflicting courses
-        // function disableConflictingCourses(jadwal) {
-        //     var hari = jadwal.hari.toUpperCase();
-        //     var jamMulai = jadwal.jam_mulai;
-
-        //     // Cari semua jadwal yang sudah dipilih dan ambil hari dan jam mulai
-        //     $('.course-checkbox:checked').each(function() {
-        //         var selectedHari = $(this).data('hari').toUpperCase();
-        //         var selectedJamMulai = $(this).data('jam_mulai');
-
-        //         if (selectedHari === hari && selectedJamMulai === jamMulai) {
-        //             // Cari semua checkbox yang memiliki jadwal bentrok
-        //             $('.course-checkbox').not(':checked').each(function() {
-        //                 var checkboxHari = $(this).data('hari').toUpperCase();
-        //                 var checkboxJamMulai = $(this).data('jam_mulai');
-
-        //                 if (checkboxHari === hari && checkboxJamMulai === jamMulai) {
-        //                     // Disable checkbox dan ubah label menjadi merah
-        //                     $(this).prop('disabled', true);
-        //                     $(this).next('label').addClass('text-red-500');
-        //                 }
-        //             });
-        //         }
-        //     });
-        // }
-        
-
 
         // Fungsi untuk enable conflicting courses
         function enableConflictingCourses(kodeMk) {
