@@ -160,7 +160,7 @@
                             <th scope="col" class="p-4">
                                 <div class="flex items-center pl-2">
                                     <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    <label for="checkbox-all-search" class="sr-only">Pilih Semua</label>
                                 </div>
                             </th>
                             <th scope="col" class="px-3 py-3">Nama</th>
@@ -185,7 +185,7 @@
                                                 value="{{ $mhs->irs->first()->id_TA }}" 
                                                 data-status="{{ $mhs->status }}" 
                                                 data-nim="{{ $mhs->nim }}">
-                                            <label for="checkbox-table-search-{{ $mhs->nim }}" class="sr-only">checkbox</label>
+                                            <label for="checkbox-item-{{ $mhs->nim }}" class="sr-only">Pilih {{ $mhs->nama_mhs }}</label>
                                         @endif
                                     </div>
                                 </td>
@@ -284,158 +284,93 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const approveButton = document.getElementById('approveIRS');
-    const rejectButton = document.getElementById('rejectIRS');
-    const permissionButton = document.getElementById('givePermission');
+        const selectAllCheckbox = document.getElementById('checkbox-all-search');
+        const checkboxes = document.querySelectorAll('.checkbox-item');
+        const approveButton = document.getElementById('approveIRS');
+        const rejectButton = document.getElementById('rejectIRS');
+        const permissionButton = document.getElementById('givePermission');
 
-    // Fungsi untuk Setujui IRS
-    approveButton.addEventListener('click', () => {
-        handleAction(['Belum Disetujui', 'Pembatalan'], 'Sudah Disetujui');
-    });
-
-    // Fungsi untuk Batalkan Persetujuan IRS
-    rejectButton.addEventListener('click', () => {
-        handleAction(['Sudah Disetujui'], 'Pembatalan');
-    });
-
-    // Fungsi untuk Beri Izin Perubahan IRS
-    permissionButton.addEventListener('click', () => {
-        handleAction(['Sudah Disetujui'], 'Belum Disetujui');
-    });
-
-    function handleAction(requiredStatuses, newStatus) {
-        const selectedCheckboxes = Array.from(document.querySelectorAll('.checkbox-item:checked'));
-
-        if (selectedCheckboxes.length === 0) {
-            alert('Pilih minimal satu mahasiswa.');
-            return;
-        }
-
-        const idTAs = selectedCheckboxes.map(checkbox => checkbox.value);
-        const invalid = selectedCheckboxes.some(checkbox => !requiredStatuses.includes(checkbox.dataset.status));
-        if (invalid) {
-            alert(`Aksi ini hanya berlaku untuk status "${requiredStatuses.join('" atau "')}".`);
-            return;
-        }
-
-        updateIRSStatus(idTAs, newStatus);
-    }
-
-    function updateIRSStatus(idTAs, status) {
-        console.log("Data yang dikirim:", { idTAs, status });
-        fetch('/dosen/updateirsstatus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: JSON.stringify({ idTAs, status }),
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Gagal menghubungi server.');
-            return response.json();
-        })
-        .then(data => {
-            console.log("Respons dari server:", data);
-            if (data.success) {
-                alert(data.message);
-                location.reload(); // Reload halaman setelah berhasil
-            } else {
-                alert(data.message || 'Terjadi kesalahan.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan. Coba lagi.');
+        // Fungsi untuk menangani seleksi semua checkbox
+        selectAllCheckbox.addEventListener('change', () => {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
         });
-    }
-});
 
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const selectAllCheckbox = document.getElementById('checkbox-all-search');
-    //     const checkboxes = document.querySelectorAll('.checkbox-item');
-    //     const approveButton = document.getElementById('approveIRS');
-    //     const rejectButton = document.getElementById('rejectIRS');
-    //     const permissionButton = document.getElementById('givePermission');
+        // Fungsi untuk memastikan status checkbox "Select All" sinkron dengan semua checkbox
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked); // Semua checkbox dicentang
+                const someChecked = Array.from(checkboxes).some(cb => cb.checked); // Ada checkbox dicentang
 
-    //     // Fungsi untuk menangani seleksi semua checkbox
-    //     selectAllCheckbox.addEventListener('change', () => {
-    //         checkboxes.forEach(checkbox => {
-    //             checkbox.checked = selectAllCheckbox.checked;
-    //         });
-    //     });
+                selectAllCheckbox.checked = allChecked; // Centang/uncheck Select All
+                selectAllCheckbox.indeterminate = !allChecked && someChecked; // Status indeterminate
+            });
+        });
 
-    //     // Fungsi untuk Setujui IRS
-    //     approveButton.addEventListener('click', () => {
-    //         console.log("Setujui IRS button clicked");
-    //         handleAction(['Belum Disetujui', 'Pembatalan'], 'Sudah Disetujui');
-    //     });
+        // Fungsi untuk Setujui IRS
+        approveButton.addEventListener('click', () => {
+            handleAction(['Belum Disetujui', 'Pembatalan'], 'Sudah Disetujui');
+        });
 
-    //     rejectButton.addEventListener('click', () => {
-    //         console.log("Batalkan Persetujuan IRS button clicked");
-    //         handleAction(['Sudah Disetujui'], 'Pembatalan');
-    //     });
+        // Fungsi untuk Batalkan Persetujuan IRS
+        rejectButton.addEventListener('click', () => {
+            handleAction(['Sudah Disetujui'], 'Pembatalan');
+        });
 
-    //     permissionButton.addEventListener('click', () => {
-    //         console.log("Beri Izin Perubahan IRS button clicked");
-    //         handleAction(['Sudah Disetujui'], 'Belum Disetujui');
-    //     });
+        // Fungsi untuk Beri Izin Perubahan IRS
+        permissionButton.addEventListener('click', () => {
+            handleAction(['Sudah Disetujui'], 'Belum Disetujui');
+        });
 
-    //     // Fungsi untuk validasi dan pengiriman data
-    //     function handleAction(requiredStatuses, newStatus) {
-    //         const selectedCheckboxes = Array.from(document.querySelectorAll('.checkbox-item:checked'));
+        function handleAction(requiredStatuses, newStatus) {
+            const selectedCheckboxes = Array.from(document.querySelectorAll('.checkbox-item:checked'));
 
-    //         if (selectedCheckboxes.length === 0) {
-    //             alert('Pilih minimal satu mahasiswa.');
-    //             return;
-    //         }
+            if (selectedCheckboxes.length === 0) {
+                alert('Pilih minimal satu mahasiswa.');
+                return;
+            }
 
-    //         selectedCheckboxes.forEach(checkbox => {
-    //             console.log(`Checkbox ID: ${checkbox.value}, Status: ${checkbox.dataset.status}`);
-    //         });
+            const idTAs = selectedCheckboxes.map(checkbox => checkbox.value);
+            const invalid = selectedCheckboxes.some(checkbox => !requiredStatuses.includes(checkbox.dataset.status));
+            if (invalid) {
+                alert(`Aksi ini hanya berlaku untuk status "${requiredStatuses.join('" atau "')}".`);
+                return;
+            }
 
-    //         const idTAs = selectedCheckboxes.map(checkbox => checkbox.value);
+            updateIRSStatus(idTAs, newStatus);
+        }
 
-    //         const invalid = selectedCheckboxes.some(checkbox => !requiredStatuses.includes(checkbox.dataset.status));
-    //         if (invalid) {
-    //             alert(`Aksi ini hanya berlaku untuk status "${requiredStatuses.join('" atau "')}".`);
-    //             return;
-    //         }
+        function updateIRSStatus(idTAs, status) {
+            console.log("Data yang dikirim:", { idTAs, status });
+            fetch('/dosen/updateirsstatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({ idTAs, status }),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Gagal menghubungi server.');
+                return response.json();
+            })
+            .then(data => {
+                console.log("Respons dari server:", data);
+                if (data.success) {
+                    alert(data.message);
+                    location.reload(); // Reload halaman setelah berhasil
+                } else {
+                    alert(data.message || 'Terjadi kesalahan.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Coba lagi.');
+            });
+        }
+    });
 
-    //         console.log('Data yang dikirim ke server:', { idTAs, newStatus });
-
-    //         updateIRSStatus(idTAs, newStatus);
-    //     }
-
-    //     function updateIRSStatus(idTAs, status) {
-    //         console.log("Data yang dikirim:", { idTAs, status });
-    //         fetch('/dosen/updateirsstatus', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-    //             },
-    //             body: JSON.stringify({ idTAs, status }),
-    //         })
-    //         .then(response => {
-    //             if (!response.ok) throw new Error('Gagal menghubungi server.');
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             console.log("Respons dari server:", data);
-    //             if (data.success) {
-    //                 alert(data.message);
-    //                 location.reload(); // Reload halaman setelah berhasil
-    //             } else {
-    //                 alert(data.message || 'Terjadi kesalahan.');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //             alert('Terjadi kesalahan. Coba lagi.');
-    //         });
-    //     }
-    // });
   </script>
 
   <!-- JS Script for filter handling -->
