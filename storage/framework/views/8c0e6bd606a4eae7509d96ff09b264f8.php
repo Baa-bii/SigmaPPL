@@ -66,33 +66,22 @@
             <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-8">
                 <ul class="flex justify-center space-x-8">
                     <li>
-                        <?php if(isset($status) && $status === 'Aktif'): ?>
                         <a href="#" onclick="showTabContent(event, 'buat-irs')" 
                         class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500 hover:text-gray-600 hover:border-gray-300">
                             Buat IRS
                         </a>
-                        <?php else: ?>
-                        <a href="#" onclick="showTabContent(event, 'buat-irs')" 
-                        class="inline-flex items-center p-2 text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500 hover:text-gray-600 hover:border-gray-300">
-                            Buat IRS
-                        </a>
-                        <?php endif; ?>
                     </li>
                     <li>
                         <a href="#" onclick="showTabContent(event, 'irs')" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
                             IRS
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href="#"  onclick="showTabContent(event, 'khs')" class="inline-flex items-center p-2 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                            KHS
-                        </a>
-                    </li> -->
                 </ul>
             </div>
 
             <?php echo $__env->make('content.mhs.buatIrs', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             <?php echo $__env->make('content.mhs.irs', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            
             <!-- <?php echo $__env->make('content.mhs.khs', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> -->
 
          

@@ -40,6 +40,11 @@ class BuatIRSController extends Controller
     $tahunAkademikArr = explode(' ', $tahunAkademik);
     $semesterGanjil = ($tahunAkademikArr[1] === 'Ganjil');
 
+    // status irs
+    $statusIRSMHS = IRS::where('nim', $nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->value('status');
+
     // Hitung total SKS
     $totalSKS = IRS::where('nim', $nim)
         ->where('id_TA', $semesterAktif->id)
@@ -125,6 +130,34 @@ class BuatIRSController extends Controller
     // Timeslots dan days untuk jadwal
     $timeslots = ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
     $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
+    $user = auth()->user();
+        $mhs = $user->mahasiswa;
+
+        $nim = $mhs->nim;
+        $semesterAktif = $mhs->semester_aktif()->where('is_active', true)->first();
+        // Mengambil id semester aktif
+        $semesterAktifId = $semesterAktif->id;
+
+        // Menjalankan query dengan id semester aktif
+        $irsData = DB::table('irs')
+            ->join('semester_aktif', 'irs.id_TA', '=', 'semester_aktif.id')
+            ->join('jadwal', 'irs.id_jadwal', '=', 'jadwal.id_jadwal')
+            ->join('ruang', 'jadwal.id_ruang', '=', 'ruang.id') // Menggunakan join yang benar
+            ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')
+            ->select('jadwal.id_jadwal as jadwalId', 'irs.id', 'irs.status_mata_kuliah as status', 'matakuliah.kode_mk', 'matakuliah.nama_mk as mata_kuliah', 
+                    'semester_aktif.semester', 'jadwal.kelas', DB::raw("CONCAT(ruang.gedung, ruang.nama) as ruang"), // Menggabungkan gedung dan nama ruang, 
+                    'matakuliah.sks')
+            ->where('semester_aktif.id', '=', $semesterAktifId) // Menambahkan kondisi untuk filter berdasarkan id semester aktif
+            ->get();
+         // Menghitung IP Semester Lalu
+        $ips = $this->hitungIpSemesterLalu($nim, $semesterAktif);
+ 
+        $maxSKS = $this->hitungMaxBebanSKS($ips);
+    
+        $totalSKS = IRS::where('nim', $mhs->nim)
+        ->where('id_TA', $semesterAktif->id)
+        ->join('matakuliah', 'irs.kode_mk', '=', 'matakuliah.kode_mk')  // Join dengan tabel matakuliah berdasarkan kode_mk
+        ->sum('matakuliah.sks');  // Ambil sum dari kolom sks yang ada di matakuliah
 
     // Return ke view
     return view('content.mhs.akademik', compact(
@@ -143,7 +176,9 @@ class BuatIRSController extends Controller
         'selectedMataKuliah',
         'semesterAktifData',
         'timeslots',
-        'days'
+        'days',
+        'statusIRSMHS',
+        'irsData', 'ips', 'maxSKS', 'totalSKS'
     ));
 }
 
@@ -195,7 +230,6 @@ class BuatIRSController extends Controller
             // Ambil semua jadwal untuk mata kuliah tersebut di semester aktif
             $jadwal = Jadwal::with(['waktu', 'ruang', 'matakuliah'])
                 ->where('kode_mk', $kodeMk)
-                ->where('status', 'disetujui')
                 ->whereNotNull('id_ruang')
                 ->get();
 
@@ -540,9 +574,9 @@ class BuatIRSController extends Controller
     {
         if ($ips < 2.00) {
             return 18;
-        } elseif ($ips >= 2.00 && $ips < 3.00) {
+        } elseif ($ips >= 2.00 && $ips < 2.50) {
             return 20;
-        } elseif ($ips >= 3.00 && $ips < 3.50) {
+        } elseif ($ips >= 2.50 && $ips < 3.00) {
             return 22;
         } else {
             return 24;
