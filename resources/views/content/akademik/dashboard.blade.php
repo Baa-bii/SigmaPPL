@@ -38,7 +38,7 @@
     const getChartOptions = (labels, values) => {
         return {
             series: values,
-            colors: ["#9CA3AF", "#B63546", "#2B2B8B", "#2F8B76", "#53B635", "#E3A008", "#CE39BA"],
+            colors: ["#9CA3AF", "#B63546", "#2B2B8B", "#2F8B76", "#53B635", "#E3A008", "#CE39BA", "#196E8F"],
             chart: {
                 height: 250,
                 width: "100%",
