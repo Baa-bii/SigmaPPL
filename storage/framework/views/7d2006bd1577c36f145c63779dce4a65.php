@@ -128,13 +128,38 @@
                                 <button class="bg-green-400 w-auto p-1 rounded text-white hover:bg-green-500 shadow-md">
                                     Edit
                                 </button>
-                                <form action="<?php echo e(route('akademik.ruang.destroy', $ruang->id)); ?>" method="POST" style="display:inline;">
+                                <form id="delete-form-<?php echo e($ruang->nama); ?>" onclick="openDialog('custom-confirm-<?php echo e($ruang->nama); ?>')" action="<?php echo e(route('akademik.ruang.destroy', $ruang->id)); ?>" method="POST" style="display:inline;">
                                     <?php echo csrf_field(); ?>
                                     <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="bg-red-500 w-auto p-1 rounded text-white hover:bg-red-600 shadow-md">
                                         Delete
                                     </button>
+                                    
                                 </form>
+
+                                <div id="custom-confirm-<?php echo e($ruang->nama); ?>" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+                                        <p class="mb-4">Apakah Anda yakin ingin menghapus mata kuliah <strong><?php echo e($ruang->nama); ?></strong>?</p>
+                                        <div class="flex justify-end gap-4">
+                                            <button onclick="closeDialog('custom-confirm-<?php echo e($ruang->nama); ?>')" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded">Batal</button>
+                                            <button onclick="submitForm('delete-form-<?php echo e($ruang->nama); ?>')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Hapus</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function openDialog(dialogId) {
+                                        document.getElementById(dialogId).classList.remove('hidden');
+                                    }
+
+                                    function closeDialog(dialogId) {
+                                        document.getElementById(dialogId).classList.add('hidden');
+                                    }
+
+                                    function submitForm(formId) {
+                                        document.getElementById(formId).submit();
+                                    }
+                                </script>
                             </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
