@@ -56,7 +56,7 @@
     <!-- Container Utama -->
     <main class="md:ml-64 h-auto pt-10 flex-grow">
         <div class="max-w-7xl m-10 py-10">
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg  w-full">
                 <div class="p-6">
                     <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Daftar Mata Kuliah yang Diambil</h2>
                     <p>Max. Beban SKS: <?php echo e($maxSKS); ?> SKS</p>
