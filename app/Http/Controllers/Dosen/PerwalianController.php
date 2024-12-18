@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dosen;
 
+use DateTime;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -174,46 +175,68 @@ class PerwalianController extends Controller
     }
     
     public function updateIRSStatus(Request $request)
-{
-    \Log::info('Data yang diterima:', [
-        'idTAs' => $request->input('idTAs'),
-        'status' => $request->input('status')
-    ]);
+    {
+        \Log::info('Data yang diterima:', [
+            'idTAs' => $request->input('idTAs'),
+            'status' => $request->input('status')
+        ]);
 
-    $request->validate([
-        'idTAs' => 'required|array',
-        'idTAs.*' => 'exists:semester_aktif,id', 
-        'status' => 'required|string|in:Sudah Disetujui,Belum Disetujui,Pembatalan',
-    ]);
+        // Validasi input request
+        $request->validate([
+            'idTAs' => 'required|array',
+            'idTAs.*' => 'exists:semester_aktif,id', 
+            'status' => 'required|string|in:Sudah Disetujui,Belum Disetujui,Pembatalan',
+        ]);
 
-    try {
-        $validIdTAs = SemesterAktif::whereIn('id', $request->idTAs)
-            ->where('is_active', 1) 
-            ->pluck('id')
-            ->toArray();
+        // Tambahkan validasi waktu
+        // Simulasi tanggal sistem (gunakan waktu aktual saat deploy) !!Samakan tanggalnya juga dibagian perwalian.blade nya
+        $today = new DateTime('2024-08-19'); // Waktu saat ini, apabila sudah tidak simulasi bisa dihapus tanggalnya
+        $startKuliah = new DateTime('2024-08-19'); // Tanggal awal kuliah
+        $endPerubahanIRS = (clone $startKuliah)->modify('+2 weeks'); // Batas akhir perubahan IRS
+        $endPembatalanIRS = (clone $startKuliah)->modify('+4 weeks'); // Batas akhir pembatalan IRS
 
-        if (empty($validIdTAs)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak ada semester aktif yang valid untuk diperbarui.',
-            ], 400);
+        // Validasi waktu berdasarkan jenis aksi
+        if ($request->status == 'Belum Disetujui' && $today > $endPerubahanIRS) {
+            return response()->json(['success' => false, 'message' => 'Waktu perubahan IRS telah berakhir.']);
         }
 
-        IRS::whereIn('id_TA', $validIdTAs)->update(['status' => $request->status]);
+        if ($request->status == 'Pembatalan' && $today > $endPembatalanIRS) {
+            return response()->json(['success' => false, 'message' => 'Waktu pembatalan IRS telah berakhir.']);
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Status IRS berhasil diperbarui.',
-        ]);
-    } catch (\Exception $e) {
-        \Log::error('Error saat update IRS:', ['error' => $e->getMessage()]);
-        return response()->json([
-            'success' => false,
-            'message' => 'Terjadi kesalahan saat memperbarui status IRS.',
-        ], 500);
+        if ($request->status == 'Sudah Disetujui' && $today > $endPembatalanIRS) {
+            return response()->json(['success' => false, 'message' => 'Waktu penyetujuan IRS telah berakhir.']);
+        }
+
+        try {
+            // Ambil ID semester aktif yang valid
+            $validIdTAs = SemesterAktif::whereIn('id', $request->idTAs)
+                ->where('is_active', 1) 
+                ->pluck('id')
+                ->toArray();
+
+            if (empty($validIdTAs)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada semester aktif yang valid untuk diperbarui.',
+                ], 400);
+            }
+
+            // Update status IRS
+            IRS::whereIn('id_TA', $validIdTAs)->update(['status' => $request->status]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status IRS berhasil diperbarui.',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error saat update IRS:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui status IRS.',
+            ], 500);
+        }
     }
-}
-
 
     public function getStatistics()
     {

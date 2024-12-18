@@ -195,7 +195,7 @@
                         </svg>
                     </span>
                     <h6 class="flex items-center mb-1 text-lg text-gray-900 dark:text-white">Batas akhir perubahan IRS untuk penggantian mata kuliah Gasal 2024/2025</h6>
-                    <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Mulai : 30 Agustus 2024</time>
+                    <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Mulai : 02 September 2024</time>
                     <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Selesai : -</time>
                 </li>
 
@@ -206,7 +206,7 @@
                         </svg>
                     </span>
                     <h6 class="flex items-center mb-1 text-lg text-gray-900 dark:text-white">Batas akhir pembatalan IRS untuk penggantian mata kuliah Gasal 2024/2025</h6>
-                    <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Mulai : 13 September 2024</time>
+                    <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Mulai : 16 September 2024</time>
                     <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Selesai : -</time>
                 </li>
             </ol>

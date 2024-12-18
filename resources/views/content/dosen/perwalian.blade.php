@@ -46,12 +46,29 @@
 
             <!-- Container Flex untuk memusatkan tombol -->
             <div class="flex flex-col md:flex-row md:items-center md:space-x-8 mt-4 md:mt-8">
+                @php
+                    // Simulasi tanggal sistem (gunakan waktu aktual saat deploy) !!Samakan tanggalnya juga dibagian perwalian.controller nya
+                    $today = new DateTime('2024-08-19'); // Waktu saat ini, apabila sudah tidak simulasi bisa dihapus tanggalnya
+                    $startKuliah = new DateTime('2024-08-19'); // Tanggal awal kuliah
+
+                    // Tanggal akhir pengisian, perubahan, dan pembatalan IRS
+                    $endPengisianIRS = (clone $startKuliah)->modify('-1 month');
+                    $endPerubahanIRS = (clone $startKuliah)->modify('+2 weeks');
+                    $endPembatalanIRS = (clone $startKuliah)->modify('+4 weeks');
+
+                    // Aturan Kapan Tombol Aktif
+                    $canApprove = $today <= $endPembatalanIRS; // Penyetujuan bisa sampai batas pembatalan
+                    $canEdit = $today <= $endPerubahanIRS;     // Perubahan IRS hanya sampai 2 minggu
+                    $canCancel = $today <= $endPembatalanIRS;  // Pembatalan IRS sampai 4 minggu
+                @endphp
+
                 <!-- Tombol Setujui IRS -->
                 <button id="approveIRS" type="button" class="w-full md:w-auto px-3 py-2 text-sm font-medium text-center inline-flex items-center text-black border border-gray-800 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 md:mb-0">
                     <svg class="w-3 h-3 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
                     </svg>
+                    @if(!$canApprove) "Disabled" @endif
                     Setujui IRS
                 </button>
 
@@ -61,7 +78,8 @@
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
                     </svg>
-                    Batalkan Persetujuan IRS
+                    @if(!$canCancel) "Disabled" @endif
+                    Beri Izin Pembatalan IRS
                 </button>
 
                 <!-- Tombol Beri Izin Perubahan IRS -->
@@ -70,6 +88,7 @@
                         <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
                         <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
                     </svg>
+                    @if(!$canEdit) "Disabled" @endif
                     Beri Izin Perubahan IRS
                 </button>
             </div>
