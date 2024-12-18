@@ -112,7 +112,7 @@
                         </div>
                         <div class=" bg-yellow-300 p-4 shadow-lg rounded-md hover:transition transform hover:scale-105">
                             <a href="/mhs/akademik"</a>
-                            <h3 class="text-lg font-bold mb-4">Isian Rencana Studi</h3>
+                            <h3 class="text-lg font-bold mb-4">Isian Rencana Semester</h3>
                             <div class="flex justify-start">
                                 <p class="text-sm py-2 mr-2">TA {{ $mhs->semester_aktif->where('is_active', true)->first()->tahun_akademik ?? 'Tidak Diketahui' }}</p>
                                 <p class="bg-gray-400 text-white px-2 py-2 text-sm mr-2">Buat IRS</p>

@@ -1,5 +1,5 @@
 <div class="z-10 tab-content flex flex-col lg:flex-row gap-6" id="buat-irs">
-<?php if(isset($status) && $status === 'Aktif' && $statusIRSMHS === 'Belum Disetujui'): ?>
+<?php if(isset($status) && $status === 'Aktif' && $statusIRSMHS === 'Belum Disetujui' || !isset($statusIRSMHS)): ?>
     <!-- Sidebar Informasi Mahasiswa -->
     <div class="bg-white p-6 w-full lg:w-1/3 border border-gray-300">
         
@@ -173,7 +173,7 @@
 </div>
 
 <?php elseif(isset($statusIRSMHS) && $statusIRSMHS === 'Pembatalan'): ?>
-<div class="flex flex-col lg:flex-row gap-6">
+<div class="flex flex-col lg:flex-row gap-6 w-full">
     <main class="h-auto flex-grow">
         <div>
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">

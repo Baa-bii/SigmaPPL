@@ -61,7 +61,7 @@
     <main class="md:ml-64 h-auto relative flex-grow">
     
         <div class="container max-w-7xl mx-auto p-6">
-        <h1 class="pt-20 text-lg font-semibold text-gray-900 dark:text-white mb-4">Akademik</h1>
+        <h1 class="pt-20 text-lg font-semibold text-gray-900 dark:text-white mb-4">Isian Rencana Semester</h1>
             <!-- Tabs -->
             <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-8">
                 <ul class="flex justify-center space-x-8">
