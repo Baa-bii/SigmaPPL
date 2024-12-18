@@ -6,14 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('/img/WP.jpg'); /* Path ke gambar */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .bg-overlay {
+            backdrop-filter: blur(5px); /* Efek blur */
+            background-color: rgba(255, 255, 255, 0.4); /* Transparansi dengan warna putih */
+        }
+    </style>
 </head>
-<body class="bg-yellow-500">
-    <section  >
-        <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0">
+<body>
+    <section class="relative h-screen">
+        <!-- Overlay untuk blur -->
+        <div class="absolute inset-0 bg-overlay"></div>
+
+        <!-- Login -->
+        <div class="relative flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0">
             <div class="">
                 <img class="w-full h-32 mr-2" src="/assets/logo.png" alt="logo">   
             </div>
-            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800/80 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white" >
                         Log in to your account
