@@ -15,7 +15,7 @@
 </head>
 <body>
     
-  <div class="antialiased bg-gray-50 dark:bg-gray-900">
+  <div class="flex flex-col min-h-screen antialiased bg-gray-50 dark:bg-gray-900">
     <!--Navbar-->    
     <x-header></x-header>
 
@@ -24,7 +24,7 @@
 
     <!-- Main Content -->
 
-    <main class="p-16 md:ml-64 h-auto pt-20">
+    <main class="flex-grow p-16 md:ml-64 h-auto pt-20">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-4">Perwalian</h1>
 
         <!-- Konten 1 -->

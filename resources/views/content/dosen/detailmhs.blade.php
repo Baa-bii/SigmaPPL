@@ -109,10 +109,15 @@
                                     $hasIRSForSemester = App\Models\IRS::where('id_TA', $semester->id)->exists();
                                     // Ambil status IRS (misal: Disetujui, Belum Disetujui, dll)
                                     $statusIRS = $hasIRSForSemester ? App\Models\IRS::where('id_TA', $semester->id)->first()->status : null;
+                                    $semesterAktifTerbaru = collect($semesterAktifData)->firstWhere('is_active', 1);
                                 @endphp
 
-                                @if (!$hasIRSForSemester)
-                                    <!-- Jika belum ada IRS, tampilkan pesan -->
+                                @if ($semester->semester > $semesterAktifTerbaru->semester)
+                                    @continue {{-- Abaikan semester di atas semester aktif --}}
+                                @endif
+
+                                @if (!$hasIRSForSemester && $semester->is_active == 1)
+                                    <!-- Jika semester ini tidak punya IRS dan is_active = 1 -->
                                     <div class="p-4 mb-4 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg">
                                         {{ $mahasiswa->nama_mhs ?? 'Nama Mahasiswa' }} belum melakukan pengisian IRS pada semester {{ $semester->semester }} tahun akademik {{ $semester->tahun_akademik }}.
                                     </div>
@@ -246,153 +251,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Konten 2 KHS -->
-            <!-- <div id="content-khs" class="bg-white rounded-lg border-gray-300 shadow dark:border-gray-600 h-auto mb-8 px-6 hidden">
-                <div id="tabs-title" class="text-xl font-semibold pt-8 pb-4 text-center">Kartu Hasil Studi</div> -->
-                <!-- Accordion KHS content here -->
-                <!-- <div id="accordion-khs">    
-                    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400"> -->
-                    
-                        <!-- 10 -->
-                        <!-- <h2 id="accordion-flush-heading-10">
-                            <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-10" aria-expanded="false" aria-controls="accordion-flush-body-10">
-                                <div class="flex flex-col items-start">
-                                    <span>Semester 1  |  Tahun Ajaran 2022/2023 Ganjil</span>
-                                    <span class="text-sm text-gray-500 mt-2">Jumlah SKS 21</span>
-                                </div> -->
-                                <!-- Ikon defaultnya mengarah ke bawah, menggunakan rotate-0 -->
-                                <!-- <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                                </svg>
-                            </button>
-                        </h2> -->
-
-                        <!-- <div id="accordion-flush-body-10" class="hidden" aria-labelledby="accordion-flush-heading-10">
-                            <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                                <p class="mb-2 text-gray-500 dark:text-gray-400"> -->
-                                    <!-- Table -->
-                                    <!-- <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        No
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Kode
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Mata Kuliah
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Jenis
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Status
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        SKS
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Nilai Huruf
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Bobot
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        SKS x Bobot
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        1
-                                                    </th>
-                                                    <td class="px-6 py-4">
-                                                        PAIK
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        Metnum
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        B
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        Lulus
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        3
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        A
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        4.0
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        12
-                                                    </td>
-                                                </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        2
-                                                    </th>
-                                                    <td class="px-6 py-4">
-                                                        PAIK
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        Metnum
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        B
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        Lulus
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        3
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        A
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        4.0
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        12
-                                                    </td>
-                                                </tr> -->
-                                                <!-- Total row -->
-                                                <!-- <tr class="font-semibold bg-gray-100 dark:bg-gray-800 dark:text-white">
-                                                    <td colspan="5" class="px-6 py-3 text-right">Total</td>
-                                                    <td class="px-6 py-3">6</td>
-                                                    <td class="px-6 py-3"></td>
-                                                    <td class="px-6 py-3">8</td>
-                                                    <td class="px-6 py-3">24</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </p>
-                                <div class="flex flex-col items-start text-sm text-gray-500 mt-8">
-                                    <span>IP. Semester : 4.0</span>
-                                    <span>82/21</span>
-                                    <span class="text-sm text-gray-500 mt-2">Jumlah SKS 21</span>
-                                </div>
-                                <button type="button" class="text-gray-900 text-center inline-flex items-center border border-gray-800 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-8 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">  
-                                    <svg class="w-3 h-3 text-gray-900 dark:text-gray-400 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-                                        <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
-                                        <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
-                                    </svg>    
-                                    Cetak KHS
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </main>
     

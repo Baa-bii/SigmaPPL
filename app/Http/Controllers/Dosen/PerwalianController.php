@@ -534,6 +534,11 @@ class PerwalianController extends Controller
 
         // Loop untuk menghitung total SKS per semester
         foreach ($semesterAktif as $semester) {
+             // Abaikan semester yang di atas semester aktif
+            if ($semester->semester > $semesterTerbaru->semester) {
+                continue;
+            }
+
             // Cek apakah semester ini memiliki IRS
             $irs = IRS::with([
                 'matakuliah', 
@@ -566,7 +571,7 @@ class PerwalianController extends Controller
         }
 
         // Kembalikan data semester aktif dan status IRS
-        return [$semesterAktifData, $hasIRS];
+        return [collect($semesterAktifData), $hasIRS];
     }
 
     public function setujuiIRS($Id)
