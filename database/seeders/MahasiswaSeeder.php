@@ -58,7 +58,7 @@ class MahasiswaSeeder extends Seeder
         // Randomisasi mahasiswa untuk setiap angkatan
         $angkatanMahasiswa = [];
         foreach ($angkatanList as $angkatan) {
-            $angkatanMahasiswa[$angkatan] = $users->splice(0, 3); // Ambil 5 mahasiswa per angkatan
+            $angkatanMahasiswa[$angkatan] = $users->splice(0, 10); // Ambil 10 mahasiswa per angkatan
         }
 
         foreach ($angkatanMahasiswa as $angkatan => $students) {
