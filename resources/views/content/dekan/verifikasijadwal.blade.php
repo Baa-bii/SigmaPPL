@@ -59,6 +59,17 @@
 
             <!-- Filter dan Actions -->
             <div class="flex items-center gap-4">
+                <!-- Dropdown untuk Menentukan Jumlah Kolom per Halaman -->
+                <!-- Dropdown untuk Jumlah Data Per Halaman -->
+                <form action="{{ route('dekan.verifikasiruang') }}" method="GET" class="inline-flex items-center ml-8">
+                    <label for="per_page" class="mr-2 text-gray-600 dark:text-gray-400">Tampilkan</label>
+                    <select name="per_page" id="per_page" onchange="this.form.submit()" class="border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-black focus:border-black block px-3 py-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                </form>
                 <!-- Dropdown Filter -->
                 <div class="relative inline-block text-left">
                     <button id="filtersDropdownButton" data-dropdown-toggle="dropdownFilters" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
@@ -73,7 +84,7 @@
                         <ul class="py-1 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap" aria-labelledby="dropdownFiltersButton">
                             <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'disetujui']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'disetujui' ? 'bg-gray-300' : '' }}">Semua Sudah Disetujui</a></li>
                             <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'ditolak']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'ditolak' ? 'bg-gray-300' : '' }}">Semua Sudah Ditolak</a></li>
-                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'menunggu']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'menunggu' ? 'bg-gray-300' : '' }}">Semua Belum Diisi</a></li>
+                            <li><a href="{{ route('dekan.jadwal.filter', ['filter' => 'diajukan']) }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white {{ request('filter') == 'diajukan' ? 'bg-gray-300' : '' }}">Semua Belum Diisi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -88,10 +99,10 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="dropdownActions" class="absolute hidden left-0 mt-1 w-30 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div id="dropdownActions" class="absolute hidden left-0 mt-1 w-35 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                         <ul class="py-1 text-xs text-gray-700" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                            <li><a href="#" id="approveButton" class="block px-4 py-2 hover:bg-gray-100">Menyetujui</a></li>
-                            <li><a href="#" id="rejectButton" class="block px-4 py-2 hover:bg-gray-100">Menolak</a></li>
+                            <li><a href="#" id="approveButton" class="block px-4 py-2 hover:bg-gray-100">Setuju</a></li>
+                            <li><a href="#" id="rejectButton" class="block px-4 py-2 hover:bg-gray-100">Tolak</a></li>
                         </ul>
                     </div>
                 </div>

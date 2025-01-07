@@ -82,6 +82,7 @@
         const loadingIndicator = document.getElementById('loading-indicator');
 
         form.addEventListener('submit', function (event) {
+            console.log('Selected Program Studi:', programStudi.value);
             event.preventDefault();
 
             const prodi = programStudi.value;

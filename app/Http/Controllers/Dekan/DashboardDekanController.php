@@ -104,10 +104,15 @@ class DashboardDekanController extends Controller
     /**
      * Menampilkan ruang yang terkait dengan jadwal yang menunggu verifikasi
      */
-    public function verifikasiruang(): View
+        public function verifikasiruang(Request $request): View
     {
-        // Ambil data ruang yang memiliki status menunggu
-        $ruang = RuangKelas::where('status', 'diajukan')->paginate(10);
+        // Ambil nilai `per_page` dari request atau gunakan default 10
+        $perPage = $request->query('per_page', 10);
+
+        // Query data ruang dengan status 'diajukan'
+        $ruang = RuangKelas::where('status', 'diajukan')->paginate($perPage);
+
+        // Kirim data ke view
         return view('content.dekan.verifikasiruang', compact('ruang'));
     }
 
@@ -220,25 +225,31 @@ public function filterJadwal(Request $request)
 
 public function filterRuang(Request $request)
 {
-    // Ambil input pencarian dan filter
     $search = $request->input('search');
-    $filter = $request->input('filter'); // Filter status
+    $filter = $request->input('filter');
+    $prodi = $request->query('prodi'); // Ambil parameter prodi dari URL
 
-    // Query ruang dengan filter berdasarkan pencarian dan status
+    // Query data ruang dengan filter
     $ruang = RuangKelas::with(['jadwal.waktu'])
+        ->when($prodi, function ($query, $prodi) {
+            $query->where('kode_prodi', $prodi);
+        })
         ->when($search, function ($query, $search) {
-            $query->where('nama', 'LIKE', "%{$search}%")
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'LIKE', "%{$search}%")
                   ->orWhere('gedung', 'LIKE', "%{$search}%");
+            });
         })
         ->when($filter, function ($query, $filter) {
             $query->where('status', $filter);
         })
-        ->paginate($request->input('per_page', 10));
+        ->paginate(10);
 
-    // Kirim data ke view
+    // Pastikan variabel $prodi dikirimkan ke view
     return view('content.dekan.verifikasiruang', [
         'ruang' => $ruang,
-        'filter' => $filter, // Kirim filter yang dipilih
+        'filter' => $filter,
+        'prodi' => $prodi, // Kirim variabel $prodi
     ]);
 }
 
@@ -268,7 +279,8 @@ public function searchRuang(Request $request)
     // Query ruang dengan filter berdasarkan pencarian
     $ruang = RuangKelas::with(['jadwal.waktu'])
         ->when($search, function ($query, $search) {
-            $query->where('nama', 'LIKE', "%{$search}%");
+            $query->where('nama', 'LIKE', "%{$search}%")
+                  ->orWhere('gedung', 'LIKE', "%{$search}%");
         })
         ->paginate($request->input('per_page', 10)); // Tambahkan paginasi jika diperlukan
 
