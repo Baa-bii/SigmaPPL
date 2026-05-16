@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth:mhs'], function () {
     // Route::post('/irs/delete/temp', [BuastIrsController::class, 'hapusJadwal'])->name('irs.delete');
     Route::get('/sks/{nim}', [DashboardMhsController::class, 'hitungSks']);
     Route::get('/get-total-sks', [BuatIRSController::class, 'getTotalSks'])->name('getTotalSks');
-    Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
+    Route::post('/irs/cancel/{jadwalId}', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal-by-id');
     Route::post('/irs/cancel', [BuatIrsController::class, 'hapusJadwal'])->name('hapus-jadwal');
 
 
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth:kaprodi', 'prefix' => 'kaprodi', 'as' => 'ka
     });
     Route::delete('/kaprodi/mata_kuliah/{kode_mk}', [MataKuliahController::class, 'destroy'])->name('kaprodi.mata_kuliah.destroy');
     Route::delete('/kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'destroy'])->name('kaprodi.jadwal.destroy');
-    Route::post('kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
+    Route::post('kaprodi/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update.byid');
     Route::post('/jadwal/ajukan', [JadwalController::class, 'ajukan'])->name('jadwal.ajukan');
     Route::put('/mata-kuliah/{kode_mk}', [MataKuliahController::class, 'update'])->name('kaprodi.mata_kuliah.update');
     Route::put('/jadwal/{id_jadwal}', [JadwalController::class, 'update'])->name('kaprodi.jadwal.update');
@@ -162,8 +162,6 @@ Route::group(['middleware'=>'auth:akademik'], function(){
     ])->except(['show']);
     Route::patch('/akademik/ruang/ajukan-all', [RuangKelasController::class, 'ajukanAll'])->name('akademik.ruang.ajukan-all');
 });
-
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
