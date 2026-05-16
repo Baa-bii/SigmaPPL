@@ -1,0 +1,1 @@
+<?php /**PATH C:\Website SiGMA\SiGMA\resources\views/content/mhs/khs.blade.php ENDPATH**/ ?>
