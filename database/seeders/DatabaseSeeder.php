@@ -97,8 +97,8 @@ class DatabaseSeeder extends Seeder
             SemesterAktifSeeder::class,
             WaktuSeeder::class,
             JadwalSeeder::class,
-            IRSSeeder::class,
-            KhsSeeder::class,
+            //IRSSeeder::class,
+            //KhsSeeder::class,
             DosenMatkulSeeder::class,
         ]);
     }
