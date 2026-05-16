@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\IRS;
 use App\Models\SemesterAktif;
 use App\Models\Mahasiswa;
-use App\Models\Matakuliah;
+use App\Models\MataKuliah;
 use App\Models\Jadwal;
 
 class IRSSeeder extends Seeder
@@ -444,15 +444,15 @@ class IRSSeeder extends Seeder
         ]);
 
         // Ambil semua mata kuliah sesuai semester
-        $mataKuliahList = Matakuliah::where('semester', $semester->semester)->get();
+        $MataKuliahList = MataKuliah::where('semester', $semester->semester)->get();
 
-        foreach ($mataKuliahList as $mataKuliah) {
+        foreach ($MataKuliahList as $MataKuliah) {
             // Cari jadwal yang sesuai dengan kode_mk
-            $jadwal = Jadwal::where('kode_mk', $mataKuliah->kode_mk)->first();
+            $jadwal = Jadwal::where('kode_mk', $MataKuliah->kode_mk)->first();
 
             if (!$jadwal) {
                 Log::warning("Tidak ditemukan jadwal untuk kode_mk", [
-                    'kode_mk' => $mataKuliah->kode_mk,
+                    'kode_mk' => $MataKuliah->kode_mk,
                     'nim' => $mahasiswa->nim,
                 ]);
                 continue;
@@ -460,7 +460,7 @@ class IRSSeeder extends Seeder
 
             // Periksa apakah data IRS sudah ada
             $exists = IRS::where('nim', $mahasiswa->nim)
-                ->where('kode_mk', $mataKuliah->kode_mk)
+                ->where('kode_mk', $MataKuliah->kode_mk)
                 ->where('id_TA', $semester->id)
                 ->exists();
 
@@ -468,7 +468,7 @@ class IRSSeeder extends Seeder
                 // Buat data IRS baru
                 IRS::create([
                     'nim' => $mahasiswa->nim,
-                    'kode_mk' => $mataKuliah->kode_mk,
+                    'kode_mk' => $MataKuliah->kode_mk,
                     'id_jadwal' => $jadwal->id_jadwal,
                     'id_TA' => $semester->id,
                     'status' => $status,
@@ -478,14 +478,14 @@ class IRSSeeder extends Seeder
 
                 Log::info("IRS berhasil dibuat", [
                     'nim' => $mahasiswa->nim,
-                    'kode_mk' => $mataKuliah->kode_mk,
+                    'kode_mk' => $MataKuliah->kode_mk,
                     'id_TA' => $semester->id,
                     'status' => $status,
                 ]);
             } else {
                 Log::info("IRS sudah ada, tidak ditambahkan lagi", [
                     'nim' => $mahasiswa->nim,
-                    'kode_mk' => $mataKuliah->kode_mk,
+                    'kode_mk' => $MataKuliah->kode_mk,
                     'id_TA' => $semester->id,
                 ]);
             }
